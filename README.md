@@ -2,7 +2,7 @@
 
 > A self-updating threat-intel brief: public feeds in over STIX/TAXII, correlated in MISP and OpenCTI, written up each morning by a **local** LLM, and fact-checked so it never invents an indicator.
 
-**Status:** Phase 0 (repo setup). Nothing runs yet. See [docs/PROGRESS.md](docs/PROGRESS.md).
+**Status:** Phase 1 (STIX/TAXII toolkit). See [docs/PROGRESS.md](docs/PROGRESS.md).
 
 <!-- Demo GIF and link to today's sample brief go here (Phase 8). -->
 
@@ -22,7 +22,19 @@ _Coming in Phase 8: `hexbrief demo` builds a brief from recorded data with no AP
 
 ## STIX/TAXII in and out
 
-_Phase 1._
+`stixkit` is a small STIX 2.1 / TAXII 2.1 toolkit ([ADR-002](docs/adr/002-taxii-tooling.md)):
+
+- **In:** a thin TAXII 2.1 client on httpx. It follows pagination, supports `added_after` and `limit`, retries 429/5xx with backoff, raises typed errors and never logs credentials.
+- **Out:** STIX 2.1 bundles built with `stix2`, marked with the official OASIS **TLP 2.0** markings, checked by `stix2-validator`, and pushed to a lab TAXII 2.1 server (medallion, bound to 127.0.0.1).
+
+```powershell
+pip install -e ".[dev]"
+hexbrief taxii collections                        # MITRE ATT&CK TAXII 2.1 server
+hexbrief stix demo-bundle --out demo-bundle.json  # indicator -indicates-> malware, TLP:CLEAR
+scripts\gen-secrets.ps1; scripts\taxii-up.ps1     # local TAXII server on 127.0.0.1:5000
+hexbrief taxii push demo-bundle.json http://127.0.0.1:5000/hexbrief/ <collection-id>
+pytest                                            # unit + round-trip tests
+```
 
 ## How the brief stays truthful
 
@@ -39,6 +51,7 @@ _Phase 5._
 ## Design decisions
 
 - [ADR-001: Hardware path and lab sizing](docs/adr/001-hardware-path.md)
+- [ADR-002: TAXII tooling (own client, pinned medallion)](docs/adr/002-taxii-tooling.md)
 
 ## License
 
