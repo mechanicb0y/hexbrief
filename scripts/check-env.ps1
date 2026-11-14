@@ -55,7 +55,16 @@ foreach ($raw in Get-Content -LiteralPath $Path -Encoding UTF8) {
     $parts = $line -split '=', 2
     if ($parts.Count -lt 2) { continue }
     $key = $parts[0].Trim()
-    $value = $parts[1].Trim().Trim([char[]]@('"', "'"))
+    $value = $parts[1].Trim()
+    if ($value -match '^"([^"]*)"' -or $value -match "^'([^']*)'") {
+        # Quoted: keep what is inside the quotes and ignore anything after them.
+        $value = $Matches[1]
+    }
+    else {
+        # Unquoted: a '#' at the start or after whitespace begins a comment,
+        # so `KEY=__replace_me__ # TODO` still counts as unset.
+        $value = ($value -replace '(^|\s)#.*$', '').Trim()
+    }
     if ($key -ne '') { $values[$key] = $value }
 }
 
