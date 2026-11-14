@@ -1,0 +1,25 @@
+[project]
+name = "hexbrief"
+version = "0.0.1"
+description = "Grounded daily threat-intel brief from STIX/TAXII, MISP and OpenCTI, written by a local LLM and fact-checked before publishing."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.12"
+dependencies = []  # added phase by phase, after checking each package's current version
+
+[project.optional-dependencies]
+dev = ["pre-commit", "ruff", "pytest"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "SIM"]  # S = bandit-style security rules
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]  # assert is fine in tests
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
