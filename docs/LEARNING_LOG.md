@@ -10,4 +10,9 @@ One entry per concept: date, concept, gotcha, one interview question.
 | 2026-11-14 | Secrets: prevention vs detection | .gitignore protects one file name; gitleaks is pattern-based and skippable with --no-verify, so CI runs it too. A leaked key must be rotated even after a history rewrite | "Your API key got pushed to a public repo. What do you do, in order?" |
 | 2026-11-14 | Parsing .env safely (check-env.ps1) | PS 5.1 leaves $PSScriptRoot empty in param() defaults; an inline `# comment` after a placeholder made it look "set" | "How do you validate config without ever logging secret values?" |
 
-**Re-quiz:** the Phase 0 answers were drafted with Claude's help. Quiz the owner again on all three Phase 0 questions, closed-book and in their own words, at the start of Phase 1.
+| 2026-11-14 | TLP 2.0 in STIX | stix2 3.0.2 only ships TLP 1.0 (TLP_WHITE). TLP 2.0 markings are OASIS marking-definitions with a property extension, using fixed ids | "How do you mark a STIX object TLP:CLEAR, and why does the marking have a fixed id?" |
+| 2026-11-14 | TAXII pagination | `next` is opaque: medallion reuses one id for every page, so detect loops by page content, not cursor | "How does TAXII 2.1 pagination work, and how do you stop a client looping forever?" |
+| 2026-11-14 | `added_after` and date_added | Re-sending an object with the same id+modified doesn't change its date_added, so it won't appear as "new" | "Why might an object you just pushed not show up in an added_after query?" |
+| 2026-11-14 | Retry safety | Retry GETs on 5xx; retry POSTs only on 429/503, because the write may already have happened | "Which HTTP errors are safe to retry, and for which methods?" |
+
+**Re-quiz:** the Phase 0 answers were drafted with Claude's help. The owner re-answered at the start of Phase 1, again with help (2026-11-14). **Quiz cold, with no help, in a later phase** on: CTI levels and staleness, lifecycle order and feedback, and the leaked-key response (rotate first).
