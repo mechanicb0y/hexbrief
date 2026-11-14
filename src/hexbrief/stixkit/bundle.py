@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import json
 from collections import Counter
-from collections.abc import Iterable
-from dataclasses import dataclass, field
+from collections.abc import Iterable, Mapping
+from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime
 from typing import Any
 
@@ -106,6 +106,68 @@ def validate(bundle: stix2.Bundle | dict[str, Any] | str) -> ValidationReport:
 def count_by_type(objects: Iterable[dict[str, Any]]) -> Counter[str]:
     """Count STIX objects by their ``type`` property."""
     return Counter(str(o.get("type", "?")) for o in objects)
+
+
+@dataclass(frozen=True)
+class AttackSummary:
+    """Counts of live ATT&CK objects (not revoked, not deprecated)."""
+
+    techniques: int = 0
+    subtechniques: int = 0
+    tactics: int = 0
+    groups: int = 0
+    software: int = 0
+    skipped: int = 0  # objects in the five categories above that are revoked or deprecated
+
+    def as_dict(self) -> dict[str, int]:
+        return asdict(self)
+
+
+_SOFTWARE_TYPES = frozenset({"malware", "tool"})
+
+
+def _attack_category(obj: Mapping[str, Any]) -> str | None:
+    """Map an ATT&CK STIX object to a summary field, or None if it is not counted."""
+    kind = obj.get("type")
+    if kind == "attack-pattern":
+        return "subtechniques" if obj.get("x_mitre_is_subtechnique") is True else "techniques"
+    if kind == "x-mitre-tactic":
+        return "tactics"
+    if kind == "intrusion-set":
+        return "groups"
+    if kind in _SOFTWARE_TYPES:
+        return "software"
+    return None
+
+
+def summarize_attack(objects: Iterable[Mapping[str, Any]]) -> AttackSummary:
+    """Count ATT&CK techniques, sub-techniques, tactics, groups and software.
+
+    Revoked and deprecated objects are not counted; they are tallied in ``skipped``.
+    Flags must be the JSON boolean ``true``, so ``"revoked": false`` is not skipped.
+    If the same id appears more than once (several versions of one object), only the
+    newest ``modified`` version counts, so a repeated or overlapping fetch never
+    double-counts and a later revocation wins.
+    """
+    latest: dict[str, Mapping[str, Any]] = {}
+    for obj in objects:
+        obj_id = obj.get("id")
+        if not obj_id:
+            continue
+        seen = latest.get(obj_id)
+        if seen is None or str(obj.get("modified", "")) > str(seen.get("modified", "")):
+            latest[obj_id] = obj
+
+    counts: Counter[str] = Counter()
+    for obj in latest.values():
+        category = _attack_category(obj)
+        if category is None:
+            continue
+        if obj.get("revoked") is True or obj.get("x_mitre_deprecated") is True:
+            counts["skipped"] += 1
+        else:
+            counts[category] += 1
+    return AttackSummary(**counts)
 
 
 def _to_json(bundle: stix2.Bundle | dict[str, Any]) -> str:
