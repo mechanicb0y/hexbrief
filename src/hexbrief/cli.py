@@ -1,0 +1,133 @@
+"""HexBrief command line (typer). Phase 1 adds the `taxii` and `stix` commands."""
+
+from __future__ import annotations
+
+import json
+import os
+from pathlib import Path
+
+import typer
+
+from hexbrief.stixkit.bundle import build_demo_bundle, count_by_type, validate
+from hexbrief.stixkit.taxii import TaxiiClient, TaxiiError
+
+app = typer.Typer(help="HexBrief: grounded daily threat-intel brief.", no_args_is_help=True)
+taxii_app = typer.Typer(help="Talk to TAXII 2.1 servers.", no_args_is_help=True)
+stix_app = typer.Typer(help="Build and validate STIX 2.1 bundles.", no_args_is_help=True)
+app.add_typer(taxii_app, name="taxii")
+app.add_typer(stix_app, name="stix")
+
+MITRE_DISCOVERY = "https://attack-taxii.mitre.org/taxii2/"
+
+
+def _load_env_file(path: Path = Path(".env")) -> None:
+    """Put .env values into os.environ (existing variables win). Values are never printed."""
+    if not path.is_file():
+        return
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if line and not line.startswith("#") and "=" in line:
+            key, value = line.split("=", 1)
+            os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+
+
+def _client(use_auth: bool) -> TaxiiClient:
+    auth = None
+    if use_auth:
+        _load_env_file()
+        user, password = os.environ.get("TAXII_USER", ""), os.environ.get("TAXII_PASSWORD", "")
+        if not user or not password:
+            raise typer.BadParameter(
+                "TAXII_USER / TAXII_PASSWORD not set (scripts/gen-secrets.ps1)"
+            )
+        auth = (user, password)
+    return TaxiiClient(auth=auth, timeout=60)
+
+
+@taxii_app.command("collections")
+def taxii_collections(
+    discovery_url: str = typer.Argument(MITRE_DISCOVERY, help="TAXII 2.1 discovery URL"),
+    auth: bool = typer.Option(False, "--auth", help="Use TAXII_USER/TAXII_PASSWORD from .env"),
+) -> None:
+    """List API roots and their collections."""
+    try:
+        with _client(auth) as c:
+            title = c.discovery(discovery_url).get("title", "?")
+            typer.echo(f"Server: {title}")
+            roots = c.api_roots(discovery_url)
+            # MITRE lists one root per ATT&CK release; show the default one only.
+            for root in roots[:1] if "mitre.org" in discovery_url else roots:
+                typer.echo(f"\nAPI root {root}")
+                for coll in c.collections(root):
+                    rw = ("r" if coll.get("can_read") else "-") + (
+                        "w" if coll.get("can_write") else "-"
+                    )
+                    typer.echo(f"  [{rw}] {coll['id']}  {coll.get('title', '')}")
+    except TaxiiError as exc:
+        typer.echo(f"TAXII error: {exc}", err=True)
+        raise typer.Exit(1) from exc
+
+
+@taxii_app.command("count")
+def taxii_count(
+    api_root: str = typer.Argument(..., help="API root URL"),
+    collection_id: str = typer.Argument(..., help="Collection id"),
+    added_after: str | None = typer.Option(None, help="Only objects added after this timestamp"),
+    page_size: int = typer.Option(500, help="Objects per page (limit)"),
+    auth: bool = typer.Option(False, "--auth", help="Use TAXII_USER/TAXII_PASSWORD from .env"),
+) -> None:
+    """Pull a whole collection and count objects by STIX type."""
+    try:
+        with _client(auth) as c:
+            counts = count_by_type(
+                c.objects(api_root, collection_id, added_after=added_after, limit=page_size)
+            )
+    except TaxiiError as exc:
+        typer.echo(f"TAXII error: {exc}", err=True)
+        raise typer.Exit(1) from exc
+    for stix_type, n in counts.most_common():
+        typer.echo(f"{n:>7}  {stix_type}")
+    typer.echo(f"{sum(counts.values()):>7}  total")
+
+
+@taxii_app.command("push")
+def taxii_push(
+    bundle_file: Path = typer.Argument(..., exists=True, dir_okay=False),
+    api_root: str = typer.Argument(..., help="API root URL"),
+    collection_id: str = typer.Argument(..., help="Collection id"),
+) -> None:
+    """Validate a STIX bundle file, then add its objects to a collection."""
+    bundle = json.loads(bundle_file.read_text(encoding="utf-8"))
+    report = validate(bundle)
+    if not report.is_valid:
+        typer.echo("Refusing to push an invalid bundle:\n  " + "\n  ".join(report.errors), err=True)
+        raise typer.Exit(1)
+    try:
+        with _client(True) as c:
+            status = c.add_objects(api_root, collection_id, bundle["objects"])
+    except TaxiiError as exc:
+        typer.echo(f"TAXII error: {exc}", err=True)
+        raise typer.Exit(1) from exc
+    typer.echo(
+        f"status={status.get('status')} success={status.get('success_count')} "
+        f"failure={status.get('failure_count')} pending={status.get('pending_count')}"
+    )
+
+
+@stix_app.command("demo-bundle")
+def stix_demo_bundle(
+    out: Path = typer.Option(Path("demo-bundle.json"), help="Where to write the bundle"),
+) -> None:
+    """Build the TLP:CLEAR demo bundle (indicator -> indicates -> malware) and validate it."""
+    bundle = build_demo_bundle()
+    report = validate(bundle)
+    out.write_text(bundle.serialize(pretty=True), encoding="utf-8")
+    typer.echo(f"Wrote {out} ({len(bundle.objects)} objects); valid={report.is_valid}")
+    for line in report.errors + report.warnings:
+        typer.echo(f"  {line}")
+    if not report.is_valid:
+        raise typer.Exit(1)
+
+
+if __name__ == "__main__":  # pragma: no cover
+    app()
