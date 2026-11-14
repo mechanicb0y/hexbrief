@@ -29,6 +29,13 @@ OpenCTI's documented minimums add up to roughly 18 GB RAM (OpenSearch/Elasticsea
 - The `vm.max_map_count` setting that OpenSearch requires is applied using the method currently documented for Docker Desktop.
 - **LLM:** 4 GB VRAM fits only ~3–4B models fully on the GPU. In Phase 4 we benchmark `llama3.2:3b` against one current 4B model and one 7–8B model with partial CPU offload. Speed matters less for a 07:00 batch job. The result goes in its own ADR.
 
+## Applied and verified (2026-11-14)
+
+- Docker Desktop disk image moved to `D:\DockerData\DockerDesktopWSL`; `docker run hello-world` works.
+- `%UserProfile%\.wslconfig`: `memory=14GB`, `swap=8GB`, `processors=8`, `kernelCommandLine = "sysctl.vm.max_map_count=1048575"` (the method was checked against Microsoft's wsl-config docs, and the value against OpenCTI's install docs).
+- After `wsl --shutdown`: `docker info` reports 14.66 GB (≈13.7 GiB) and 8 CPUs.
+- `vm.max_map_count`: Docker Desktop resets it to 262144 for containers, so it is raised at stack start-up instead. See TROUBLESHOOTING.md.
+
 ## Consequences
 
 - OpenCTI runs below its documented minimum. Expect slower imports. Connectors are throttled or run one at a time, and the first big ATT&CK import may take a while.
