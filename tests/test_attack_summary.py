@@ -76,3 +76,29 @@ def test_accepts_a_generator_and_as_dict() -> None:
         "software": 2,
         "skipped": 4,
     }
+
+
+def test_newest_version_wins_with_fractional_seconds() -> None:
+    # As text, "...00Z" > "...00.500Z" because "Z" > "." -- the bug this test pins down.
+    old = _obj("intrusion-set", 1, modified="2026-01-01T00:00:00Z")
+    new = {**old, "modified": "2026-01-01T00:00:00.500Z", "revoked": True}
+    assert summarize_attack([old, new]) == AttackSummary(skipped=1)
+    assert summarize_attack([new, old]) == AttackSummary(skipped=1)
+
+
+def test_same_instant_in_another_offset_is_not_newer() -> None:
+    old = _obj("tool", 1, modified="2026-01-01T08:00:00+08:00")
+    same = {**old, "modified": "2026-01-01T00:00:00Z", "revoked": True}
+    assert summarize_attack([old, same]) == AttackSummary(software=1)
+
+
+def test_missing_or_malformed_modified_sorts_oldest() -> None:
+    dated = _obj("malware", 1)
+    undated = {k: v for k, v in dated.items() if k != "modified"} | {"revoked": True}
+    garbage = {**dated, "modified": "not-a-date", "revoked": True}
+    assert summarize_attack([dated, undated]) == AttackSummary(software=1)
+    assert summarize_attack([garbage, dated]) == AttackSummary(software=1)
+
+
+def test_campaigns_are_not_counted_as_groups() -> None:
+    assert summarize_attack([_obj("campaign", 1)]) == AttackSummary()
