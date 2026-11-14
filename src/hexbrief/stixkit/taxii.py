@@ -110,6 +110,9 @@ class TaxiiClient:
             transport=transport,
             headers={"Accept": TAXII_MEDIA_TYPE, "User-Agent": "hexbrief-stixkit/0.1"},
             follow_redirects=False,
+            # Ignore HTTP(S)_PROXY / SSL_CERT_FILE etc. from the environment: proxies
+            # and CA bundles must be configured explicitly, never picked up silently.
+            trust_env=False,
         )
         self.max_retries = max_retries
         self.backoff = backoff
