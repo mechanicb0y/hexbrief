@@ -20,15 +20,28 @@ app.add_typer(stix_app, name="stix")
 MITRE_DISCOVERY = "https://attack-taxii.mitre.org/taxii2/"
 
 
-def _load_env_file(path: Path = Path(".env")) -> None:
-    """Put .env values into os.environ (existing variables win). Values are never printed."""
+# Repo root for an editable install (src/hexbrief/cli.py -> repo). Never the current
+# directory: a .env planted in whatever folder you run from must not be trusted.
+REPO_ENV = Path(__file__).resolve().parents[2] / ".env"
+# Only these keys are read. Loading everything would let a .env set things like
+# HTTPS_PROXY or SSL_CERT_FILE and silently redirect or weaken TLS. (Phase 5 moves
+# config to pydantic-settings.)
+_ENV_ALLOW = frozenset({"TAXII_USER", "TAXII_PASSWORD"})
+
+
+def _load_env_file(path: Path = REPO_ENV) -> None:
+    """Copy allow-listed keys from .env into os.environ (existing variables win).
+
+    Values are never printed.
+    """
     if not path.is_file():
         return
     for raw in path.read_text(encoding="utf-8").splitlines():
         line = raw.strip()
         if line and not line.startswith("#") and "=" in line:
-            key, value = line.split("=", 1)
-            os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+            key, value = (part.strip() for part in line.split("=", 1))
+            if key in _ENV_ALLOW:
+                os.environ.setdefault(key, value.strip('"').strip("'"))
 
 
 def _client(use_auth: bool) -> TaxiiClient:
