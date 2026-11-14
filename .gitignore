@@ -36,3 +36,6 @@ Desktop.ini
 
 # --- Claude local settings ---
 .claude/settings.local.json
+
+# --- CLI outputs ---
+demo-bundle.json
