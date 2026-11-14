@@ -42,7 +42,17 @@ if (Select-String -Path $envFile -Pattern '__replace_me__' -Quiet) {
     & (Join-Path $PSScriptRoot 'gen-secrets.ps1') -Path $envFile
 }
 
-# 3. start
+# 3. TLS: nginx needs ssl/cert.pem + key.pem. Make a private lab CA + server cert once.
+$sslDir = Join-Path $upstream 'ssl'
+if (-not (Test-Path (Join-Path $sslDir 'cert.pem'))) {
+    New-Item -ItemType Directory -Force $sslDir | Out-Null
+    docker run --rm -v "${sslDir}:/out" -v "$(Join-Path $mispDir 'make-cert.sh'):/make-cert.sh:ro" `
+        alpine:3.22 sh /make-cert.sh
+    if ($LASTEXITCODE -ne 0) { throw 'lab certificate generation failed' }
+}
+Write-Host "MISP CA for clients: $(Join-Path $sslDir 'ca.pem')  (set MISP_VERIFY_SSL to this path)"
+
+# 4. start
 docker compose -p hexbrief-misp --env-file $envFile `
     -f (Join-Path $upstream 'docker-compose.yml') -f (Join-Path $mispDir 'compose.override.yml') `
     up -d
