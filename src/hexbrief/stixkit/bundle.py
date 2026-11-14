@@ -140,6 +140,19 @@ def _attack_category(obj: Mapping[str, Any]) -> str | None:
     return None
 
 
+def _modified_at(obj: Mapping[str, Any]) -> datetime:
+    """Parse ``modified`` for comparison. Missing or malformed values sort as oldest."""
+    value = obj.get("modified")
+    if isinstance(value, datetime):
+        parsed = value
+    else:
+        try:
+            parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        except ValueError:
+            return datetime.min.replace(tzinfo=UTC)
+    return parsed if parsed.tzinfo else parsed.replace(tzinfo=UTC)
+
+
 def summarize_attack(objects: Iterable[Mapping[str, Any]]) -> AttackSummary:
     """Count ATT&CK techniques, sub-techniques, tactics, groups and software.
 
@@ -147,7 +160,10 @@ def summarize_attack(objects: Iterable[Mapping[str, Any]]) -> AttackSummary:
     Flags must be the JSON boolean ``true``, so ``"revoked": false`` is not skipped.
     If the same id appears more than once (several versions of one object), only the
     newest ``modified`` version counts, so a repeated or overlapping fetch never
-    double-counts and a later revocation wins.
+    double-counts and a later revocation wins. `modified` is compared as a real
+    timestamp, not as text, because `...00Z` and `...00.500Z` sort wrongly as strings.
+
+    Campaigns (`campaign`) are not counted: `groups` means `intrusion-set` only.
     """
     latest: dict[str, Mapping[str, Any]] = {}
     for obj in objects:
@@ -155,7 +171,7 @@ def summarize_attack(objects: Iterable[Mapping[str, Any]]) -> AttackSummary:
         if not obj_id:
             continue
         seen = latest.get(obj_id)
-        if seen is None or str(obj.get("modified", "")) > str(seen.get("modified", "")):
+        if seen is None or _modified_at(obj) > _modified_at(seen):
             latest[obj_id] = obj
 
     counts: Counter[str] = Counter()
