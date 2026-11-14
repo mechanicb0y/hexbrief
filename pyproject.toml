@@ -1,14 +1,30 @@
+[build-system]
+requires = ["hatchling>=1.33"]
+build-backend = "hatchling.build"
+
 [project]
 name = "hexbrief"
-version = "0.0.1"
+version = "0.1.0"
 description = "Grounded daily threat-intel brief from STIX/TAXII, MISP and OpenCTI, written by a local LLM and fact-checked before publishing."
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.12"
-dependencies = []  # added phase by phase, after checking each package's current version
+# Versions checked on PyPI 2026-11-14. Libraries are added phase by phase.
+dependencies = [
+    "httpx>=0.28.1,<0.29",
+    "stix2==3.0.2",
+    "stix2-validator==3.3.2",
+    "typer>=0.29,<0.30",
+]
 
 [project.optional-dependencies]
-dev = ["pre-commit", "ruff", "pytest"]
+dev = ["pre-commit", "ruff", "pytest>=9", "respx>=0.23"]
+
+[project.scripts]
+hexbrief = "hexbrief.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/hexbrief"]
 
 [tool.ruff]
 line-length = 100
@@ -19,7 +35,13 @@ src = ["src", "tests"]
 select = ["E", "F", "W", "I", "B", "UP", "S", "SIM"]  # S = bandit-style security rules
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["S101"]  # assert is fine in tests
+"tests/**" = ["S101", "S105", "S106"]  # assert and dummy test passwords are fine in tests
+"src/hexbrief/cli.py" = ["B008"]  # typer declares options as function-call defaults by design
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = [
+    "integration: needs the local medallion TAXII server (scripts/taxii-up.ps1)",
+    "live: talks to a real internet service; run only with HEXBRIEF_LIVE=1, never in CI",
+]
+addopts = "-m 'not live'"
