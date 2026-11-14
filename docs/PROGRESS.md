@@ -21,9 +21,15 @@ _Any new session reads this first._
 - 2026-11-14: stixkit built: httpx TAXII 2.1 client, official TLP 2.0 markings, bundle builder and validator, `hexbrief taxii collections|count|push` and `hexbrief stix demo-bundle`.
 - 2026-11-14: medallion (pinned 39e76bf) in Docker on 127.0.0.1:5000, `hexbrief` API root, `daily-briefs` collection. Round-trip test passes; 28 tests green.
 
+- 2026-11-14: Owner's task `summarize_attack()` (87f17a6), 37 tests green. Phase 1 questions answered (with help).
+- 2026-11-14: Enterprise ATT&CK pulled once over TAXII 2.1: 26,699 objects in 186 s, cached to `data/attack/` (git-ignored). Live counts: 227 techniques, 479 sub-techniques, 15 tactics, 178 groups, 842 software, 179 revoked/deprecated skipped.
+
 ## Next (Phase 1)
-- [ ] Full Enterprise ATT&CK count by type (MITRE rate-limited us with 429; retry later)
-- [ ] Your-turn task, 3 questions, checkpoint, PR
+- [ ] Review fix in `summarize_attack`: compare `modified` as datetimes, not strings
+- [ ] Merge PR #3
+
+## Next phase
+Phase 2 — MISP (misp-docker, feeds, warninglists, PyMISP).
 
 ## Blockers
 - None.

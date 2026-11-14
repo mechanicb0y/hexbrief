@@ -14,5 +14,7 @@ One entry per concept: date, concept, gotcha, one interview question.
 | 2026-11-14 | TAXII pagination | `next` is opaque: medallion reuses one id for every page, so detect loops by page content, not cursor | "How does TAXII 2.1 pagination work, and how do you stop a client looping forever?" |
 | 2026-11-14 | `added_after` and date_added | Re-sending an object with the same id+modified doesn't change its date_added, so it won't appear as "new" | "Why might an object you just pushed not show up in an added_after query?" |
 | 2026-11-14 | Retry safety | Retry GETs on 5xx; retry POSTs only on 429/503, because the write may already have happened | "Which HTTP errors are safe to retry, and for which methods?" |
+| 2026-11-14 | ATT&CK as STIX | 26,699 objects, 82% of them relationships. Techniques are `attack-pattern` (+`x_mitre_is_subtechnique`); revoked/deprecated objects stay in the feed and must be filtered | "How is ATT&CK represented in STIX, and what do you filter out before using it?" |
+| 2026-11-14 | Comparing STIX timestamps | `modified` strings with different fractional precision don't sort correctly as text (`…00Z` > `…00.500Z`); parse them first | "Why can't you compare ISO 8601 timestamps as strings?" |
 
 **Re-quiz:** the Phase 0 answers were drafted with Claude's help. The owner re-answered at the start of Phase 1, again with help (2026-11-14). **Quiz cold, with no help, in a later phase** on: CTI levels and staleness, lifecycle order and feedback, and the leaked-key response (rotate first).
