@@ -15,6 +15,7 @@ dependencies = [
     "stix2==3.0.2",
     "stix2-validator==3.3.2",
     "typer>=0.29,<0.30",
+    "pymisp==2.5.34.4",  # 2.5 line to match MISP 2.5.51; 3.x targets MISP 3.0 (ADR-003)
 ]
 
 [project.optional-dependencies]
