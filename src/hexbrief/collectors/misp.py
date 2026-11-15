@@ -14,7 +14,9 @@ The collector is read-only: it only calls ``search``.
 from __future__ import annotations
 
 from collections import Counter
+from collections.abc import Mapping
 from dataclasses import dataclass, field
+from datetime import UTC, datetime, timedelta
 from typing import Any, Protocol
 
 
@@ -125,6 +127,68 @@ def collect_window(
     if drop_warninglist_hits:
         attributes = [a for a in attributes if not a.get("warnings")]
     return MispWindow(hours=hours, events=events, attributes=attributes)
+
+
+_MAX_CLOCK_SKEW = timedelta(minutes=5)
+
+
+def _attribute_time(attribute: Mapping[str, Any]) -> datetime | None:
+    """An attribute's own ``timestamp`` (Unix seconds, usually sent as a string) in UTC.
+
+    Returns None when it is missing or cannot be parsed.
+    """
+    raw = attribute.get("timestamp")
+    if raw is None or isinstance(raw, bool):  # bool is an int subclass, never a time
+        return None
+    try:
+        return datetime.fromtimestamp(int(str(raw).strip()), UTC)
+    except (TypeError, ValueError, OverflowError, OSError):
+        return None
+
+
+def fresh_only(
+    window: MispWindow,
+    hours: int,
+    *,
+    now: datetime | None = None,
+    max_clock_skew: timedelta = _MAX_CLOCK_SKEW,
+) -> MispWindow:
+    """Keep only attributes whose *own* ``timestamp`` is in the last ``hours`` hours.
+
+    ``collect_window`` selects by the event's publish time, and feed events are often
+    re-published, so an event published today can still carry attributes from 2015.
+    This filter looks at each attribute's own ``timestamp`` instead.
+
+    - A missing or unparsable timestamp counts as old and is dropped: nothing shows it
+      is fresh.
+    - A timestamp more than ``max_clock_skew`` in the future is dropped too; a few
+      minutes of skew between MISP and this machine is tolerated.
+    - Events left without any fresh attribute are dropped. Events and attributes are
+      matched on ``event_id``, or on ``event_uuid`` when the attribute carries one.
+
+    Returns a new ``MispWindow``; the input window is not changed.
+    """
+    if hours <= 0:
+        raise ValueError("hours must be positive")
+    now = now or datetime.now(UTC)
+    if now.tzinfo is None:
+        now = now.replace(tzinfo=UTC)
+    oldest, newest = now - timedelta(hours=hours), now + max_clock_skew
+
+    kept = [
+        a
+        for a in window.attributes
+        if (t := _attribute_time(a)) is not None and oldest <= t <= newest
+    ]
+    event_ids = {str(a["event_id"]) for a in kept if a.get("event_id") is not None}
+    event_uuids = {str(a["event_uuid"]) for a in kept if a.get("event_uuid")}
+    events = [
+        e
+        for e in window.events
+        if (e.get("id") is not None and str(e["id"]) in event_ids)
+        or (e.get("uuid") and str(e["uuid"]) in event_uuids)
+    ]
+    return MispWindow(hours=hours, events=events, attributes=kept)
 
 
 def event_as_stix(misp: MispSearch, event_id: int | str) -> dict[str, Any]:
