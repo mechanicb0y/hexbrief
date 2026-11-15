@@ -80,7 +80,10 @@ def main() -> int:
     for model in args.models:
         print(f"== {model}", flush=True)
         with OllamaWriter(model) as w:
-            w.write(findings[:1], seed=1)  # warm-up: load weights, not timed
+            warm = w.write(findings[:1], seed=1)  # warm-up: load weights, not timed
+            if warm.error:
+                print(f"   skipped: {warm.error}", flush=True)
+                continue
             proc = ollama_processor(model)
             runs = [run_one(w, findings, seed=100 * i + 7) for i in range(args.runs)]
         results[model] = {"processor": proc, "runs": runs}
