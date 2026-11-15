@@ -12,6 +12,7 @@ they can be pushed into OpenCTI as a fifth source and used by the brief engine.
 
 from __future__ import annotations
 
+import ipaddress
 import re
 import uuid
 from dataclasses import dataclass, field
@@ -81,6 +82,7 @@ def pull(
 
 # --------------------------------------------------------------------- STIX
 _HASH_KEYS = {"md5_hash": "MD5", "sha1_hash": "SHA-1", "sha256_hash": "SHA-256"}
+_HASH_LEN = {"md5_hash": 32, "sha1_hash": 40, "sha256_hash": 64}
 
 
 def _q(value: str) -> str:
@@ -92,14 +94,18 @@ def stix_pattern(ioc_type: str, value: str) -> str | None:
     """STIX 2.1 pattern for a ThreatFox/URLhaus IOC, or None if unsupported."""
     value = value.strip()
     if ioc_type == "ip:port":
-        ip = value.rsplit(":", 1)[0]
-        kind = "ipv6-addr" if ":" in ip else "ipv4-addr"
-        return f"[{kind}:value = '{_q(ip)}']"
+        ip = value.rsplit(":", 1)[0].strip("[]")  # "[2001:db8::1]:443" -> 2001:db8::1
+        try:
+            addr = ipaddress.ip_address(ip)
+        except ValueError:
+            return None  # one malformed row must not fail the whole bundle
+        kind = "ipv6-addr" if addr.version == 6 else "ipv4-addr"
+        return f"[{kind}:value = '{addr}']"
     if ioc_type == "domain":
         return f"[domain-name:value = '{_q(value)}']"
     if ioc_type == "url":
         return f"[url:value = '{_q(value)}']"
-    if ioc_type in _HASH_KEYS and re.fullmatch(r"[0-9a-fA-F]+", value):
+    if ioc_type in _HASH_KEYS and re.fullmatch(rf"[0-9a-fA-F]{{{_HASH_LEN[ioc_type]}}}", value):
         return f"[file:hashes.'{_HASH_KEYS[ioc_type]}' = '{value.lower()}']"
     return None
 
@@ -211,7 +217,7 @@ def to_stix_bundle(data: AbuseChPull) -> dict[str, Any]:
             f"ThreatFox {row.get('threat_type', 'ioc')}: {family or 'unknown family'}",
             _ts(row.get("first_seen")),
             [str(t) for t in (row.get("tags") or [])] + ["threatfox"],
-            int(row.get("confidence_level") or 50),
+            50 if row.get("confidence_level") is None else int(row["confidence_level"]),
             row.get("reference") or None,
             family,
         )

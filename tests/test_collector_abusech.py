@@ -78,6 +78,10 @@ def test_missing_key_and_bad_days() -> None:
     [
         ("ip:port", "198.51.100.23:8080", "[ipv4-addr:value = '198.51.100.23']"),
         ("ip:port", "2001:db8::1:443", "[ipv6-addr:value = '2001:db8::1']"),
+        ("ip:port", "[2001:db8::1]:443", "[ipv6-addr:value = '2001:db8::1']"),
+        ("ip:port", "not-an-ip:80", None),
+        ("sha256_hash", "ab" * 10, None),  # hex but wrong length
+        ("md5_hash", "a" * 32, "[file:hashes.'MD5' = '" + "a" * 32 + "']"),
         ("domain", "bad.example.test", "[domain-name:value = 'bad.example.test']"),
         ("url", "http://x.test/a'b", "[url:value = 'http://x.test/a\\'b']"),
         ("sha256_hash", "AB" * 32, "[file:hashes.'SHA-256' = '" + "ab" * 32 + "']"),
@@ -87,6 +91,13 @@ def test_missing_key_and_bad_days() -> None:
 )
 def test_stix_patterns(ioc_type: str, value: str, expected: str | None) -> None:
     assert stix_pattern(ioc_type, value) == expected
+
+
+def test_zero_confidence_is_kept() -> None:
+    row = dict(TF_ROW, confidence_level=0)
+    bundle = to_stix_bundle(AbuseChPull(threatfox=[row]))
+    ind = next(o for o in bundle["objects"] if o["type"] == "indicator")
+    assert ind["confidence"] == 0
 
 
 def test_bundle_is_valid_tlp_clear_and_deterministic() -> None:
