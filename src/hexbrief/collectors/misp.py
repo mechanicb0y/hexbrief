@@ -40,6 +40,11 @@ class MispWindow:
     def ids_attributes(self) -> int:
         return sum(1 for a in self.attributes if a.get("to_ids") is True)
 
+    @property
+    def warninglist_hits(self) -> int:
+        """Attributes kept but flagged by a warninglist (scoring subtracts for these)."""
+        return sum(1 for a in self.attributes if a.get("warnings"))
+
 
 def connect(url: str, key: str, verify: bool | str = True, timeout: float = 60) -> MispSearch:
     """Create a PyMISP client. ``verify`` may be a path to MISP's CA/cert file.
@@ -69,13 +74,17 @@ def collect_window(
     hours: int = 24,
     *,
     ids_only: bool = True,
-    enforce_warninglist: bool = True,
+    drop_warninglist_hits: bool = False,
     page_size: int = 1000,
-    max_pages: int = 50,
+    max_pages: int = 1000,
 ) -> MispWindow:
     """Events and attributes *published* in the last ``hours`` hours.
 
-    ``enforce_warninglist`` removes known-benign values before they reach scoring.
+    Warninglist hits are **flagged, not dropped** by default: each hit carries a
+    ``warnings`` list, so scoring can subtract for it and the appendix can show it.
+    We never use MISP's ``enforceWarninglist`` here, because MISP applies it *after*
+    paging: a page of 1000 can come back with 974 rows, which looks like the last
+    page and silently ends the loop. (Found live on 2026-11-15; see TROUBLESHOOTING.)
     """
     if hours <= 0:
         raise ValueError("hours must be positive")
@@ -99,9 +108,9 @@ def collect_window(
                 publish_timestamp=since,
                 published=True,
                 to_ids=True if ids_only else None,
-                enforce_warninglist=enforce_warninglist,
                 include_event_tags=True,
                 include_event_uuid=True,
+                includeWarninglistHits=True,
                 limit=page_size,
                 page=page,
                 pythonify=False,
@@ -109,10 +118,12 @@ def collect_window(
             "Attribute",
         )
         attributes.extend(rows)
-        if len(rows) < page_size:
+        if len(rows) < page_size:  # safe: nothing filters rows after paging now
             break
     else:
         raise RuntimeError(f"more than {max_pages * page_size} attributes; narrow the window")
+    if drop_warninglist_hits:
+        attributes = [a for a in attributes if not a.get("warnings")]
     return MispWindow(hours=hours, events=events, attributes=attributes)
 
 

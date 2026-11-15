@@ -174,7 +174,10 @@ def misp_recent(
     typer.echo(f"Events published: {len(window.events)}")
     for ev in window.events[:10]:
         typer.echo(f"  #{ev.get('id')}  {str(ev.get('info', ''))[:90]}")
-    typer.echo(f"Attributes: {len(window.attributes)} ({window.ids_attributes} to_ids)")
+    typer.echo(
+        f"Attributes: {len(window.attributes)} ({window.ids_attributes} to_ids, "
+        f"{window.warninglist_hits} warninglist hits)"
+    )
     for attr_type, n in window.attribute_types.most_common(10):
         typer.echo(f"  {n:>6}  {attr_type}")
 
