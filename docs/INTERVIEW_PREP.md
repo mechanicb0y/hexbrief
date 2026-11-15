@@ -130,3 +130,20 @@ Study notes for each phase: what you need to know, then likely interview questio
 2. *How do consumers get your brief by machine?* As a STIX 2.1 Report over TAXII 2.1: from OpenCTI's `daily-briefs` collection, or from the lab medallion. Both were tested with a GET after the push.
 3. *What did you learn auditing your own public page?* Defanging the URL host isn't enough. An IP in the URL *path* was still raw, so now IPs are defanged anywhere in a URL. Always audit what you publish with a scanner, not by eye.
 4. *Why print PDF with a headless browser?* The HTML is already the source of truth, and a local Edge/Chrome is available on Windows, so there are no extra dependencies. The page loads nothing external, and a throwaway profile keeps the user's browser data out of it.
+
+---
+
+## Phase 7: Automation and hardening
+
+**What you need to know**
+- **Idempotent daily job:** re-running a day overwrites that day's outputs and updates the *same* STIX Report (deterministic id), so retries are safe. Each step retries with back-off; optional steps (MISP, abuse.ch, medallion) degrade the run instead of failing it.
+- **Resource-aware orchestration:** MISP runs first and its fresh findings are snapshotted, then OpenCTI runs, because both don't fit in RAM. The MISP collector falls back to the snapshot.
+- **Why Task Scheduler and not a container scheduler:** the job needs Docker Desktop, the host GPU (Ollama) and the owner's git credentials, all of which live in the Windows user session.
+- **Supply chain:** actions pinned by commit SHA, Dependabot weekly, pip-audit in CI. Four transitive CVEs are pinned by pycti and are explicitly ignored with a written reason and a removal trigger, not silently.
+- **`hexbrief doctor`:** checks names-only secrets, services, model, disk and the last run. Its `.env` parser treats an unclosed quote as malformed (closed issue #2).
+
+**Q&A**
+1. *How do you make a daily pipeline reliable?* Idempotent steps, retries with back-off, optional vs required steps, one run log per day, a health check before work, and degraded output instead of no output. Then measure it: the done-criterion is 7 consecutive unattended days.
+2. *What would you do about a CVE in a transitive dependency you can't upgrade?* Confirm the vulnerable path is reachable or not (pycti's telemetry exporter isn't used; setuptools isn't used at runtime), suppress that specific ID with the reason in code and in an ADR, set a removal trigger (pycti release), and let Dependabot surface it. Never blanket-ignore.
+3. *How do you keep secrets out of CI?* No live keys in CI at all: tests use fixtures and a throwaway medallion password generated per run and masked. gitleaks scans full history on every push/PR.
+4. *Why push the public page only from a clean `main`?* So a scheduled job can never publish half-finished branch work. The job checks branch and cleanliness and otherwise keeps the page locally and marks the run "degraded".
