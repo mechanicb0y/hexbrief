@@ -43,6 +43,11 @@ Every error we hit, with the log lines, the cause and the fix.
 - **Fix:** request `includeWarninglistHits=True`, keep every row, and flag hits (`MispWindow.warninglist_hits`) so scoring can subtract them. There is a regression test for it.
 - **Lesson:** any server-side filter applied after pagination breaks "short page = done".
 
+### MISP would reset the admin password on every start (2026-11-15, Phase 2)
+- **Found while reading upstream code:** `core/files/configure_misp.sh` → `init_user` runs `cake User change_pw "$ADMIN_EMAIL" "$ADMIN_PASSWORD"` on **every** container start whenever `ADMIN_PASSWORD` is set.
+- **Effect:** the owner's new password would quietly revert to the generated one at the next `misp-up.ps1`.
+- **Fix:** after the first login, the `ADMIN_PASSWORD` line is removed from `docker/misp/.env.misp` (that path logs "setting admin password skipped"). The template says so too.
+
 ## Template
 
 ### <short error title> (YYYY-MM-DD, Phase N)
