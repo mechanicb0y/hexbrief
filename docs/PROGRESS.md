@@ -6,7 +6,12 @@ _Any new session reads this first._
 **Autonomy mode** (owner's standing orders, 2026-11-15, until v1.0.0). Decide, record in one line, keep going. Report once per phase. Merge own PRs when green and reviewed. Stop only for owner-only actions.
 
 ## Current phase
-**Phase 8 — Quality + demo** (branch `phase-8-demo`), finishing. Next: Phase 9 portfolio launch (v1.0.0).
+**Phase 9 — Launch** (branch `phase-9-launch`): v1.0.0. After this: 7 unattended days, then at most two stretch goals.
+
+## Decisions log (Phase 9)
+- Launch kit lives in `docs/launch/` (write-up, LinkedIn draft + video shot list, resume bullets). The owner posts; Claude posts nothing.
+- Resume numbers only from `scripts/run_stats.py`; bracketed ones fill in after 7 scheduled days.
+- Repo topics and the Pages link set in About. Pinning the repo is owner-only.
 
 ## Decisions log (Phase 8)
 - `hexbrief demo` uses recorded TLP:CLEAR findings + a recorded narrative shipped in the package, and runs the recorded text through the same validator (no keys, no Docker; `--llm` writes it live).
@@ -60,10 +65,11 @@ _Any new session reads this first._
   - `collectors/opencti.py` + `hexbrief opencti recent`.
 
 - 2026-11-15: Phases 3–7 merged (PRs #5–#9). Pages live, CI green, daily dry run OK.
-- 2026-11-15: Phase 8: demo mode (fresh clone → brief in ~5 min), HTML redesign, README/architecture.
+- 2026-11-15: **Phase 8 merged** (PR #12): demo mode (fresh clone → brief in ~5 min), HTML redesign, README/architecture.
 
 ## Next
-- Phase 9 — v1.0.0 tag, CHANGELOG, write-up, LinkedIn draft, resume bullets, 20 interview Q&A.
+- Owner: run `install-schedule.ps1`, pin the repo, record the demo video, post on LinkedIn.
+- After 7 unattended days: fill resume numbers, then pick at most two stretch goals.
 
 ## Notes for Phase 5
 - `publish_timestamp` is when **our** MISP published an event, so a feed fetch makes 2015 events look new. Use the attribute's own timestamp/first_seen (`fresh_only`).
