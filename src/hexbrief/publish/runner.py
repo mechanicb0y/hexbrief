@@ -27,6 +27,11 @@ def _stack_value(key: str) -> str:
     return ""
 
 
+def _bundle(paths: dict[str, Path]) -> dict[str, Any]:
+    """Read inside each step, so a missing/bad file fails that step only."""
+    return dict(json.loads(paths["stix"].read_text(encoding="utf-8")))
+
+
 def publish(
     result: BriefResult,
     paths: dict[str, Path],
@@ -59,13 +64,12 @@ def publish(
         step("pdf", do_pdf)
 
     if push:
-        bundle = json.loads(paths["stix"].read_text(encoding="utf-8"))
         from hexbrief.publish.stix_push import push_opencti, push_taxii
 
         step(
             "opencti",
             lambda: push_opencti(
-                bundle,
+                _bundle(paths),
                 os.environ.get("OPENCTI_URL", "http://127.0.0.1:8088"),
                 _stack_value("OPENCTI_IMPORTER_TOKEN"),
             ),
@@ -73,7 +77,7 @@ def publish(
         step(
             "taxii",
             lambda: push_taxii(
-                bundle,
+                _bundle(paths),
                 os.environ.get("TAXII_URL", "http://127.0.0.1:5000/taxii2/"),
                 os.environ.get("TAXII_USER", ""),
                 os.environ.get("TAXII_PASSWORD", ""),
