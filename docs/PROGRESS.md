@@ -6,7 +6,7 @@ _Any new session reads this first._
 **Autonomy mode** (owner's standing orders, 2026-11-15, until v1.0.0). Decide, record in one line, keep going. Report once per phase. Merge own PRs when green and reviewed. Stop only for owner-only actions.
 
 ## Current phase
-**Phase 3 — OpenCTI** (branch `phase-3-opencti`).
+**Phase 4 — Local LLM** (branch `phase-4-llm`), finishing. Next: Phase 5 brief engine.
 
 ## Decisions log (one line each)
 - 2026-11-15: OpenCTI version = community `7.261109.3`, not LTS. LTS needs a paid license (ADR-004).
@@ -17,6 +17,8 @@ _Any new session reads this first._
 - 2026-11-15: OpenCTI dashboard screenshot moved to Phase 8 (README visuals pass) to avoid scripted logins now.
 - 2026-11-15: abuse.ch retired its anonymous CSV exports (410), so ThreatFox/URLhaus come in through our own API importer with a least-privilege importer user (confidence ≤ 50).
 - 2026-11-15: MISP→OpenCTI connector runs in a deliberate `-WithMisp` session (RAM). First run scheduled with Phase 7's daily job.
+- 2026-11-15: LLM = qwen3.5:4b (fallback llama3.2:3b). All 3 candidates were 100% faithful; qwen3.5:4b had the best content (ADR-005, `docs/benchmarks/llm-2026-11-15.md`).
+- 2026-11-15: Phase 5 adds a completeness check (validators catch inventions, not omissions) and a prompt v2 rule against unsupported trend claims.
 - 2026-11-15: Phase 3 done-criteria met: OpenCTI holds data from 5 sources (MITRE, CISA KEV, AlienVault OTX, abuse.ch, HexBrief via TAXII2/medallion) with ATT&CK links.
 
 ## Done
@@ -38,7 +40,7 @@ _Any new session reads this first._
 - OpenCTI window uses `updated_at`.
 
 ## Owner-only items pending
-- Add the "Autonomy mode" section to CLAUDE.md (my edit was blocked by the auto-mode safety check).
+- None. (Autonomy mode section added to CLAUDE.md by the owner, 2026-11-15. ACT containers were stopped by the owner's own `docker stop`; leave them.)
 
 ## Blockers
 - None.
