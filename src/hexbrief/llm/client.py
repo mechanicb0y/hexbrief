@@ -77,7 +77,7 @@ class OllamaWriter:
         *,
         host: str = DEFAULT_HOST,
         temperature: float = 0.1,
-        num_ctx: int = 8192,
+        num_ctx: int = 12288,  # room for findings + rejected answer + feedback on retries
         timeout: float = 900,
         transport: httpx.BaseTransport | None = None,
     ) -> None:

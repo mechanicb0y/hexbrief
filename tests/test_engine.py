@@ -144,6 +144,14 @@ def test_fallback_model_is_used_when_primary_fails() -> None:
     assert [a["model"] for a in res.run_log["llm"]["attempts"]][-1] == "fallback"
 
 
+def test_first_faithful_answer_is_kept_when_retries_get_worse() -> None:
+    incomplete = good(["F2"])  # faithful, but F1 (top) not covered
+    w = FakeWriter([incomplete, None, None])  # retries then fail to parse
+    res = run(COLLECTORS, now=NOW, writer=w)
+    assert res.llm_ok and res.narrative == incomplete
+    assert res.run_log["llm"]["complete"] is False
+
+
 def test_completeness_requires_top_and_lens_findings() -> None:
     llm = [{"id": "F1", "_lens": True}, {"id": "F2"}, {"id": "F3"}]
     narrative = good(["F2"])

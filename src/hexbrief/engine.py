@@ -60,10 +60,12 @@ def completeness_errors(narrative: dict[str, Any], llm_findings: list[dict[str, 
             errs.append(f"completeness: top-ranked finding {f['id']} is not covered in top_threats")
     lens = [f["id"] for f in llm_findings if f.get("_lens")]
     watch = str(narrative.get("education_asean_watch") or "")
-    if lens and not any(fid in watch for fid in lens):
+    if lens and not any(f"[{fid}]" in watch for fid in lens):
+        # At least the most relevant lens finding must be cited; asking for all of
+        # them made answers long enough to be truncated (2026-11-15 dry run).
         errs.append(
-            "completeness: education_asean_watch must cover finding(s) "
-            f"{', '.join(lens)} (education / Malaysia / ASEAN) and cite them as [F#]"
+            f"completeness: education_asean_watch must discuss {lens[0]} "
+            "(education / Malaysia / ASEAN) and cite it as [" + lens[0] + "]"
         )
     return errs
 
@@ -145,6 +147,7 @@ def run(
     )
 
     narrative, llm_ok = None, False
+    best_faithful: dict[str, Any] | None = None  # valid but incomplete, kept as a fallback
     attempts: list[dict[str, Any]] = []
     for w in (writer, fallback_writer):
         if w is None or llm_ok or not top:
@@ -165,13 +168,19 @@ def run(
                     "error": res.error,
                 }
             )
-            if val.ok and (not comp or attempt == max_retries):
-                # Faithful is mandatory; completeness is best effort after retries.
+            if val.ok and not comp:
                 narrative, llm_ok = res.parsed, True
                 break
+            if val.ok and best_faithful is None:
+                best_faithful = res.parsed
             feedback, previous = val.errors + comp, res.raw or None
+    if not llm_ok and best_faithful is not None:
+        # Faithful is mandatory; completeness is best effort. A later retry may even
+        # get worse (e.g. truncated JSON), so keep the first faithful answer.
+        narrative, llm_ok = best_faithful, True
     runlog["llm"] = {
         "ok": llm_ok,
+        "complete": bool(attempts) and any(a["valid"] and a["complete"] for a in attempts),
         "attempts": attempts,
         "first_try_pass": bool(attempts and attempts[0]["valid"]),
     }
