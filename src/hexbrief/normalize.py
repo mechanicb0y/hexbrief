@@ -7,7 +7,7 @@ from datetime import UTC, datetime
 from typing import Any
 
 from hexbrief.collectors.opencti import OpenCTIWindow, tlp_of
-from hexbrief.model import Finding, Ioc, iocs_from_pattern
+from hexbrief.model import Finding, Ioc, iocs_from_pattern, max_tlp
 
 ASEAN = {
     "malaysia",
@@ -97,7 +97,7 @@ def from_opencti(
             sources=[_author(r)],
             source_urls=_refs(r),
             first_seen=_dt(r.get("published")) or _dt(r.get("created")),
-            tlp=tlp_of(r) or "TLP:CLEAR",
+            tlp=tlp_of(r) or "TLP:AMBER",
             confidence=int(r.get("confidence") or 50),
             stix_ids=[str(r.get("standard_id"))] if r.get("standard_id") else [],
         )
@@ -118,6 +118,8 @@ def from_opencti(
                 f.countries.add(name)
             elif et == "Indicator":
                 f.iocs += iocs_from_pattern(str(obj.get("pattern") or ""))
+                # an indicator stricter than its report makes the whole finding stricter
+                f.tlp = max_tlp(f.tlp, tlp_of(obj) or "TLP:AMBER")
                 if obj.get("id"):
                     in_reports.add(str(obj["id"]))
         f.iocs = sorted(set(f.iocs))
@@ -136,7 +138,7 @@ def from_opencti(
                 summary=str(v.get("description") or "")[:1200],
                 sources=[_author(v)],
                 first_seen=_dt(v.get("created")),
-                tlp=tlp_of(v) or "TLP:CLEAR",
+                tlp=tlp_of(v) or "TLP:AMBER",
                 confidence=int(v.get("confidence") or 50),
                 cves={name},
                 in_kev=kev,
@@ -172,7 +174,7 @@ def from_opencti(
                 sources=[author],
                 source_urls=sorted({u for r in rows for u in _refs(r)})[:3],
                 first_seen=min(firsts) if firsts else None,
-                tlp=max((tlp_of(r) or "TLP:CLEAR" for r in rows), key=_tlp_rank),
+                tlp=max((tlp_of(r) or "TLP:AMBER" for r in rows), key=_tlp_rank),
                 confidence=max(int(r.get("confidence") or 0) for r in rows),
                 iocs=iocs,
                 malware={family} if family and family.lower() != "unknown family" else set(),
@@ -220,7 +222,8 @@ def from_misp(window: Any) -> list[Finding]:
                 iocs.append(Ioc(t, value))
             wl += bool(a.get("warnings"))
         tags = {str(t.get("name", "")).lower() for t in ev.get("Tag") or []}
-        tlp = next((t.upper() for t in tags if t.startswith("tlp:")), "tlp:clear").upper()
+        tlp_tags = [t.upper() for t in tags if t.startswith("tlp:")]
+        tlp = max_tlp(*tlp_tags) if tlp_tags else "TLP:AMBER"  # unmarked: fail closed
         out.append(
             Finding(
                 key=str(ev.get("uuid") or eid),
