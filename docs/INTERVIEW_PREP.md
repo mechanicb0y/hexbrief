@@ -114,3 +114,19 @@ Study notes for each phase: what you need to know, then likely interview questio
 3. *What happens when the model fails?* It retries twice with the validator errors and its own rejected answer, then uses the fallback model, then publishes a facts-only brief. The run log records every attempt, and that is where the "first-try pass rate" résumé number comes from.
 4. *Why both a faithfulness and a completeness check?* Faithfulness catches inventions; completeness catches omissions. In the benchmark a small model invented nothing but silently skipped the most relevant (education) finding.
 5. *What is still imperfect?* Semantic mistakes the regexes can't see, such as pairing a technique ID with the wrong name. Mitigation: the prompt forbids technique names and names are rendered from data. A human reads the brief before anything non-CLEAR leaves the machine.
+
+---
+
+## Phase 6: Publish and share
+
+**What you need to know**
+- **TLP in practice:** the private brief's TLP is the strictest among its findings. Unmarked data **fails closed to AMBER** (security review). The public archive gets a separate *public view*: CLEAR findings only, and the AI narrative is dropped if anything non-CLEAR was in the top 8, because the prose could mention it. Two independent guards follow: `pages.write_brief` refuses non-CLEAR, and the Pages workflow greps for GREEN/AMBER/RED before deploying.
+- **STIX out, TAXII out:** each brief is a STIX 2.1 `report` (`report_types: threat-report`, `object_refs` to the underlying objects, label `hexbrief`). The id is deterministic per day, so re-runs update the same Report. Pushing it into OpenCTI makes OpenCTI's own TAXII 2.1 collection `daily-briefs` serve it (verified: a TAXII GET returns the Report).
+- **Defang everywhere humans read:** IPs, domains, URL hosts **and IPs inside URL paths** (an audit of the first public page found one). Machine outputs keep real values.
+- **Untrusted text in published pages:** feed titles and LLM prose are escaped for Markdown and autoescaped in HTML, the CSP is `default-src 'none'`, and the referrer policy is `no-referrer`.
+
+**Q&A**
+1. *How do you make sure nothing sensitive gets published?* TLP on every finding, with unmarked = AMBER. The public view filters to CLEAR, the publisher refuses non-CLEAR, and CI refuses non-CLEAR markings. A narrative is only reused when every top finding was CLEAR.
+2. *How do consumers get your brief by machine?* As a STIX 2.1 Report over TAXII 2.1: from OpenCTI's `daily-briefs` collection, or from the lab medallion. Both were tested with a GET after the push.
+3. *What did you learn auditing your own public page?* Defanging the URL host isn't enough. An IP in the URL *path* was still raw, so now IPs are defanged anywhere in a URL. Always audit what you publish with a scanner, not by eye.
+4. *Why print PDF with a headless browser?* The HTML is already the source of truth, and a local Edge/Chrome is available on Windows, so there are no extra dependencies. The page loads nothing external, and a throwaway profile keeps the user's browser data out of it.

@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:">
+<meta name="referrer" content="no-referrer">
+<title>HexBrief 2026-11-15</title>
+<style>
+:root { --bg:#f7f7f5; --fg:#1b1d1f; --muted:#5d6166; --line:#d9dad6; --card:#fff; --accent:#0f766e;
+        --clear:#e9f7ef; --clear-fg:#14532d; --warn:#fff4e5; --warn-fg:#7c2d12; }
+@media (prefers-color-scheme: dark) { :root { --bg:#111315; --fg:#e7e7e4; --muted:#a2a6aa; --line:#2b2e31;
+        --card:#181b1d; --accent:#2dd4bf; --clear:#0f2a1c; --clear-fg:#86efac; --warn:#2a1a0b; --warn-fg:#fdba74; } }
+* { box-sizing:border-box } body { margin:0; background:var(--bg); color:var(--fg);
+  font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif }
+main { max-width:860px; margin:0 auto; padding:24px 16px 64px }
+h1 { font-size:1.6rem; margin:.2em 0 } h2 { font-size:1.15rem; margin:2em 0 .6em; border-bottom:1px solid var(--line); padding-bottom:.3em }
+h3 { font-size:1.02rem; margin:1.4em 0 .3em }
+.tlp { display:inline-block; padding:.2em .7em; border-radius:4px; font-weight:700; letter-spacing:.03em }
+.tlp.clear { background:var(--clear); color:var(--clear-fg) } .tlp.other { background:var(--warn); color:var(--warn-fg) }
+.meta, .muted { color:var(--muted); font-size:.92rem }
+.card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px 16px; margin:12px 0 }
+.bluf { border-left:4px solid var(--accent) }
+code, .ioc { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:.88em; word-break:break-all }
+table { width:100%; border-collapse:collapse; font-size:.92rem } th, td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); vertical-align:top }
+.tags span { display:inline-block; border:1px solid var(--line); border-radius:999px; padding:0 .55em; margin:2px; font-size:.82rem }
+a { color:var(--accent) }
+</style>
+</head>
+<body><main>
+<p><span class="tlp clear">TLP:CLEAR</span>
+<span class="meta">May be shared publicly.</span></p>
+<h1>HexBrief daily threat brief: 2026-11-15</h1>
+<p class="meta">Window 2026-11-14 22:24 → 2026-11-15 22:24 (Asia/Kuala_Lumpur) · generated 2026-11-15 22:24</p>
+
+<h2>Bottom line up front</h2>
+<div class="card bluf">Today&#39;s intelligence highlights a convergence of AI-driven automation in cyberattacks, with frameworks like BOSSAI and CyberStrikeAI targeting education sectors alongside critical infrastructure. Universities face dual threats from credential theft operations and sophisticated mobile malware campaigns exploiting supply chain compromises.</div>
+
+<h2>Top threats</h2>
+
+<div class="card">
+<h3>1. BOSSAI AI Mesh Targets Education and Emergency Services</h3>
+<p class="muted">Findings: <a href="#f3">F3</a></p>
+<p>The BOSSAI campaign utilizes a mesh of 12 AI agents to automate attacks against universities, exfiltrating student data alongside medical records from emergency services.</p>
+<strong>Recommended actions</strong>
+<ul><li>Monitor for the identified IOC domains and IP ranges associated with the attacker-collector infrastructure.</li><li>Review access controls for student databases and healthcare systems given the cross-sector targeting.</li><li>Deploy behavioral analysis tools to detect automated reconnaissance patterns.</li></ul>
+</div>
+
+<div class="card">
+<h3>2. CyberStrikeAI Framework Targets Educational Institutions</h3>
+<p class="muted">Findings: <a href="#f6">F6</a></p>
+<p>This open-source framework combines LLM orchestration with traditional C2 servers to execute full attack chains against educational institutions in Africa and Latin America.</p>
+<strong>Recommended actions</strong>
+<ul><li>Block the identified fastcdn[.]bar domain and associated IP addresses at the perimeter.</li><li>Audit SQL Server infrastructure for unauthorized access points used as initial entry vectors.</li><li>Implement network segmentation to limit lateral movement capabilities.</li></ul>
+</div>
+
+<div class="card">
+<h3>3. ClingSTUN Backdoor Exploits IoT and Public STUN Infrastructure</h3>
+<p class="muted">Findings: <a href="#f2">F2</a></p>
+<p>This Linux malware strain exploits unpatched vulnerabilities in Internet-facing devices to establish persistent footholds, abusing public STUN infrastructure for connectivity.</p>
+<strong>Recommended actions</strong>
+<ul><li>Patch all identified CVEs listed in the finding immediately.</li><li>Disable or restrict access to public STUN servers on internal networks.</li><li>Scan for IoT devices running unpatched firmware.</li></ul>
+</div>
+
+<div class="card">
+<h3>4. KeyHunter Operation Targets Academic Credentials and LLM Keys</h3>
+<p class="muted">Findings: <a href="#f1">F1</a></p>
+<p>The operation harvested API keys from misconfigured cloud infrastructure and created fraudulent student accounts at major universities.</p>
+<strong>Recommended actions</strong>
+<ul><li>Audit cloud configurations on Vercel, Netlify, and Railway for exposed API keys.</li><li>Verify the integrity of student account creation processes against known fraud indicators.</li><li>Monitor Telegram channels for automated scanning activity.</li></ul>
+</div>
+
+<div class="card">
+<h3>5. Critical Vulnerabilities Added to CISA KEV</h3>
+<p class="muted">Findings: <a href="#f4">F4</a>, <a href="#f5">F5</a></p>
+<p>Two high-severity vulnerabilities affecting UnrealIRCd and Check Point products are now in the Critical Infrastructure Security Enhancement (KEV) list with strict federal due dates.</p>
+<strong>Recommended actions</strong>
+<ul><li>Apply patches for CVE-2026-114713 and CVE-2026-123039 before the 2026-11-16 deadline.</li><li>Review UnrealIRCd configurations on university networks.</li><li>Update Check Point Firewalls and Management Servers.</li></ul>
+</div>
+
+
+<h2>New CISA KEV entries</h2>
+<table><tr><th>CVE</th><th>Vulnerability</th><th>Ransomware</th></tr>
+<tr><td><code>CVE-2026-114713</code></td><td>UnrealIRCd Improper Neutralization of Delimiters Vulnerability</td><td></td></tr><tr><td><code>CVE-2026-123039</code></td><td>Check Point Multiple Products Incorrect Permission Assignment for Critical Resource Vulnerability</td><td></td></tr>
+</table>
+
+<h2>ATT&amp;CK techniques seen</h2>
+<p class="tags"><span><code>T1190</code> ×4</span><span><code>T1105</code> ×4</span><span><code>T1082</code> ×3</span><span><code>T1027</code> ×3</span><span><code>T1140</code> ×3</span><span><code>T1059</code> ×3</span><span><code>T1083</code> ×3</span><span><code>T1071.001</code> ×2</span><span><code>T1036</code> ×2</span><span><code>T1068</code> ×2</span><span><code>T1189</code> ×2</span><span><code>T1090</code> ×2</span><span><code>T1055</code> ×2</span><span><code>T1046</code> ×2</span><span><code>T1059.001</code> ×2</span><span><code>T1057</code> ×2</span><span><code>T1543.003</code> ×2</span><span><code>T1505.003</code> ×2</span><span><code>T1016</code> ×2</span><span><code>T1053.005</code> ×2</span><span><code>T1203</code> ×2</span><span><code>T1102</code> ×2</span><span><code>T1059.004</code> ×2</span><span><code>T1133</code> ×2</span><span><code>T1070.006</code> ×2</span></p>
+
+
+<h2>Education and Malaysia/ASEAN watch</h2>
+<div class="card">The BOSSAI campaign [F3] targeted universities in Thailand, exfiltrating student data. Additionally, the CyberStrikeAI framework [F6] conducted attacks against educational institutions across Latin America and Africa. No other specific ASEAN or Malaysia-related education threats were identified today.</div>
+
+<h2>Trends</h2>
+<p>No specific trends or counts were reported in today&#39;s findings.</p>
+
+<h2>Findings</h2>
+
+<div class="card" id="f1">
+<h3>F1: KeyHunter Operation: Harvard Alumni Data, Stanford Applications and LLM Key Theft</h3>
+<p class="muted">Score 70: +15 exploited in the wild, +10 confidence 100, +20 education sector, +20 Malaysia, +5 analysed report<br>
+Sources: AlienVault OTX · TLP:CLEAR · confidence 100</p>
+<p>CVEs: <code>CVE-2026-41940</code> </p>
+
+<p>A Chinese-speaking threat actor identified as leepsmarts conducted a multi-vector operation combining LLM API credential theft with academic fraud targeting 20 universities. The campaign harvested 2,233 API keys from misconfigured cloud … (see source)</p>
+</div>
+
+<div class="card" id="f2">
+<h3>F2: ClingSTUN Linux Backdoor Abuses Public STUN Infrastructure</h3>
+<p class="muted">Score 68: +15 exploited in the wild, +10 confidence 100, +20 education sector, +5 government sector, +10 ASEAN, +3 ATT&amp;CK-mapped, +5 analysed report<br>
+Sources: AlienVault OTX · TLP:CLEAR · confidence 100</p>
+<p>CVEs: <code>CVE-2014-8361</code> <code>CVE-2016-10372</code> <code>CVE-2016-20016</code> <code>CVE-2017-7921</code> <code>CVE-2019-17621</code> <code>CVE-2019-7256</code> <code>CVE-2021-21974</code> <code>CVE-2021-33044</code> <code>CVE-2021-3493</code> <code>CVE-2021-35394</code> <code>CVE-2021-36380</code> <code>CVE-2021-4034</code> <code>CVE-2022-21894</code> <code>CVE-2022-26134</code> <code>CVE-2022-26289</code> <code>CVE-2022-30190</code> <code>CVE-2022-31199</code> <code>CVE-2022-35555</code> <code>CVE-2022-36553</code> <code>CVE-2022-37055</code> <code>CVE-2022-47986</code> <code>CVE-2023-1389</code> <code>CVE-2023-22518</code> <code>CVE-2023-26801</code> <code>CVE-2023-2868</code> <code>CVE-2023-34362</code> <code>CVE-2023-36025</code> <code>CVE-2023-41011</code> <code>CVE-2023-46604</code> <code>CVE-2023-46805</code> <code>CVE-2024-10914</code> <code>CVE-2024-10915</code> <code>CVE-2024-21412</code> <code>CVE-2024-21887</code> <code>CVE-2024-23624</code> <code>CVE-2024-23625</code> <code>CVE-2024-32281</code> <code>CVE-2024-32292</code> <code>CVE-2024-32314</code> <code>CVE-2024-3400</code> <code>CVE-2024-35340</code> <code>CVE-2024-3721</code> <code>CVE-2024-40766</code> <code>CVE-2024-46048</code> <code>CVE-2024-7029</code> <code>CVE-2024-7344</code> <code>CVE-2025-0994</code> <code>CVE-2025-21042</code> <code>CVE-2025-3248</code> <code>CVE-2025-34035</code> <code>CVE-2025-34037</code> <code>CVE-2025-49704</code> <code>CVE-2025-49706</code> <code>CVE-2025-53770</code> <code>CVE-2025-53771</code> <code>CVE-2025-55182</code> <code>CVE-2025-67038</code> <code>CVE-2026-109618</code> <code>CVE-2026-109619</code> <code>CVE-2026-115560</code> <code>CVE-2026-21509</code> <code>CVE-2026-36356</code> <code>CVE-2026-46300</code> <code>CVE-2026-87827</code> </p>
+<p>ATT&amp;CK: <code>T1016</code> <code>T1021</code> <code>T1021.004</code> <code>T1027</code> <code>T1027.004</code> <code>T1036</code> <code>T1036.004</code> <code>T1037</code> <code>T1046</code> <code>T1053.005</code> <code>T1053.006</code> <code>T1055</code> <code>T1057</code> <code>T1059</code> <code>T1059.001</code> <code>T1059.004</code> <code>T1068</code> <code>T1070.002</code> <code>T1070.003</code> <code>T1070.004</code> <code>T1070.006</code> <code>T1071.001</code> <code>T1071.004</code> <code>T1082</code> <code>T1083</code> <code>T1090</code> <code>T1095</code> <code>T1102</code> <code>T1105</code> <code>T1106</code> <code>T1132.001</code> <code>T1133</code> <code>T1136</code> <code>T1140</code> <code>T1189</code> <code>T1190</code> <code>T1203</code> <code>T1204</code> <code>T1486</code> <code>T1497.001</code> <code>T1497.003</code> <code>T1498</code> <code>T1498.001</code> <code>T1505.003</code> <code>T1543.002</code> <code>T1543.003</code> <code>T1548.001</code> <code>T1562.001</code> <code>T1568.002</code> <code>T1571</code> <code>T1572</code> <code>T1573</code> <code>T1573.001</code> <code>T1574</code> <code>T1574.002</code> <code>T1595.002</code> </p>
+<p>A Linux malware strain named ClingSTUN exploits unpatched vulnerabilities in Internet-facing devices to establish persistent footholds and functions as a back-connect proxy backdoor. The campaign targets IoT devices through multiple CVEs … (see source)</p>
+</div>
+
+<div class="card" id="f3">
+<h3>F3: BOSSAI: Inside the AI attack mesh that targeted Taiwan&#39;s emergency services</h3>
+<p class="muted">Score 46: +10 confidence 100, +20 education sector, +5 government sector, +3 ASEAN among 14 countries, +3 ATT&amp;CK-mapped, +5 analysed report<br>
+Sources: AlienVault OTX · TLP:CLEAR · confidence 100</p>
+
+<p>ATT&amp;CK: <code>T1003</code> <code>T1018</code> <code>T1046</code> <code>T1059</code> <code>T1071</code> <code>T1078</code> <code>T1083</code> <code>T1090</code> <code>T1105</code> <code>T1110</code> <code>T1133</code> <code>T1190</code> <code>T1213</code> <code>T1552</code> <code>T1567</code> <code>T1589</code> <code>T1590</code> <code>T1590.005</code> <code>T1592</code> <code>T1595</code> </p>
+<p>Acronis Threat Research Unit identified a single operator utilizing a mesh of 12 AI agents called BOSSAI to conduct persistent campaigns across 11 countries. The attacker deployed both abliterated and commercial AI models working in … (see source)</p>
+</div>
+
+<div class="card" id="f4">
+<h3>F4: CVE-2026-114713: UnrealIRCd Improper Neutralization of Delimiters Vulnerability</h3>
+<p class="muted">Score 44: +30 in CISA KEV, +5 new in the last 72 h, +9 confidence 95<br>
+Sources: CISA KEV · TLP:CLEAR · confidence 95</p>
+<p>CVEs: <code>CVE-2026-114713</code> </p>
+
+<p>UnrealIRCd UnrealIRCd contains an improper neutralization of delimiters vulnerability that allows any user on a network with two or more linked servers to inject server-to-server commands that are executed with server authority. Added to … (see source)</p>
+</div>
+
+<div class="card" id="f5">
+<h3>F5: CVE-2026-123039: Check Point Multiple Products Incorrect Permission Assignment for Critical Resource Vulnerability</h3>
+<p class="muted">Score 44: +30 in CISA KEV, +5 new in the last 72 h, +9 confidence 95<br>
+Sources: CISA KEV · TLP:CLEAR · confidence 95</p>
+<p>CVEs: <code>CVE-2026-123039</code> </p>
+
+<p>Check Point Firewall, Multi-Domain Security Management Server, Scalable Platforms, Security Gateway, and Security Management Server contain an incorrect permissions assignment for critical resources vulnerability when the Gaia OS … (see source)</p>
+</div>
+
+<div class="card" id="f6">
+<h3>F6: CyberStrikeAI attacks educational institutions</h3>
+<p class="muted">Score 38: +10 confidence 100, +20 education sector, +3 ATT&amp;CK-mapped, +5 analysed report<br>
+Sources: AlienVault OTX · TLP:CLEAR · confidence 100</p>
+
+<p>ATT&amp;CK: <code>T1003.001</code> <code>T1003.002</code> <code>T1003.003</code> <code>T1018</code> <code>T1021.002</code> <code>T1021.006</code> <code>T1053.005</code> <code>T1059.001</code> <code>T1069.002</code> <code>T1082</code> <code>T1087.002</code> <code>T1105</code> <code>T1113</code> <code>T1136.001</code> <code>T1213.001</code> <code>T1482</code> <code>T1543.003</code> <code>T1550.001</code> <code>T1558.001</code> <code>T1558.003</code> <code>T1570</code> </p>
+<p>An open-source framework called CyberStrikeAI was used in real-world attacks against educational institutions across Africa and Latin America. The framework combines LLM-based orchestration with a traditional C2 server, where an AI model … (see source)</p>
+</div>
+
+<div class="card" id="f7">
+<h3>F7: Exploitation Targeting Node-RED, a Tool Embedded in ICS Products</h3>
+<p class="muted">Score 38: +15 exploited in the wild, +10 confidence 100, +5 government sector, +3 ATT&amp;CK-mapped, +5 analysed report<br>
+Sources: AlienVault OTX · TLP:CLEAR · confidence 100</p>
+<p>CVEs: <code>CVE-2019-17558</code> <code>CVE-2026-58115</code> </p>
+<p>ATT&amp;CK: <code>T1027</code> <code>T1036</code> <code>T1036.005</code> <code>T1059</code> <code>T1059.004</code> <code>T1070.006</code> <code>T1071.001</code> <code>T1078</code> <code>T1102</code> <code>T1105</code> <code>T1140</code> <code>T1190</code> <code>T1505.003</code> <code>T1562.003</code> <code>T1569.002</code> <code>T1583.001</code> <code>T1608.001</code> <code>T1608.004</code> </p>
+<p>On October 30, 2026, exploitation activity was detected targeting CVE-2026-58115, an unauthenticated Node-RED admin API vulnerability. Attackers deployed malicious flows that automatically download and execute Linux bots through three … (see source)</p>
+</div>
+
+<div class="card" id="f8">
+<h3>F8: Poisoned Source: APT29 Watering Holes Targets Mobile Devices</h3>
+<p class="muted">Score 38: +15 exploited in the wild, +10 confidence 100, +5 government sector, +3 ATT&amp;CK-mapped, +5 analysed report<br>
+Sources: AlienVault OTX · TLP:CLEAR · confidence 100</p>
+<p>CVEs: <code>CVE-2024-27808</code> <code>CVE-2024-27833</code> <code>CVE-2024-27834</code> <code>CVE-2025-14174</code> <code>CVE-2025-24201</code> <code>CVE-2025-27038</code> <code>CVE-2025-31277</code> <code>CVE-2025-43510</code> <code>CVE-2025-43520</code> <code>CVE-2025-43529</code> <code>CVE-2026-20700</code> <code>CVE-2026-3910</code> </p>
+<p>ATT&amp;CK: <code>T1005</code> <code>T1016</code> <code>T1027</code> <code>T1033</code> <code>T1041</code> <code>T1055</code> <code>T1056.001</code> <code>T1057</code> <code>T1068</code> <code>T1082</code> <code>T1083</code> <code>T1087</code> <code>T1119</code> <code>T1140</code> <code>T1189</code> <code>T1190</code> <code>T1195.002</code> <code>T1203</code> <code>T1518.001</code> <code>T1539</code> <code>T1552.001</code> <code>T1555.003</code> <code>T1566.002</code> <code>T1583.001</code> <code>T1584.001</code> <code>T1584.004</code> <code>T1584.006</code> <code>T1614</code> </p>
+<p>Sekoia TDR identified a large-scale watering hole campaign employing three infection vectors: compromised legitimate websites, Adversary-in-the-Middle-like impersonating high-profile domains, and supply-chain compromise of Ukrainian Plerdy … (see source)</p>
+</div>
+
+
+<h2>IOC appendix (defanged)</h2>
+<table><tr><th>Finding</th><th>Type</th><th>Indicator</th></tr>
+<tr><td>F1</td><td>domain</td><td class="ioc">juanwangccbotgithubgithub[.]com</td></tr><tr><td>F1</td><td>ipv4</td><td class="ioc">14.47.118[.]194</td></tr><tr><td>F1</td><td>ipv4</td><td class="ioc">190.114.197[.]2</td></tr><tr><td>F1</td><td>ipv4</td><td class="ioc">46.39.24[.]98</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">10d83c1748895361e07320f68d44d427b43cadd2cbffe0ab5e607ab03aec83da</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">121f2050e3c891b29565fd73451fff7ae60199c86eb8d79ec1eb1d9844578487</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">284e5ec8748f99fd1b8c331b699a5fe5fd4448bbaae0347a940f427f931c4d14</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">2ed54e0f988a62039abed88f6394eb1e3d5ed931f0183556055417fb08844ecf</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">48962b3893f2c8261e32e6b95ea7d463d145a529a8b2a6c987dd979454405c73</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">48f9b72ce72ab7087794650d6eef10135345088384fbde1482f1c74a02b80302</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">4fbd61cb9181ebbc4fe9a6e59d3c346dc00001da48d66bd890556fc6fad22b07</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">5c4e263546fb21f8fe8732789a5b6583eaa8ae11ebeef099462a7c9bf50e022d</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">6581bf37184bb2db899b9893064d39dd314ea691adf3281cc0aa7e0a31e5138a</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">76692a23abe718b93e63edefd743971ec627c0cdf3778f856bd5ec88003deaa2</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">9391c6ad17aced1142607c0c623b18d86a7697cc483d204ffac94093e26b8068</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">a297eddfa7abea8d411afc0f150f8f6f30e470a77204de87e3b0815fa9bb8a84</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">b90640b392827b4f2d280f6cf67860862953331917d42df23e1653a92f2f98ad</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">c0d8ffebfba969b1c1ca76bd9623bb623e9f95155c8ceca77d8fcc521435a497</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">c1d8e2829ea63b9dc1cf2c3421a5093406adad4d6622e238376e78e908e0e6e8</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">dc892f5013edb0aa1e61e808511387373d8d120348b5be0929621d21e6e9946a</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">dfba6008a2c828a9cb62342aec53006ae05a60cb8d4c41c3fa216fd727e8c6a3</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">e4d12208789f36efc5a1ff765088fed95d6bb5972d1a804a4536fd42366797d4</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">e6e113783356446aef66e5296db45b244f318292af7cebc2a9bd76f095a95c4c</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">ec199c78c11040fd3127887222fd75a85e5797bf96aa691a117fdd83dd663d81</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">f49f45303cbfccee14ff193ac9608f860e6d616f08c0ecbef1ec44f7c863d7ec</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">3a6927a3399f2a10bb2e2229482e5096e5f1c3401a87f7f1730db11243531e28</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">90d738a8d650e3fefda9d7efa4baa11bd89ab05fcf0eb173e04aa01a52b465e2</td></tr><tr><td>F2</td><td>ipv4</td><td class="ioc">130.12.180[.]89</td></tr><tr><td>F2</td><td>ipv4</td><td class="ioc">130.94.67[.]235</td></tr><tr><td>F2</td><td>ipv4</td><td class="ioc">198.41.83[.]165</td></tr><tr><td>F2</td><td>ipv4</td><td class="ioc">198.41.83[.]174</td></tr><tr><td>F2</td><td>ipv4</td><td class="ioc">2.59.133[.]151</td></tr><tr><td>F2</td><td>ipv4</td><td class="ioc">23.27.25[.]75</td></tr><tr><td>F2</td><td>ipv4</td><td class="ioc">38.60.136[.]217</td></tr><tr><td>F2</td><td>ipv4</td><td class="ioc">45.39.190[.]176</td></tr><tr><td>F2</td><td>ipv4</td><td class="ioc">96.126.130[.]81</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">1c93ea48fa7ff886a6d81e44869dd7962309e95d01c1561df362b0b18007a562</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">2d692ee6dcb41c249c55881897b7dec0550b92963e07fccdb11ad655601977c3</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">4a1502affa36d106d5374bf02cf777956eef651176ec8964b26ff90f103dd506</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">535b9e298defd3449ba2b10b9828925d3ce344872dcbd9470c0e8db20f0aae83</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">5e99d6023dce9bb18d845a37fcdbc7ea574fdb20ab8d888ec54c695382d46036</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">66bcbc8c2b9d847a1e976e57972e10eac98e9b894cbf30510bff1e8d63efb81f</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">6f84cc354b785157983efa8f4b674d2e1d6c3331017f29ff8d51bc43668d4b0f</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">9c15dc5a510bf2e8a16c846e61fa35c50ef733b72d4e47b6e8307498a398443c</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">c1e81cfbaf7e4cccad7d7f43c1a624b791ba1b7f1d176e224455138604837b4c</td></tr><tr><td>F2</td><td>url</td><td class="ioc">hxxp://162[.]35[.]99[.]94[:]8090/metabase-rce-139.162.86[.]33&#39;</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">2a61e811669c2fa9f2d9ecbc8d4c0932897409244d352dded764a4fd936c4d1c</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">2ebf2759195413e44f9e77cc8360976f989ff96e05531d40ec7d05756a1ea9c4</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">4d75c5461b65a2944b12414f1e5ef301fe411c1968788134d90aaaa6a50e68dd</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">715e3ae134195f89d8da82ec4cbe6ba1d596d756a2c207a95f75a94afcdff3a4</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">73076c366edd5b8b351f04725663d2189a92dfdc93cc34740a61a1de9bbde51e</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">7a9d66a4637ee2a1ee1e82cfa5db91f720b757aa8fe1457e0807b1f2210b308e</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">8fe2edd0572ea9f092d80c503d2c6df9026c36bd0ace1a77bdeff9cc99737739</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">b29cbf1bdde86ab15b5789e30dab7ce74c14ffd98f9d7e8b4f9887000e6d6834</td></tr><tr><td>F2</td><td>sha256</td><td class="ioc">e066c6a728ac92d261c1abff7bfce1ad5ebd8b1ef054974431221629ac30d221</td></tr><tr><td>F3</td><td>domain</td><td class="ioc">attacker-collector[.]com</td></tr><tr><td>F3</td><td>ipv4</td><td class="ioc">112.121.185[.]218</td></tr><tr><td>F3</td><td>ipv4</td><td class="ioc">156.240.109[.]26</td></tr><tr><td>F3</td><td>ipv4</td><td class="ioc">202.160.76[.]153</td></tr><tr><td>F3</td><td>ipv4</td><td class="ioc">202.160.76[.]154</td></tr><tr><td>F3</td><td>ipv4</td><td class="ioc">202.160.76[.]155</td></tr><tr><td>F3</td><td>ipv4</td><td class="ioc">202.160.76[.]156</td></tr><tr><td>F3</td><td>ipv4</td><td class="ioc">202.160.76[.]157</td></tr><tr><td>F3</td><td>ipv4</td><td class="ioc">202.160.76[.]174</td></tr><tr><td>F3</td><td>ipv4</td><td class="ioc">49.158.237[.]136</td></tr><tr><td>F6</td><td>domain</td><td class="ioc">fastcdn[.]bar</td></tr><tr><td>F6</td><td>ipv4</td><td class="ioc">104.234.26[.]163</td></tr><tr><td>F6</td><td>sha256</td><td class="ioc">61c0810a23580cf492a6ba4f7654566108331e7a4134c968c2d6a05261b2d8a1</td></tr><tr><td>F7</td><td>ipv4</td><td class="ioc">45.194.90[.]57</td></tr><tr><td>F7</td><td>sha256</td><td class="ioc">4662660a5924cc8f09736d32ca1b8d8728d8e69805e7d1e8c9efdbdffa3cf0f1</td></tr><tr><td>F7</td><td>url</td><td class="ioc">hxxp://45[.]194[.]90[.]57[:]38472/.sys_update</td></tr><tr><td>F7</td><td>url</td><td class="ioc">hxxp://85[.]215[.]73[.]250[:]8080/bot-linux-amd64</td></tr><tr><td>F8</td><td>domain</td><td class="ioc">adsprism-stat[.]com</td></tr><tr><td>F8</td><td>domain</td><td class="ioc">america250[.]holiday</td></tr><tr><td>F8</td><td>domain</td><td class="ioc">theowo[.]club</td></tr><tr><td>F8</td><td>ipv4</td><td class="ioc">95.133.231[.]28</td></tr><tr><td>F8</td><td>sha256</td><td class="ioc">06c17b31d36838f3d29044784aa047d5c2d9174d3356c1211cf25f9df677445f</td></tr><tr><td>F8</td><td>sha256</td><td class="ioc">183d62d682aea8018491c8559544e8d6a9ab0e1abd05ecbb6c97daa4f438d2b8</td></tr><tr><td>F8</td><td>sha256</td><td class="ioc">29d283ebd08d0cd3b2e6f4a67718d3d6e7a6be01d0613d716bce218dba57a928</td></tr><tr><td>F8</td><td>sha256</td><td class="ioc">2ffb35e3f9e55286a930fb887e73764a913166648135fe0ca7551736d97d7bfa</td></tr><tr><td>F8</td><td>sha256</td><td class="ioc">35c0cd19a7334b544c193e392bcd9a8f1d1f43cf6b61be5bf1d9e35537aff2ef</td></tr><tr><td>F8</td><td>sha256</td><td class="ioc">387a7fb768db1350a9788d9704e7a72abe07152734e0ff026af72b417e36268c</td></tr><tr><td>F8</td><td>sha256</td><td class="ioc">41e6fd33a30d36dabff9ea408d9766a6583edcc107968f6dc1499f2586381967</td></tr><tr><td>F8</td><td>sha256</td><td class="ioc">621112712ec515e8791129c62feda8fff6654a0116882401609503cacc08054a</td></tr><tr><td>F8</td><td>sha256</td><td class="ioc">69b6cb327a4d5da99399718f6a66f84de69f89425b0a31f2dcee0682f811596f</td></tr><tr><td>F8</td><td>sha256</td><td class="ioc">a7d2493df00565c21587b0cad2a9fe7ca1e5590acf796da6e499be0ffde44cc3</td></tr><tr><td>F8</td><td>sha256</td><td class="ioc">ae3241d96cc2d99538c7aff60f382cc8dac13859bcbea3ee84992d24d22a8108</td></tr><tr><td>F8</td><td>sha256</td><td class="ioc">bee3e014e3df87ddce0250b0985b87f6868a427a7b650a74b7ffedb9d57f3088</td></tr><tr><td>F8</td><td>sha256</td><td class="ioc">c170fda024183645c0aa681149304e50506509c3498bb6b9a5f5ced6aa73e5fa</td></tr><tr><td>F8</td><td>url</td><td class="ioc">hxxp://ad[.]starx-net[.]com[:]8881/telemetry/v12</td></tr><tr><td>F8</td><td>url</td><td class="ioc">hxxps://ad[.]starx-net[.]com/api/</td></tr><tr><td>F8</td><td>url</td><td class="ioc">hxxps://ad[.]starx-net[.]com[:]8881/telemetry/v12</td></tr><tr><td>F8</td><td>url</td><td class="ioc">hxxps://edge-ord[.]clouds-stacks[.]com/module/5b4c8fea5cbcee273e8d830f52-temfp.js</td></tr><tr><td>F8</td><td>url</td><td class="ioc">hxxps://static[.]flux-telemetry[.]com/api/uGmlx2pmMHU1jq7wZU2QWgeC28vbXalf/v1&#39;</td></tr><tr><td>F8</td><td>url</td><td class="ioc">hxxps://static[.]flux-telemetry[.]com/module/5b4c8fea5cbcee273e8d830f52-temfp.js&#39;</td></tr>
+</table>
+
+
+<h2>Sources</h2>
+<ul><li>AlienVault OTX</li><li>CISA KEV</li><li>hxxps://arstechnica[.]com/security/2026/11/hackers-exploited-ios-and-android-flaws-to-infect-phones/</li><li>hxxps://blog[.]polyswarm[.]io/yoba-malware-campaign-abuses-signed-ai-applications-to-evade-detection</li><li>hxxps://hunt[.]io/blog/php2shell-honeypot-shells-root-palo-alto-firewalls</li><li>hxxps://nvd[.]nist[.]gov/vuln/detail/CVE-2026-114713</li><li>hxxps://nvd[.]nist[.]gov/vuln/detail/CVE-2026-123039</li><li>hxxps://otx[.]alienvault[.]com/pulse/6ac368846173b592a85473db</li><li>hxxps://otx[.]alienvault[.]com/pulse/6ac4285a7c6e1cd492e8b2cf</li><li>hxxps://otx[.]alienvault[.]com/pulse/6ae4c9f97b4e07a268c06b96</li><li>hxxps://otx[.]alienvault[.]com/pulse/6ae86a19eabc583f87c50fd6</li><li>hxxps://otx[.]alienvault[.]com/pulse/6ae9ac6e66c89c6be4d99928</li><li>hxxps://otx[.]alienvault[.]com/pulse/6ae9eb16f9bae7d0faed8d7a</li><li>hxxps://otx[.]alienvault[.]com/pulse/6aeae4fe1c423d6e45143b77</li><li>hxxps://otx[.]alienvault[.]com/pulse/6aeb242026030af6a32b4b10</li><li>hxxps://otx[.]alienvault[.]com/pulse/6aeb40b4e681d29bd1496aac</li><li>hxxps://otx[.]alienvault[.]com/pulse/6aebe661b7e5525aa39d6ba8</li><li>hxxps://securelist[.]com/tr/cyberstrikeai-attacks/121715/</li><li>hxxps://socradar[.]io/blog/keyhunter-operation-harvard-alumni-stanford-llm-key-data/</li><li>hxxps://www[.]acronis[.]com/en/tru/posts/bossai-inside-the-ai-attack-mesh-that-targeted-taiwans-emergency-services/</li><li>hxxps://www[.]fortinet[.]com/blog/threat-research/clingstun-linux-backdoor-abuses-public-stun-infrastructure</li><li>hxxps://www[.]nozominetworks[.]com/blog/a-stunning-disguise-cling-malware-masquerades-as-google-</li><li>hxxps://www[.]sekoia[.]com/blog/poisoned-source-apt29-watering-holes-targets-mobile-devices-with-n-day-exploits</li><li>hxxps://www[.]vulncheck[.]com/blog/exploitation-targeting-node-red</li></ul>
+
+<h2>Method</h2>
+<p class="muted">Narrative written by a local AI model; every fact is checked against cited sources. Ranking is rule-based: KEV, exploitation, recency, independent sources, confidence, education/Malaysia/ASEAN relevance, and warninglist hits. 217 lower-ranked findings are listed in brief.json.</p>
+</main></body></html>
