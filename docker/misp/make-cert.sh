@@ -16,7 +16,7 @@ cat > ext.cnf <<EOF
 basicConstraints=critical,CA:FALSE
 keyUsage=critical,digitalSignature,keyEncipherment
 extendedKeyUsage=serverAuth
-subjectAltName=IP:127.0.0.1,DNS:localhost
+subjectAltName=IP:127.0.0.1,DNS:localhost,DNS:host.docker.internal
 authorityKeyIdentifier=keyid,issuer
 subjectKeyIdentifier=hash
 EOF
