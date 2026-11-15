@@ -84,6 +84,25 @@ def test_rendered_ids_are_strict(tmp_path: Path) -> None:
     assert "<script>" not in md and "javascript:" not in md
 
 
+def test_tlp_white_counts_as_clear_for_pages(tmp_path: Path) -> None:
+    f = kev_finding()
+    f.tlp = "TLP:WHITE"
+    res = run({"k": lambda now, h: [f]}, now=NOW, writer=None)
+    assert write_brief(public_view(res), tmp_path).is_file()
+
+
+def test_missing_stix_fails_only_its_steps(tmp_path: Path) -> None:
+    from hexbrief.publish.runner import publish
+
+    res = run(COLLECTORS, now=NOW, writer=FakeWriter([good(["F1", "F2"])]))
+    paths = write_outputs(res, tmp_path / "o", tmp_path / "r")
+    paths["stix"].unlink()
+    lines = publish(res, paths, pdf=False, push=True, pages=True, site=tmp_path / "site")
+    assert any("opencti" in ln and "FAILED" in ln for ln in lines)
+    assert any("pages" in ln and "ok" in ln for ln in lines)
+    assert json.loads(paths["runlog"].read_text())["publish"]["pages"]["ok"] is True
+
+
 def test_brief_json_round_trip_rebuilds_the_same_page(tmp_path: Path) -> None:
     from hexbrief.engine import load_result
 

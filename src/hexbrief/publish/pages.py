@@ -12,13 +12,14 @@ import re
 from pathlib import Path
 
 from hexbrief.engine import BriefResult
+from hexbrief.publish.public import is_clear
 from hexbrief.render.brief import to_html, to_markdown
 
 _DAY = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
 def write_brief(result: BriefResult, site: Path) -> Path:
-    if result.tlp != "TLP:CLEAR" or any(f.tlp != "TLP:CLEAR" for _, f in result.top):
+    if not is_clear(result.tlp) or any(not is_clear(f.tlp) for _, f in result.top):
         raise ValueError("refusing to publish a non-TLP:CLEAR brief to the public archive")
     if not _DAY.match(result.day):
         raise ValueError(f"bad day {result.day!r}")
