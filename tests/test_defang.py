@@ -18,6 +18,10 @@ from hexbrief.render.defang import defang_ioc, defang_text
         ),
         (Ioc("url", "http://198.51.100.23:8080/x"), "hxxp://198[.]51[.]100[.]23[:]8080/x"),
         (Ioc("sha256", "ab" * 32), "ab" * 32),
+        (
+            Ioc("url", "http://203.0.113.1/x-198.51.100.2"),
+            "hxxp://203[.]0[.]113[.]1/x-198.51.100[.]2",
+        ),
     ],
 )
 def test_every_ioc_type_is_defanged(ioc: Ioc, expected: str) -> None:

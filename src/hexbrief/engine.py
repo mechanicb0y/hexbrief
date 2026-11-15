@@ -236,6 +236,7 @@ def write_outputs(result: BriefResult, out_dir: Path, runs_dir: Path) -> dict[st
                 "day": result.day,
                 "tlp": json_tlp,
                 "tlp_top": result.tlp,
+                "generated": result.generated,
                 "llm_ok": result.llm_ok,
                 "window": [result.window_start, result.window_end],
                 "narrative": result.narrative,
@@ -262,3 +263,40 @@ def write_outputs(result: BriefResult, out_dir: Path, runs_dir: Path) -> dict[st
     paths["stix"].write_text(json.dumps(bundle, indent=1, ensure_ascii=False), encoding="utf-8")
     paths["runlog"].write_text(json.dumps(result.run_log, indent=1, default=str), encoding="utf-8")
     return paths
+
+
+def load_result(brief_json: Path) -> BriefResult:
+    """Rebuild a BriefResult from brief.json (re-render / re-publish without a new run)."""
+    from hexbrief.model import Ioc
+
+    data = json.loads(brief_json.read_text(encoding="utf-8"))
+
+    def finding(d: dict[str, Any]) -> Finding:
+        f = Finding(key=d["key"], kind=d["kind"], title=d["title"])
+        for k, v in d.items():
+            if k in ("fid", "key", "kind", "title"):
+                continue
+            if k == "iocs":
+                v = [Ioc(i["type"], i["value"]) for i in v]
+            elif k == "first_seen":
+                v = datetime.fromisoformat(v) if v else None
+            elif k in ("cves", "attack_ids", "malware", "actors", "sectors", "countries"):
+                v = set(v)
+            setattr(f, k, v)
+        return f
+
+    top = [(d["fid"], finding(d)) for d in data["top"]]
+    others = [finding(d) for d in data["others"]]
+    return BriefResult(
+        day=data["day"],
+        window_start=data["window"][0],
+        window_end=data["window"][1],
+        generated=data.get("generated", data["window"][1]),
+        tlp=data.get("tlp_top", data["tlp"]),
+        narrative=data["narrative"],
+        llm_ok=data["llm_ok"],
+        top=top,
+        others=others,
+        all_findings=[f for _, f in top] + others,
+        run_log={},
+    )
