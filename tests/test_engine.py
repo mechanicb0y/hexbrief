@@ -227,3 +227,14 @@ def test_misp_snapshot_round_trip(tmp_path: Path, monkeypatch) -> None:  # noqa:
     loaded = pipeline.load_misp_snapshot(NOW)
     assert loaded and loaded[0].iocs == f.iocs and loaded[0].cves == f.cves
     assert pipeline.load_misp_snapshot(NOW + timedelta(days=2)) is None
+
+
+def test_demo_runs_offline_and_passes_the_gate(tmp_path: Path) -> None:
+    from hexbrief.demo_mode import demo_run
+
+    res = demo_run()  # recorded findings + recorded narrative, no services
+    assert res.llm_ok, res.run_log["llm"]
+    assert res.tlp == "TLP:CLEAR" and len(res.top) == 8
+    paths = write_outputs(res, tmp_path / "o", tmp_path / "r")
+    assert res.run_log["stix_valid"] is True
+    assert "Narrative written by a local AI model" in paths["md"].read_text("utf-8")

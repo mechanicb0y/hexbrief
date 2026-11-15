@@ -6,7 +6,12 @@ _Any new session reads this first._
 **Autonomy mode** (owner's standing orders, 2026-11-15, until v1.0.0). Decide, record in one line, keep going. Report once per phase. Merge own PRs when green and reviewed. Stop only for owner-only actions.
 
 ## Current phase
-**Phase 7 — Automation** (branch `phase-7-automation`), finishing. Next: Phase 8 quality + demo mode.
+**Phase 8 — Quality + demo** (branch `phase-8-demo`), finishing. Next: Phase 9 portfolio launch (v1.0.0).
+
+## Decisions log (Phase 8)
+- `hexbrief demo` uses recorded TLP:CLEAR findings + a recorded narrative shipped in the package, and runs the recorded text through the same validator (no keys, no Docker; `--llm` writes it live).
+- Engine fix after the daily dry run fell back to facts-only: keep the best faithful answer across retries, completeness requires only the top lens finding, `num_ctx` 12288.
+- HTML brief redesigned around the TLP strip (official colours, top and bottom, print-safe). README rewritten demo-first; `docs/architecture.md` + `docs/sample-brief.md` added.
 
 ## Decisions log (Phase 7)
 - Task Scheduler (user task, 07:00, catch-up, wake) via `scripts/install-schedule.ps1`, which **the owner runs once** (Windows setting). ADR-006.
@@ -54,15 +59,19 @@ _Any new session reads this first._
   - `scripts/opencti_setup.py`: label `hexbrief`, TAXII collection `daily-briefs`, read-only reader + 365-day token in `.env`.
   - `collectors/opencti.py` + `hexbrief opencti recent`.
 
+- 2026-11-15: Phases 3–7 merged (PRs #5–#9). Pages live, CI green, daily dry run OK.
+- 2026-11-15: Phase 8: demo mode (fresh clone → brief in ~5 min), HTML redesign, README/architecture.
+
 ## Next
-- Phase 4 — local LLM benchmark (Ollama; 4 GB VRAM).
+- Phase 9 — v1.0.0 tag, CHANGELOG, write-up, LinkedIn draft, resume bullets, 20 interview Q&A.
 
 ## Notes for Phase 5
 - `publish_timestamp` is when **our** MISP published an event, so a feed fetch makes 2015 events look new. Use the attribute's own timestamp/first_seen (`fresh_only`).
 - OpenCTI window uses `updated_at`.
 
 ## Owner-only items pending
-- None. (Autonomy mode section added to CLAUDE.md by the owner, 2026-11-15. ACT containers were stopped by the owner's own `docker stop`; leave them.)
+- Run `scripts\install-schedule.ps1` once (Task Scheduler). The "7 days unattended" count starts at the first scheduled run.
+- (Autonomy mode section added to CLAUDE.md by the owner, 2026-11-15. ACT containers were stopped by the owner's own `docker stop`; leave them.)
 
 ## Blockers
 - None.
