@@ -80,6 +80,7 @@ def test_missing_key_and_bad_days() -> None:
         ("ip:port", "2001:db8::1:443", "[ipv6-addr:value = '2001:db8::1']"),
         ("ip:port", "[2001:db8::1]:443", "[ipv6-addr:value = '2001:db8::1']"),
         ("ip:port", "not-an-ip:80", None),
+        ("ip:port", "[fe80::1%eth0' OR 1=1]:80", None),  # scoped address / injection attempt
         ("sha256_hash", "ab" * 10, None),  # hex but wrong length
         ("md5_hash", "a" * 32, "[file:hashes.'MD5' = '" + "a" * 32 + "']"),
         ("domain", "bad.example.test", "[domain-name:value = 'bad.example.test']"),
@@ -91,6 +92,21 @@ def test_missing_key_and_bad_days() -> None:
 )
 def test_stix_patterns(ioc_type: str, value: str, expected: str | None) -> None:
     assert stix_pattern(ioc_type, value) == expected
+
+
+@pytest.mark.parametrize(
+    ("ref", "kept"),
+    [
+        ("https://example.org/report", True),
+        ("javascript:alert(1)", False),
+        ("data:text/html,<b>x</b>", False),
+        ("https:///no-host", False),
+    ],
+)
+def test_only_http_references_are_kept(ref: str, kept: bool) -> None:
+    bundle = to_stix_bundle(AbuseChPull(threatfox=[dict(TF_ROW, reference=ref)]))
+    ind = next(o for o in bundle["objects"] if o["type"] == "indicator")
+    assert ("external_references" in ind) is kept
 
 
 def test_zero_confidence_is_kept() -> None:

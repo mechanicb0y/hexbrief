@@ -18,6 +18,7 @@ import uuid
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any
+from urllib.parse import urlsplit
 
 import httpx
 
@@ -99,8 +100,10 @@ def stix_pattern(ioc_type: str, value: str) -> str | None:
             addr = ipaddress.ip_address(ip)
         except ValueError:
             return None  # one malformed row must not fail the whole bundle
+        if getattr(addr, "scope_id", None):
+            return None  # "fe80::1%eth0'..." would carry arbitrary text into the pattern
         kind = "ipv6-addr" if addr.version == 6 else "ipv4-addr"
-        return f"[{kind}:value = '{addr}']"
+        return f"[{kind}:value = '{_q(addr.compressed)}']"
     if ioc_type == "domain":
         return f"[domain-name:value = '{_q(value)}']"
     if ioc_type == "url":
@@ -108,6 +111,16 @@ def stix_pattern(ioc_type: str, value: str) -> str | None:
     if ioc_type in _HASH_KEYS and re.fullmatch(rf"[0-9a-fA-F]{{{_HASH_LEN[ioc_type]}}}", value):
         return f"[file:hashes.'{_HASH_KEYS[ioc_type]}' = '{value.lower()}']"
     return None
+
+
+def _safe_ref(url: str) -> bool:
+    """Only plain http(s) links with a host may become external references.
+
+    These strings come from a public feed and end up as clickable links in the
+    OpenCTI UI and our briefs, so ``javascript:`` / ``data:`` and similar are dropped.
+    """
+    parts = urlsplit(url.strip())
+    return parts.scheme in ("http", "https") and bool(parts.netloc) and len(url) < 2048
 
 
 def _ts(value: str | None) -> str:
@@ -170,7 +183,7 @@ def to_stix_bundle(data: AbuseChPull) -> dict[str, Any]:
             "created_by_ref": ABUSECH_IDENTITY_ID,
             "object_marking_refs": [clear],
         }
-        if ref:
+        if ref and _safe_ref(ref):
             ind["external_references"] = [{"source_name": "abuse.ch", "url": ref}]
         objects.append(ind)
         if family:
