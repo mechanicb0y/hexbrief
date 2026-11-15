@@ -24,6 +24,8 @@ OpenCTI is the main store and the STIX 2.1 knowledge graph. The laptop runs the 
    - TAXII2 connector (profile `taxii`, on demand) pulls from our medallion to demonstrate TAXII *in*.
 7. **Dependency conflict:** pycti 7.26xx pins `requests<2.34`, while PyMISP ≥2.5.34.2 needs `requests>=2.34.2`. PyMISP is pinned to **2.5.34.1** (newest compatible, still the 2.5 line for MISP 2.5.51). `pip check` is clean.
 
+8. **Least privilege for our own clients** (from the security review): the brief engine uses `automation@hexbrief.lab` (role *HexBrief reader*: KNOWLEDGE + API token + TAXII read). The abuse.ch importer uses `importer@hexbrief.lab` (create/update knowledge only, **group max confidence 50**, so it cannot overwrite higher-confidence data). Both tokens last 365 days, are minted by their owners and are stored in git-ignored env files. The admin token is used only by `opencti_setup.py`. External references from feeds are kept only if they are plain `http(s)` URLs with a host.
+
 ## Consequences
 
 - The first boot builds the ES indices and runs migrations, which takes several minutes. `opencti-up.ps1` retries `compose up` for up to 25 minutes.
