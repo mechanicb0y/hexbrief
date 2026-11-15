@@ -28,8 +28,43 @@ REPO = Path(__file__).resolve().parents[1]
 STACK_ENV = REPO / "docker" / "opencti" / ".env.opencti"
 REPO_ENV = REPO / ".env"
 URL = "http://127.0.0.1:8088"
-READER_EMAIL = "automation@hexbrief.lab"
-READER_CAPS = ("KNOWLEDGE", "APIACCESS", "APIACCESS_USETOKEN", "TAXIIAPI")
+# Least privilege: the brief engine only reads; the abuse.ch importer may create and
+# update knowledge but is capped at confidence 50, so it can never overwrite data
+# from higher-confidence sources (security review, 2026-11-15).
+PRINCIPALS = (
+    {
+        "name": "HexBrief automation",
+        "email": "automation@hexbrief.lab",
+        "role": "HexBrief reader",
+        "group": "HexBrief readers",
+        "description": "Read-only knowledge + API token (brief engine)",
+        "caps": ("KNOWLEDGE", "APIACCESS", "APIACCESS_USETOKEN", "TAXIIAPI"),
+        "max_confidence": 100,
+        "password_key": "OPENCTI_READER_PASSWORD",
+        "token_name": "hexbrief-collector",
+        "token_key": "OPENCTI_TOKEN",
+        "token_file": REPO_ENV,
+    },
+    {
+        "name": "HexBrief abuse.ch importer",
+        "email": "importer@hexbrief.lab",
+        "role": "HexBrief importer",
+        "group": "HexBrief importers",
+        "description": "Create/update knowledge only, confidence capped at 50",
+        "caps": (
+            "KNOWLEDGE",
+            "KNOWLEDGE_KNUPDATE",
+            "KNOWLEDGE_KNPARTICIPATE",
+            "APIACCESS",
+            "APIACCESS_USETOKEN",
+        ),
+        "max_confidence": 50,
+        "password_key": "OPENCTI_IMPORTER_PASSWORD",
+        "token_name": "hexbrief-abusech-importer",
+        "token_key": "OPENCTI_IMPORTER_TOKEN",
+        "token_file": STACK_ENV,
+    },
+)
 
 
 def read_env(path: Path) -> dict[str, str]:
@@ -110,72 +145,80 @@ def main() -> None:
     else:
         print("TAXII collection daily-briefs: exists")
 
-    # 3. least-privilege reader
+    # 3. least-privilege principals
     caps = {c["name"]: c["id"] for c in api.capability.list()}
-    role = next((r for r in api.role.list() if r["name"] == "HexBrief reader"), None)
-    if role is None:
-        role = api.role.create(
-            name="HexBrief reader", description="Read-only knowledge + API token"
+    tlp_markings = [m["id"] for m in api.marking_definition.list() if m["definition_type"] == "TLP"]
+    for p in PRINCIPALS:
+        ensure_principal(api, p, caps, tlp_markings)
+        if read_env(p["token_file"]).get(p["token_key"], "") not in ("", "__replace_me__"):
+            print(f"{p['email']}: token already in {p['token_file'].name}, not minting another")
+            continue
+        token = mint_token(p)
+        set_env(p["token_file"], p["token_key"], token)
+        print(
+            f"{p['email']}: token (365 days) written to {p['token_file'].name} "
+            f"as {p['token_key']} (not shown)"
         )
-        for cap in READER_CAPS:
+    set_env(REPO_ENV, "OPENCTI_URL", URL)
+
+
+def ensure_principal(api: OpenCTIApiClient, p: dict, caps: dict, markings: list[str]) -> None:
+    role = next((r for r in api.role.list() if r["name"] == p["role"]), None)
+    if role is None:
+        role = api.role.create(name=p["role"], description=p["description"])
+        for cap in p["caps"]:
             api.role.add_capability(id=role["id"], capability_id=caps[cap])
-    group = next((g for g in api.group.list() if g["name"] == "HexBrief readers"), None)
+    group = next((g for g in api.group.list() if g["name"] == p["group"]), None)
     if group is None:
         group = api.group.create(
-            name="HexBrief readers",
-            description="HexBrief collectors",
-            group_confidence_level={"max_confidence": 100, "overrides": []},
+            name=p["group"],
+            description=p["description"],
+            group_confidence_level={"max_confidence": p["max_confidence"], "overrides": []},
         )
         if group is None:
-            sys.exit("group creation failed (see OpenCTI logs)")
+            sys.exit(f"group creation failed for {p['group']} (see OpenCTI logs)")
         api.group.add_role(id=group["id"], role_id=role["id"])
-        markings = [m["id"] for m in api.marking_definition.list() if m["definition_type"] == "TLP"]
         for mid in markings:
             api.group.add_allowed_marking(id=group["id"], marking_id=mid)
-    user = next((u for u in api.user.list() if u.get("user_email") == READER_EMAIL), None)
+    user = next((u for u in api.user.list() if u.get("user_email") == p["email"]), None)
     if user is None:
         password = secrets.token_urlsafe(32)
-        user = api.user.create(
-            name="HexBrief automation",
-            user_email=READER_EMAIL,
-            password=password,
-            groups=[group["id"]],
+        api.user.create(
+            name=p["name"], user_email=p["email"], password=password, groups=[group["id"]]
         )
-        set_env(STACK_ENV, "OPENCTI_READER_PASSWORD", password)
-        print(f"user {READER_EMAIL}: created (password stored in .env.opencti, not shown)")
-    else:
-        print(f"user {READER_EMAIL}: exists")
+        set_env(STACK_ENV, p["password_key"], password)
+        print(f"user {p['email']}: created (password stored in .env.opencti, not shown)")
 
-    # 4. token for the reader: tokens are minted by their owner, so log in as the reader
-    password = read_env(STACK_ENV).get("OPENCTI_READER_PASSWORD")
+
+def mint_token(p: dict) -> str:
+    """API tokens are minted by their owner, so log in as that user first."""
+    password = read_env(STACK_ENV).get(p["password_key"])
     if not password:
-        sys.exit("OPENCTI_READER_PASSWORD missing; cannot mint the reader token")
+        sys.exit(f"{p['password_key']} missing; cannot mint a token for {p['email']}")
     session = requests.Session()
     r = session.post(
         f"{URL}/graphql",
         json={
             "query": "mutation($input: UserLoginInput!) { token(input: $input) }",
-            "variables": {"input": {"email": READER_EMAIL, "password": password}},
+            "variables": {"input": {"email": p["email"], "password": password}},
         },
         timeout=60,
     )
     r.raise_for_status()
-    login = r.json()
-    if login.get("errors"):
-        sys.exit(f"reader login failed: {[e.get('message') for e in login['errors']]}")
+    if r.json().get("errors"):
+        sys.exit(f"login failed for {p['email']}: {[e.get('message') for e in r.json()['errors']]}")
     minted = session.post(
         f"{URL}/graphql",
         json={
-            "query": 'mutation { userTokenAdd(input: {name: "hexbrief-collector", '
-            "duration: DAYS_365}) { token_id plaintext_token } }"
+            "query": "mutation($n: String!) { userTokenAdd(input: {name: $n, "
+            "duration: DAYS_365}) { token_id plaintext_token } }",
+            "variables": {"n": p["token_name"]},
         },
         timeout=60,
     ).json()
     if minted.get("errors"):
         sys.exit(f"token mint failed: {[e.get('message') for e in minted['errors']]}")
-    set_env(REPO_ENV, "OPENCTI_URL", URL)
-    set_env(REPO_ENV, "OPENCTI_TOKEN", minted["data"]["userTokenAdd"]["plaintext_token"])
-    print("reader token (365 days) written to .env as OPENCTI_TOKEN (not shown)")
+    return str(minted["data"]["userTokenAdd"]["plaintext_token"])
 
 
 if __name__ == "__main__":
