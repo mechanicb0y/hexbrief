@@ -46,7 +46,9 @@ def test_window_filters_published_ids_and_warninglists() -> None:
     assert ev_call["published"] is True
     assert at_call["controller"] == "attributes"
     assert at_call["to_ids"] is True
-    assert at_call["enforce_warninglist"] is True
+    # Never server-side enforceWarninglist: MISP filters after paging (see docstring).
+    assert "enforce_warninglist" not in at_call
+    assert at_call["includeWarninglistHits"] is True
     assert window.events == [{"id": "1", "info": "x"}]
     assert window.attribute_types == {"ip-dst": 1, "domain": 1}
     assert window.ids_attributes == 2
@@ -54,11 +56,39 @@ def test_window_filters_published_ids_and_warninglists() -> None:
 
 def test_context_attributes_when_ids_only_is_off() -> None:
     misp = FakeMisp()
-    collect_window(misp, hours=6, ids_only=False, enforce_warninglist=False)
+    collect_window(misp, hours=6, ids_only=False)
     at_call = misp.calls[1]
     assert at_call["to_ids"] is None
-    assert at_call["enforce_warninglist"] is False
     assert at_call["publish_timestamp"] == "6h"
+
+
+def hit(n: int) -> dict[str, Any]:
+    a = attr(n)
+    a["warnings"] = [{"warninglist_name": "Public DNS resolvers", "match": a["value"]}]
+    return a
+
+
+def test_warninglist_hits_are_flagged_not_dropped_by_default() -> None:
+    misp = FakeMisp(attribute_pages=[{"Attribute": [attr(1), hit(2)]}])
+    window = collect_window(misp)
+    assert len(window.attributes) == 2
+    assert window.warninglist_hits == 1
+
+
+def test_warninglist_hits_can_be_dropped_client_side() -> None:
+    misp = FakeMisp(attribute_pages=[{"Attribute": [attr(1), hit(2)]}])
+    window = collect_window(misp, drop_warninglist_hits=True)
+    assert [a["id"] for a in window.attributes] == ["1"]
+
+
+def test_regression_filtered_page_does_not_end_paging() -> None:
+    # 2026-11-15: with server-side enforceWarninglist a full page came back short
+    # (974 of 1000) and the loop stopped. Now pages are always full until the last.
+    full = {"Attribute": [attr(1), hit(2), attr(3)]}
+    misp = FakeMisp(attribute_pages=[full, full, {"Attribute": [attr(4)]}])
+    window = collect_window(misp, page_size=3)
+    assert len(window.attributes) == 7
+    assert window.warninglist_hits == 2
 
 
 def test_pages_until_a_short_page() -> None:
