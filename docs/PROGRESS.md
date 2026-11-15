@@ -6,7 +6,14 @@ _Any new session reads this first._
 **Autonomy mode** (owner's standing orders, 2026-11-15, until v1.0.0). Decide, record in one line, keep going. Report once per phase. Merge own PRs when green and reviewed. Stop only for owner-only actions.
 
 ## Current phase
-**Phase 6 — Publish** (branch `phase-6-publish`), finishing. Next: Phase 7 automation (07:00 MYT schedule, doctor, CI, backups).
+**Phase 7 — Automation** (branch `phase-7-automation`), finishing. Next: Phase 8 quality + demo mode.
+
+## Decisions log (Phase 7)
+- Task Scheduler (user task, 07:00, catch-up, wake) via `scripts/install-schedule.ps1`, which **the owner runs once** (Windows setting). ADR-006.
+- Daily job order: MISP session → snapshot → MISP down → OpenCTI + medallion → abuse.ch import → brief + publish → push `site/` only from clean `main` → stacks down → Sunday backup.
+- pip-audit: 4 pycti-pinned transitive CVEs ignored with reasons (ADR-006). mypy is not a CI gate yet.
+- Issue #2 fixed in `hexbrief doctor` (unclosed quote = malformed).
+- "7 days unattended" starts counting from the first scheduled run.
 
 ## Decisions log (Phase 6)
 - PDF via local headless Edge/Chrome (no extra dependency; strict CSP, throwaway profile).

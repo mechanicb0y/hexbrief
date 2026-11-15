@@ -2,7 +2,7 @@
 
 > A self-updating threat-intel brief: public feeds in over STIX/TAXII, correlated in MISP and OpenCTI, written up each morning by a **local** LLM, and fact-checked so it never invents an indicator.
 
-**Status:** Phase 6 (publish): briefs go to PDF, OpenCTI/TAXII and a public TLP:CLEAR archive. See [docs/PROGRESS.md](docs/PROGRESS.md).
+**Status:** Phase 7 (automation): daily 07:00 MYT job, `hexbrief doctor`, CI, backups. See [docs/PROGRESS.md](docs/PROGRESS.md).
 
 <!-- Demo GIF and link to today's sample brief go here (Phase 8). -->
 
@@ -98,6 +98,10 @@ Pipeline: collect (OpenCTI, CISA KEV, MISP) → normalize to findings → KEV cr
 - Intel goes only to a local LLM, never to a cloud AI API.
 - Secrets live in a git-ignored `.env`; gitleaks runs on every commit and in CI.
 
+## Operations
+
+Daily job, health checks, backups and upgrades: [docs/OPERATIONS.md](docs/OPERATIONS.md) ([ADR-006](docs/adr/006-automation.md)). CI runs ruff, tests (including a TAXII round trip against medallion), bandit, pip-audit and gitleaks on every PR.
+
 ## Design decisions
 
 - [ADR-001: Hardware path and lab sizing](docs/adr/001-hardware-path.md)
@@ -105,6 +109,7 @@ Pipeline: collect (OpenCTI, CISA KEV, MISP) → normalize to findings → KEV cr
 - [ADR-003: MISP deployment, PyMISP pin and feeds](docs/adr/003-misp-deployment.md)
 - [ADR-004: OpenCTI deployment, version and connectors](docs/adr/004-opencti-deployment.md)
 - [ADR-005: Local LLM for the brief narrative](docs/adr/005-llm-model.md)
+- [ADR-006: Daily automation, operations and CI](docs/adr/006-automation.md)
 
 ## License
 
