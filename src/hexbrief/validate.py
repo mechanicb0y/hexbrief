@@ -208,8 +208,12 @@ def validate_narrative(
         errors.append(f"schema: {where}: {e.message}")
 
     known_ids = {str(f.get("id")) for f in findings}
-    for threat in narrative.get("top_threats") or []:
-        for fid in threat.get("finding_ids") or []:
+    # Wrong shapes are already reported by the schema check; skip them here instead
+    # of crashing, so the caller gets a failed result it can retry with.
+    threats = narrative.get("top_threats")
+    for threat in threats if isinstance(threats, list) else []:
+        ids = threat.get("finding_ids") if isinstance(threat, dict) else None
+        for fid in ids if isinstance(ids, list) else []:
             if fid not in known_ids:
                 errors.append(f"cites {fid}, which is not in the findings")
     text = "\n".join(_texts(narrative))

@@ -38,8 +38,13 @@ def test_request_is_local_schema_constrained_and_cold() -> None:
 def test_feedback_is_appended_on_retry() -> None:
     route = respx.post(CHAT).respond(200, json={"message": {"content": "{}"}})
     with OllamaWriter("m") as w:
-        w.write(FINDINGS, feedback=["mentions ips not in the findings: 192.0.2.1"])
+        w.write(
+            FINDINGS,
+            feedback=["mentions ips not in the findings: 192.0.2.1"],
+            previous='{"bluf": "C2 at 192.0.2.1"}',
+        )
     msgs = json.loads(route.calls.last.request.content)["messages"]
+    assert msgs[-2] == {"role": "assistant", "content": '{"bluf": "C2 at 192.0.2.1"}'}
     assert msgs[-1]["role"] == "user" and "192.0.2.1" in msgs[-1]["content"]
 
 

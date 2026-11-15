@@ -47,9 +47,9 @@ def ollama_processor(model: str) -> str:
 
 
 def run_one(writer: OllamaWriter, findings: list, seed: int) -> dict:
-    attempts, feedback = [], None
+    attempts, feedback, previous = [], None, None
     for attempt in range(3):  # first try + 2 retries
-        res = writer.write(findings, feedback=feedback, seed=seed + attempt)
+        res = writer.write(findings, feedback=feedback, previous=previous, seed=seed + attempt)
         val = validate_narrative(res.parsed, findings)
         attempts.append(
             {
@@ -66,6 +66,7 @@ def run_one(writer: OllamaWriter, findings: list, seed: int) -> dict:
         if val.ok:
             break
         feedback = val.errors or [res.error or "invalid output"]
+        previous = res.raw or None
     return {"seed": seed, "attempts": attempts, "final_ok": attempts[-1]["valid"]}
 
 

@@ -102,13 +102,24 @@ class OllamaWriter:
         self.close()
 
     def write(
-        self, findings: list[dict[str, Any]], *, feedback: list[str] | None = None, seed: int = 7
+        self,
+        findings: list[dict[str, Any]],
+        *,
+        feedback: list[str] | None = None,
+        previous: str | None = None,
+        seed: int = 7,
     ) -> WriteResult:
-        """One generation. ``feedback`` holds validator errors from a previous try."""
+        """One generation.
+
+        On a retry, ``previous`` is the rejected answer and ``feedback`` the validator's
+        errors: the model sees what it wrote and why it was rejected.
+        """
         messages = [
             {"role": "system", "content": self.system},
             {"role": "user", "content": findings_message(findings)},
         ]
+        if previous:
+            messages.append({"role": "assistant", "content": previous})
         if feedback:
             messages.append(
                 {
