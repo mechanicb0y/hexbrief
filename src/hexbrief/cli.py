@@ -18,6 +18,8 @@ app.add_typer(taxii_app, name="taxii")
 app.add_typer(stix_app, name="stix")
 misp_app = typer.Typer(help="Read from the lab MISP (read-only).", no_args_is_help=True)
 app.add_typer(misp_app, name="misp")
+opencti_app = typer.Typer(help="Read from the lab OpenCTI (read-only).", no_args_is_help=True)
+app.add_typer(opencti_app, name="opencti")
 
 MITRE_DISCOVERY = "https://attack-taxii.mitre.org/taxii2/"
 
@@ -29,7 +31,15 @@ REPO_ENV = Path(__file__).resolve().parents[2] / ".env"
 # HTTPS_PROXY or SSL_CERT_FILE and silently redirect or weaken TLS. (Phase 5 moves
 # config to pydantic-settings.)
 _ENV_ALLOW = frozenset(
-    {"TAXII_USER", "TAXII_PASSWORD", "MISP_URL", "MISP_API_KEY", "MISP_VERIFY_SSL"}
+    {
+        "TAXII_USER",
+        "TAXII_PASSWORD",
+        "MISP_URL",
+        "MISP_API_KEY",
+        "MISP_VERIFY_SSL",
+        "OPENCTI_URL",
+        "OPENCTI_TOKEN",
+    }
 )
 
 
@@ -199,6 +209,24 @@ def misp_stix(
         typer.echo(f"  {n:>5}  {stix_type}")
     for line in report.errors[:10]:
         typer.echo(f"  ERROR {line}")
+
+
+@opencti_app.command("recent")
+def opencti_recent(hours: int = typer.Option(24, help="Window in hours (by updated_at)")) -> None:
+    """Counts of reports, indicators, vulnerabilities, malware and intrusion sets updated."""
+    from hexbrief.collectors.opencti import collect_window, connect
+
+    _load_env_file()
+    url, token = os.environ.get("OPENCTI_URL", ""), os.environ.get("OPENCTI_TOKEN", "")
+    if not url or not token or token == "__replace_me__":  # noqa: S105 - placeholder check
+        raise typer.BadParameter("OPENCTI_URL / OPENCTI_TOKEN not set in .env")
+    window = collect_window(connect(url, token), hours=hours)
+    typer.echo(f"Window: updated since {window.since}")
+    for kind, n in window.counts.items():
+        typer.echo(f"  {n:>6}  {kind}")
+    typer.echo("By author (top 10):")
+    for author, n in window.sources.most_common(10):
+        typer.echo(f"  {n:>6}  {author}")
 
 
 if __name__ == "__main__":  # pragma: no cover
