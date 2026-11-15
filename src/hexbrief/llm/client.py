@@ -18,7 +18,7 @@ from typing import Any
 
 import httpx
 
-PROMPT_VERSION = "v1"
+PROMPT_VERSION = "v2"  # v2: no unsupported trend/role claims, cite lens findings
 DEFAULT_HOST = "http://127.0.0.1:11434"
 
 
@@ -84,6 +84,7 @@ class OllamaWriter:
         if not 0 <= temperature <= 0.2:
             raise ValueError("temperature must be between 0 and 0.2 for grounded writing")
         self.model = model
+        self.retry_wait = 10.0
         self.temperature = temperature
         self.num_ctx = num_ctx
         self._http = httpx.Client(
@@ -139,6 +140,11 @@ class OllamaWriter:
         start = time.perf_counter()
         try:
             r = self._http.post("/api/chat", json=body)
+            if r.status_code >= 500:
+                # Ollama sometimes answers 500 while it is still loading the model
+                # (observed on a cold start next to OpenCTI). One short wait, one retry.
+                time.sleep(self.retry_wait)
+                r = self._http.post("/api/chat", json=body)
             r.raise_for_status()
             data = r.json()
         except (httpx.HTTPError, ValueError) as exc:
