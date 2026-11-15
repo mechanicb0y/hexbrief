@@ -2,9 +2,9 @@
   "/discovery": {
     "title": "HexBrief lab TAXII 2.1 server",
     "description": "Local medallion instance that serves HexBrief daily briefs as STIX 2.1 Reports.",
-    "default": "http://127.0.0.1:5000/hexbrief/",
+    "default": "/hexbrief/",
     "api_roots": [
-      "http://127.0.0.1:5000/hexbrief/"
+      "/hexbrief/"
     ]
   },
   "hexbrief": {
