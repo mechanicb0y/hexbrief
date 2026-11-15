@@ -344,5 +344,46 @@ def misp_snapshot(hours: int = typer.Option(24, help="Window in hours")) -> None
     typer.echo(f"{n} MISP findings -> {path}")
 
 
+@app.command("demo")
+def demo(
+    llm: bool = typer.Option(False, "--llm", help="Write the narrative live with local Ollama"),
+    out: Path = typer.Option(Path("out/demo"), help="Where to write the demo brief"),
+    pdf: bool = typer.Option(False, help="Also export PDF (needs Edge/Chrome)"),
+) -> None:
+    """A full brief from recorded TLP:CLEAR data: no keys, no MISP/OpenCTI, no Docker."""
+    from hexbrief.demo_mode import demo_run
+    from hexbrief.engine import write_outputs
+
+    writer = None
+    if llm:
+        from hexbrief.llm.client import OllamaWriter
+
+        writer = OllamaWriter(os.environ.get("OLLAMA_MODEL", "qwen3.5:4b"))
+    try:
+        result = demo_run(writer)
+    finally:
+        if writer is not None:
+            writer.close()
+    paths = write_outputs(result, out, out / "runs")
+    if pdf:
+        from hexbrief.render.pdf import html_to_pdf
+
+        paths["pdf"] = html_to_pdf(paths["html"], paths["html"].with_suffix(".pdf"))
+    rl = result.run_log
+    typer.echo(
+        f"Demo brief ({result.day}, {result.tlp}) from {rl['findings_in']} recorded "
+        f"findings -> {rl['after_dedupe']} after dedupe -> top {len(result.top)}"
+    )
+    typer.echo(
+        f"Narrative: {'validated' if result.llm_ok else 'facts-only'} "
+        f"({rl['llm']['attempts'][-1]['model'] if rl['llm']['attempts'] else 'none'}); "
+        f"STIX valid: {rl.get('stix_valid')}"
+    )
+    for k, p in paths.items():
+        if k != "runlog":
+            typer.echo(f"  {k:5} {p}")
+    typer.echo(f"Open: {paths['html'].resolve().as_uri()}")
+
+
 if __name__ == "__main__":  # pragma: no cover
     app()

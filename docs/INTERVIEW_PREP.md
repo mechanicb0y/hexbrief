@@ -147,3 +147,16 @@ Study notes for each phase: what you need to know, then likely interview questio
 2. *What would you do about a CVE in a transitive dependency you can't upgrade?* Confirm the vulnerable path is reachable or not (pycti's telemetry exporter isn't used; setuptools isn't used at runtime), suppress that specific ID with the reason in code and in an ADR, set a removal trigger (pycti release), and let Dependabot surface it. Never blanket-ignore.
 3. *How do you keep secrets out of CI?* No live keys in CI at all: tests use fixtures and a throwaway medallion password generated per run and masked. gitleaks scans full history on every push/PR.
 4. *Why push the public page only from a clean `main`?* So a scheduled job can never publish half-finished branch work. The job checks branch and cleanliness and otherwise keeps the page locally and marks the run "degraded".
+
+## Phase 8: Quality and demo mode
+
+**What you need to know**
+- **`hexbrief demo`:** builds a complete brief from 48 recorded TLP:CLEAR findings and a recorded narrative shipped inside the package. The recorded text still goes through the faithfulness validator, so the demo proves the pipeline, not just the templates. No keys, Docker or Ollama needed; `--llm` writes the narrative live.
+- **Why the daily dry run fell back to facts-only:** the completeness rule asked for too much, and each retry added the previous answer to the prompt until the context overflowed and the JSON was cut off. The fix keeps the best faithful answer across retries, requires only the top lens finding, and raises `num_ctx` to 12288. Lesson: measure the prompt size, and never let a retry be worse than the first try.
+- **HTML design:** the identity is the TLP strip in its official FIRST colour, top and bottom of every page and in print, so a reader can't miss the sharing level. Strict CSP, no external fonts or scripts.
+- **README order:** pitch and screenshot, diagram, demo-first quickstart, STIX/TAXII, truthfulness, security. A reviewer gets a result in five minutes before reading anything.
+
+**Q&A**
+1. *How can someone evaluate your project without your API keys?* `pip install .` then `hexbrief demo`: recorded public data, same scoring, same validator, same renderers, about five minutes on a fresh clone.
+2. *Isn't a recorded narrative cheating?* It's labelled as recorded, it passes the same gate a live answer must pass, and `--llm` regenerates it live. CI runs the demo as a test, so a validator or template change that breaks it fails the build.
+3. *Tell me about a production bug you fixed.* The first daily dry run published facts-only. Root cause: retries grew the prompt past the model's context, so the JSON was truncated, and a too-strict completeness rule triggered the retries. I kept the first faithful answer, relaxed completeness to what matters (the top lens finding), raised the context, and added a regression test.

@@ -144,6 +144,14 @@ def test_fallback_model_is_used_when_primary_fails() -> None:
     assert [a["model"] for a in res.run_log["llm"]["attempts"]][-1] == "fallback"
 
 
+def test_first_faithful_answer_is_kept_when_retries_get_worse() -> None:
+    incomplete = good(["F2"])  # faithful, but F1 (top) not covered
+    w = FakeWriter([incomplete, None, None])  # retries then fail to parse
+    res = run(COLLECTORS, now=NOW, writer=w)
+    assert res.llm_ok and res.narrative == incomplete
+    assert res.run_log["llm"]["complete"] is False
+
+
 def test_completeness_requires_top_and_lens_findings() -> None:
     llm = [{"id": "F1", "_lens": True}, {"id": "F2"}, {"id": "F3"}]
     narrative = good(["F2"])
@@ -219,3 +227,14 @@ def test_misp_snapshot_round_trip(tmp_path: Path, monkeypatch) -> None:  # noqa:
     loaded = pipeline.load_misp_snapshot(NOW)
     assert loaded and loaded[0].iocs == f.iocs and loaded[0].cves == f.cves
     assert pipeline.load_misp_snapshot(NOW + timedelta(days=2)) is None
+
+
+def test_demo_runs_offline_and_passes_the_gate(tmp_path: Path) -> None:
+    from hexbrief.demo_mode import demo_run
+
+    res = demo_run()  # recorded findings + recorded narrative, no services
+    assert res.llm_ok, res.run_log["llm"]
+    assert res.tlp == "TLP:CLEAR" and len(res.top) == 8
+    paths = write_outputs(res, tmp_path / "o", tmp_path / "r")
+    assert res.run_log["stix_valid"] is True
+    assert "Narrative written by a local AI model" in paths["md"].read_text("utf-8")
