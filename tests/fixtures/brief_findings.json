@@ -1,0 +1,100 @@
+[
+  {
+    "id": "F1",
+    "type": "vulnerability",
+    "title": "Remote code execution in a widely used VPN appliance, exploited in the wild",
+    "summary": "CISA added CVE-2026-20001 to the Known Exploited Vulnerabilities catalog. Unauthenticated attackers can execute code on the appliance. Patch deadline for US federal agencies is 21 days.",
+    "cves": ["CVE-2026-20001"],
+    "attack_ids": ["T1190"],
+    "in_kev": true,
+    "sources": ["CISA KEV", "AlienVault OTX"],
+    "first_seen": "2026-11-14",
+    "tlp": "TLP:CLEAR",
+    "confidence": 90,
+    "sectors": ["education", "government"]
+  },
+  {
+    "id": "F2",
+    "type": "report",
+    "title": "Phishing campaign against universities in Southeast Asia delivers ExampleRAT",
+    "summary": "Emails impersonating a scholarship office lure staff to download a ZIP containing a malicious LNK file. The LNK runs PowerShell that installs ExampleRAT, which beacons to its C2 server.",
+    "iocs": ["198.51.100.23", "scholarship-portal.example.test", "hxxp://scholarship-portal[.]example[.]test/apply.zip"],
+    "attack_ids": ["T1566.001", "T1204.002", "T1059.001"],
+    "sources": ["AlienVault OTX"],
+    "first_seen": "2026-11-14",
+    "tlp": "TLP:CLEAR",
+    "confidence": 70,
+    "sectors": ["education"],
+    "countries": ["Malaysia", "Indonesia"]
+  },
+  {
+    "id": "F3",
+    "type": "indicator",
+    "title": "ThreatFox: botnet C2 for ExampleBot",
+    "summary": "Botnet command-and-control server reported by ThreatFox with 100% confidence.",
+    "iocs": ["203.0.113.45"],
+    "sources": ["abuse.ch ThreatFox"],
+    "first_seen": "2026-11-15",
+    "tlp": "TLP:CLEAR",
+    "confidence": 100
+  },
+  {
+    "id": "F4",
+    "type": "vulnerability",
+    "title": "Privilege escalation in a common Windows component",
+    "summary": "CISA added CVE-2026-21345 to KEV. Local attackers can gain SYSTEM privileges; reported in ransomware intrusions.",
+    "cves": ["CVE-2026-21345"],
+    "attack_ids": ["T1068"],
+    "in_kev": true,
+    "sources": ["CISA KEV"],
+    "first_seen": "2026-11-14",
+    "tlp": "TLP:CLEAR",
+    "confidence": 90
+  },
+  {
+    "id": "F5",
+    "type": "report",
+    "title": "Ransomware group leaks data from a regional logistics firm",
+    "summary": "The group used stolen VPN credentials, then encrypted servers. File hash of the encryptor is listed.",
+    "iocs": ["0f3c2b9a8d7e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a"],
+    "attack_ids": ["T1078", "T1486"],
+    "sources": ["AlienVault OTX"],
+    "first_seen": "2026-11-13",
+    "tlp": "TLP:CLEAR",
+    "confidence": 60,
+    "countries": ["Singapore"]
+  },
+  {
+    "id": "F6",
+    "type": "indicator",
+    "title": "URLhaus: malware download URL",
+    "summary": "URL serving a malware payload, status online.",
+    "iocs": ["hxxp://files.example.test/update.bin"],
+    "sources": ["abuse.ch URLhaus"],
+    "first_seen": "2026-11-15",
+    "tlp": "TLP:CLEAR",
+    "confidence": 80
+  },
+  {
+    "id": "F7",
+    "type": "malware",
+    "title": "ExampleRAT",
+    "summary": "Remote access trojan with keylogging and screenshot capability, first reported in 2025.",
+    "attack_ids": ["T1056.001", "T1113"],
+    "sources": ["MITRE ATT&CK", "AlienVault OTX"],
+    "tlp": "TLP:CLEAR",
+    "confidence": 70
+  },
+  {
+    "id": "F8",
+    "type": "indicator",
+    "title": "ThreatFox: phishing domain",
+    "summary": "Credential-phishing domain imitating a webmail login page.",
+    "iocs": ["webmail-login.example.test"],
+    "attack_ids": ["T1566.002"],
+    "sources": ["abuse.ch ThreatFox"],
+    "first_seen": "2026-11-15",
+    "tlp": "TLP:CLEAR",
+    "confidence": 75
+  }
+]
