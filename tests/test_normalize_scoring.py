@@ -149,3 +149,24 @@ def test_scoring_reasons_and_broad_lists() -> None:
     assert any("education among 6 sectors" in r for r in broad.reasons)
     assert narrow.score > broad.score
     assert [f.key for f in rank([broad, narrow], NOW)] == ["n", "b"]
+
+
+def test_unmarked_data_fails_closed_to_amber() -> None:
+    row = _report(
+        [
+            {
+                "id": "i",
+                "entity_type": "Indicator",
+                "pattern": "[ipv4-addr:value = '198.51.100.9']",
+                "objectMarking": [{"definition_type": "TLP", "definition": "TLP:RED"}],
+            }
+        ]
+    )
+    rep = next(
+        f for f in from_opencti(OpenCTIWindow(24, "", {"report": [row]})) if f.kind == "report"
+    )
+    assert rep.tlp == "TLP:RED"  # stricter contained indicator wins
+    row = _report([])
+    row["objectMarking"] = []
+    rep = from_opencti(OpenCTIWindow(24, "", {"report": [row]}))[0]
+    assert rep.tlp == "TLP:AMBER"  # unmarked: never assumed CLEAR

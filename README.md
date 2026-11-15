@@ -2,7 +2,7 @@
 
 > A self-updating threat-intel brief: public feeds in over STIX/TAXII, correlated in MISP and OpenCTI, written up each morning by a **local** LLM, and fact-checked so it never invents an indicator.
 
-**Status:** Phase 5 (brief engine): `hexbrief run` produces a validated daily brief end to end. See [docs/PROGRESS.md](docs/PROGRESS.md).
+**Status:** Phase 6 (publish): briefs go to PDF, OpenCTI/TAXII and a public TLP:CLEAR archive. See [docs/PROGRESS.md](docs/PROGRESS.md).
 
 <!-- Demo GIF and link to today's sample brief go here (Phase 8). -->
 
@@ -68,6 +68,16 @@ scripts\opencti-down.ps1               # stop; data is kept
 - `hexbrief.validate` is a hard gate. It refangs the text, extracts every IP (v4/v6), domain, URL, hash (MD5â€“SHA-512), CVE and ATT&CK ID, and rejects anything not present in the input. Planted fakes are covered by tests.
 - On failure the engine retries twice with the errors **and the rejected answer** fed back, then tries the fallback model, then publishes a **facts-only** brief. Unchecked text is never published.
 - A completeness check (top-3 findings covered; education/Malaysia/ASEAN findings cited in the watch section) catches omissions the faithfulness check can't see.
+
+## Publish
+
+`hexbrief run --push --pages [--notify]` does everything in one go:
+- `brief.pdf` printed from the self-contained HTML by a local headless Edge/Chrome (strict CSP, no network);
+- the STIX 2.1 Report goes into **OpenCTI** (least-privilege importer token, label `hexbrief`), so OpenCTI's own TAXII 2.1 collection **`daily-briefs`** serves it, and into the lab **medallion** collection;
+- the **TLP:CLEAR public view** goes to `site/` for GitHub Pages. Non-CLEAR findings are dropped, and if any were in the top 8 the AI narrative is replaced with facts-only text. Third-party text is quoted briefly with source links, and every indicator is defanged;
+- an optional Discord/Telegram post of the public BLUF (`WEBHOOK_URL`, off by default).
+
+`hexbrief republish YYYY-MM-DD` re-renders a past day's public page from `brief.json` without a new run.
 
 ## Run it
 

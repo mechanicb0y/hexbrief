@@ -41,7 +41,8 @@ select = ["E", "F", "W", "I", "B", "UP", "S", "SIM"]  # S = bandit-style securit
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101", "S105", "S106"]  # assert and dummy test passwords are fine in tests
-"src/hexbrief/cli.py" = ["B008"]  # typer declares options as function-call defaults by design
+"src/hexbrief/cli.py" = ["B008"]
+"src/hexbrief/publish/pages.py" = ["E501"]  # inline CSS in the archive template  # typer declares options as function-call defaults by design
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

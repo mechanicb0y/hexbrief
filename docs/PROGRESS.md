@@ -6,7 +6,15 @@ _Any new session reads this first._
 **Autonomy mode** (owner's standing orders, 2026-11-15, until v1.0.0). Decide, record in one line, keep going. Report once per phase. Merge own PRs when green and reviewed. Stop only for owner-only actions.
 
 ## Current phase
-**Phase 5 — Brief engine** (branch `phase-5-engine`), finishing. Next: Phase 6 publish (HTML design, PDF, OpenCTI/TAXII push, Pages).
+**Phase 6 — Publish** (branch `phase-6-publish`), finishing. Next: Phase 7 automation (07:00 MYT schedule, doctor, CI, backups).
+
+## Decisions log (Phase 6)
+- PDF via local headless Edge/Chrome (no extra dependency; strict CSP, throwaway profile).
+- Public archive = HTML + MD only (defanged). No public JSON/STIX: machine outputs with real IOCs stay local, in OpenCTI and TAXII.
+- Public summaries limited to 240 characters + source link (third-party text).
+- Unmarked data fails closed to TLP:AMBER (security review).
+- The HTML design pass (frontend-design) is deferred to Phase 8 with the README visuals.
+- First public brief: 2026-11-15 (TLP:CLEAR, LLM narrative validated on the first try).
 
 ## Decisions log (Phase 5)
 - Findings: reports, indicator clusters (by author + name), new KEV entries (direct feed), MISP events (after `fresh_only`). OpenCTI vulnerabilities are not standalone findings (KEV connector re-touches all).
