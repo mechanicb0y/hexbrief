@@ -15,6 +15,7 @@ from typing import Any
 
 from jinja2 import Environment, PackageLoader, StrictUndefined, select_autoescape
 
+from hexbrief.model import TLP_ORDER
 from hexbrief.render.defang import defang_ioc, defang_text
 
 METHOD_NOTE = "Narrative written by a local AI model; every fact is checked against cited sources."
@@ -31,6 +32,10 @@ _env = Environment(
     lstrip_blocks=False,
     keep_trailing_newline=True,
 )
+
+# Identifiers rendered outside code spans must match these exactly (no injection).
+_CVE = re.compile(r"^CVE-\d{4}-\d{4,7}$")
+_TECH = re.compile(r"^(?:T\d{4}(?:\.\d{3})?|TA\d{4}|G\d{4}|S\d{4}|M\d{4})$")
 
 _MD_SPECIAL = re.compile(r"([\\`*_\[\]()|#!])")
 
@@ -88,10 +93,10 @@ def context(
                 "score": int(f.score),
                 "reasons": [esc(r) for r in f.reasons],
                 "sources": [txt(s) for s in f.sources],
-                "tlp": f.tlp,
+                "tlp": f.tlp if f.tlp in TLP_ORDER else "TLP:AMBER",
                 "confidence": f.confidence,
-                "cves": [code(c) for c in sorted(f.cves)],
-                "attack_ids": [code(a) for a in sorted(f.attack_ids)],
+                "cves": [code(c) for c in sorted(f.cves) if _CVE.match(c)],
+                "attack_ids": [code(a) for a in sorted(f.attack_ids) if _TECH.match(a)],
                 "malware": [txt(m) for m in sorted(f.malware)],
             }
         )
@@ -101,13 +106,17 @@ def context(
                 iocs.append({"fid": fid, "type": ioc.type, "value": code(defang_ioc(ioc))})
     techniques = [
         (code(t), n)
-        for t, n in Counter(t for _, f in result.top for t in f.attack_ids).most_common(25)
+        for t, n in Counter(
+            t for _, f in result.top for t in f.attack_ids if _TECH.match(t)
+        ).most_common(25)
     ]
     # From kev_new, not from finding kind: a KEV entry merged into a report (shared
     # CVE) must still be listed here.
     kev_rows: dict[str, dict[str, Any]] = {}
     for f in result.all_findings:
         for cve, name in f.kev_new.items():
+            if not _CVE.match(cve):
+                continue
             kev_rows.setdefault(
                 cve, {"cve": code(cve), "title": txt(name), "ransomware": f.ransomware}
             )

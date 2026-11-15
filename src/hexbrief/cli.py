@@ -236,8 +236,12 @@ def run_brief(
     top: int = typer.Option(8, help="Findings sent to the LLM"),
     no_llm: bool = typer.Option(False, "--no-llm", help="Facts-only brief, no model"),
     out: Path = typer.Option(Path("out"), help="Output root (git-ignored)"),
+    pdf: bool = typer.Option(True, help="Also export brief.pdf (local Edge/Chrome)"),
+    push: bool = typer.Option(False, help="Push the STIX Report to OpenCTI + lab TAXII"),
+    pages: bool = typer.Option(False, help="Write the TLP:CLEAR public view to site/"),
+    notify: bool = typer.Option(False, help="Send the public BLUF to WEBHOOK_URL"),
 ) -> None:
-    """Build today's brief: collect, score, write (local LLM), validate, render."""
+    """Build today's brief: collect, score, write (local LLM), validate, render, publish."""
     import logging
     from datetime import UTC, datetime
     from zoneinfo import ZoneInfo
@@ -294,6 +298,10 @@ def run_brief(
     typer.echo(
         f"TLP {result.tlp}; STIX valid: {rl.get('stix_valid')}; runtime {rl['runtime_seconds']}s"
     )
+    from hexbrief.publish.runner import publish
+
+    for line in publish(result, paths, pdf=pdf, push=push, pages=pages, notify=notify):
+        typer.echo(line)
     for k, p in paths.items():
         typer.echo(f"  {k:6} {p}")
 
