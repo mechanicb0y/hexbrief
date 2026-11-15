@@ -94,3 +94,23 @@ Study notes for each phase: what you need to know, then likely interview questio
 2. *How did you pick the model?* I benchmarked llama3.2:3b, qwen3.5:4b and qwen3.5:9b on a fixed fixture (time, JSON validity, facts surviving validation). All were faithful, so quality decided: qwen3.5:4b covered more threats and caught the education angle in ~90 s, which is fine for a 07:00 batch job (ADR-005).
 3. *What can't your validator catch?* Omissions and wrong-but-allowed claims, e.g. calling a phishing IP a "C2". Mitigations: deterministic tables rendered from data, a completeness check, a prompt rule against unsupported trend claims, and a human reading the brief.
 4. *Why not a cloud model?* TLP:GREEN+ intel must not leave the machine. A cloud model would be allowed only for TLP:CLEAR data and only with explicit approval.
+
+---
+
+## Phase 5: Brief engine
+
+**What you need to know**
+- **Pipeline:** collect → normalize to a `Finding` (keeps provenance: sources, URLs, STIX ids) → KEV cross-check → dedupe → score → LLM → validate → render → run log.
+- **Dedupe** is union-find on shared CVEs or IOCs. Indicator clusters may *join* a report that shares an IOC but never claim IOCs themselves, otherwise two big ThreatFox clusters sharing one IP would merge into nonsense (a bug a test caught).
+- **Scoring is rules, not AI:** KEV +30, exploited +15, ransomware +10, fresh +10/+5, +8 per extra independent source, confidence, education/Malaysia/ASEAN lens, −15 if every IOC hits a warninglist. Reasons are printed per finding. Source aliases ("Cybersecurity and Infrastructure Security Agency" = "CISA KEV") stop one organisation counting twice. Long "targeted sectors/countries" lists get a reduced bonus.
+- **Two gates:** *faithfulness* (hard, nothing invented) and *completeness* (best effort, nothing important left out).
+- **Fallbacks:** retries with the rejected answer + errors, then a fallback model, then a facts-only brief. One broken source is logged and skipped.
+- **Outputs:** humans get defanged Markdown/HTML. Machines get real values in JSON and a validated STIX 2.1 Report (deterministic id per day, so re-runs update it).
+- **First live run (2026-11-15):** 133 findings → 129 after dedupe → top 8. qwen3.5:4b passed on attempt 3 (a cold-start 500, then a completeness retry). The STIX bundle is valid, and the run took about 8 min.
+
+**Q&A**
+1. *Walk me through how a brief is made.* See the pipeline above. The key point is that facts are rendered from data (tables, IOC appendix, KEV list) and the model only writes prose about IDs it was given.
+2. *How do you rank 2,000 indicators a day?* Cluster indicators by source and family, merge stories that share CVEs/IOCs, then apply transparent weights. KEV and exploitation dominate, then recency, corroboration and my education/ASEAN lens. Every score has written reasons, so an analyst can disagree with a specific rule.
+3. *What happens when the model fails?* It retries twice with the validator errors and its own rejected answer, then uses the fallback model, then publishes a facts-only brief. The run log records every attempt, and that is where the "first-try pass rate" résumé number comes from.
+4. *Why both a faithfulness and a completeness check?* Faithfulness catches inventions; completeness catches omissions. In the benchmark a small model invented nothing but silently skipped the most relevant (education) finding.
+5. *What is still imperfect?* Semantic mistakes the regexes can't see, such as pairing a technique ID with the wrong name. Mitigation: the prompt forbids technique names and names are rendered from data. A human reads the brief before anything non-CLEAR leaves the machine.
