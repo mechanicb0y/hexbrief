@@ -60,6 +60,14 @@ def _plant(text: str) -> dict:
         ("See hxxps://evil-cdn[.]example[.]org/x for details.", "urls"),
         ("Dropper hash " + "ab" * 32 + ".", "hashes"),
         ("Defanged C2 192.0.2[.]77 was also reported.", "ips"),
+        # bypasses found by the security review (2026-11-15)
+        ("C2 at 2001:db8:dead::beef was seen.", "ips"),
+        ("Bad host 192 (dot) 0 (dot) 2 (dot) 1 too.", "ips"),
+        ("Odd value 999.1.1.1 noted.", "ips"),
+        ("Sub-technique t1055.012 used.", "attack_ids"),
+        ("Archive served from payload.zip and loader.sh.", "domains"),
+        ("SHA-512 " + "cd" * 64 + ".", "hashes"),
+        ("Host evil{.}example{.}org.", "domains"),
     ],
 )
 def test_planted_fakes_fail(planted: str, kind: str) -> None:

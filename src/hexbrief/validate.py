@@ -35,6 +35,8 @@ BANNED_PHRASES = (
     "apocalypse",
 )
 
+# File extensions that are NOT also real TLDs (zip/sh/py/one/mov/app are TLDs, so
+# names ending in them are still checked as domains; security review 2026-11-15).
 _FILE_EXTS = {
     "exe",
     "dll",
@@ -45,11 +47,8 @@ _FILE_EXTS = {
     "vbs",
     "js",
     "jar",
-    "py",
-    "sh",
     "bin",
     "dat",
-    "zip",
     "rar",
     "7z",
     "iso",
@@ -80,7 +79,6 @@ _FILE_EXTS = {
     "apk",
     "dmg",
     "hta",
-    "one",
     "wsf",
     "log",
     "tmp",
@@ -88,11 +86,13 @@ _FILE_EXTS = {
 }
 
 RE_CVE = re.compile(r"\bCVE-\d{4}-\d{4,7}\b", re.IGNORECASE)
-RE_ATTACK = re.compile(r"\b(?:T\d{4}(?:\.\d{3})?|TA\d{4}|G\d{4}|S\d{4}|M\d{4})\b")
+RE_ATTACK = re.compile(r"\b(?:T\d{4}(?:\.\d{3})?|TA\d{4}|G\d{4}|S\d{4}|M\d{4})\b", re.IGNORECASE)
 RE_URL = re.compile(r"\b(?:https?|ftp)://[^\s\"'<>\]\)]+", re.IGNORECASE)
 # Not followed by a digit or ".digit" (a sentence-ending "." is fine: "C2 at 1.2.3.4.").
 RE_IPV4 = re.compile(r"(?<![\d.])(?:\d{1,3}\.){3}\d{1,3}(?!\d)(?!\.\d)")
-RE_HASH = re.compile(r"\b(?:[a-fA-F0-9]{64}|[a-fA-F0-9]{40}|[a-fA-F0-9]{32})\b")
+RE_HASH = re.compile(r"\b(?:[a-fA-F0-9]{128}|[a-fA-F0-9]{64}|[a-fA-F0-9]{40}|[a-fA-F0-9]{32})\b")
+# IPv6 candidates: hex groups with at least two colons; ipaddress decides validity.
+RE_IPV6 = re.compile(r"(?<![\w:])(?:[0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}(?![\w:])")
 RE_DOMAIN = re.compile(
     r"\b(?=[a-z0-9-]{1,63}\.)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,24}\b",
     re.IGNORECASE,
@@ -101,9 +101,12 @@ RE_DOMAIN = re.compile(
 
 def refang(text: str) -> str:
     """Undo common defanging so 1.2.3[.]4 and hxxp:// are checked like the real thing."""
-    out = text.replace("[.]", ".").replace("(.)", ".").replace("[dot]", ".")
+    # [.] (.) {.} [dot] (dot) {dot}, with optional spaces inside the brackets
+    out = re.sub(r"\s*[\[\(\{]\s*(?:\.|dot)\s*[\]\)\}]\s*", ".", text, flags=re.IGNORECASE)
     out = re.sub(r"\bhxxp", "http", out, flags=re.IGNORECASE)
-    return out.replace("[:]", ":").replace("[://]", "://")
+    out = re.sub(r"\bfxp://", "ftp://", out, flags=re.IGNORECASE)
+    out = re.sub(r"\[\s*://\s*\]", "://", out)
+    return re.sub(r"[\[\(\{]\s*:\s*[\]\)\}]", ":", out)
 
 
 @dataclass(frozen=True)
@@ -125,15 +128,25 @@ def extract(text: str) -> Facts:
         try:
             ips.add(str(ipaddress.ip_address(cand)))
         except ValueError:
-            continue
+            # Fail closed: an IP-shaped token we can't parse (e.g. 999.1.1.1 or
+            # leading zeros) is still checked against the allowed set as written.
+            ips.add(cand)
+    for cand in RE_IPV6.findall(without_urls):
+        try:
+            addr = ipaddress.ip_address(cand)
+        except ValueError:
+            continue  # times like 12:48:11 or "a:b" in prose are not addresses
+        if addr.version == 6:
+            ips.add(addr.compressed)
+    no_addrs = RE_IPV6.sub(" ", RE_IPV4.sub(" ", without_urls))
     domains = {
         d.lower()
-        for d in RE_DOMAIN.findall(RE_IPV4.sub(" ", without_urls))
+        for d in RE_DOMAIN.findall(no_addrs)
         if d.rsplit(".", 1)[-1].lower() not in _FILE_EXTS
     }
     return Facts(
         cves={c.upper() for c in RE_CVE.findall(t)},
-        attack_ids=set(RE_ATTACK.findall(t)),
+        attack_ids={a.upper() for a in RE_ATTACK.findall(t)},
         urls=urls,
         ips=ips,
         domains=domains,
