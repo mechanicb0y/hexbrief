@@ -1,0 +1,247 @@
+# HexBrief OpenCTI lab stack (ADR-004). Trimmed from OpenCTI-Platform/docker:
+# no XTM One, Postgres or composer. Platform, worker and connectors share ONE tag.
+# Run via scripts/opencti-up.ps1 (passes --env-file docker/opencti/.env.opencti).
+name: hexbrief-opencti
+
+x-opencti-tag: &tag "7.261109.3"
+
+x-connector-env: &connector-env
+  OPENCTI_URL: http://opencti:8080
+  OPENCTI_TOKEN: ${OPENCTI_ADMIN_TOKEN:?run scripts/opencti-up.ps1}
+  CONNECTOR_LOG_LEVEL: error
+
+x-connector: &connector
+  # The platform reports healthy a little before its API accepts connectors, so a
+  # connector may exit once at start. Retry a bounded number of times.
+  restart: "on-failure:20"
+  depends_on:
+    opencti:
+      condition: service_healthy
+  mem_limit: 256m
+
+services:
+  redis:
+    image: redis:8.10.1
+    restart: "no"
+    command: ["redis-server", "--maxmemory", "512mb", "--maxmemory-policy", "noeviction"]
+    volumes: [redisdata:/data]
+    mem_limit: 640m
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.19.21
+    restart: "no"
+    environment:
+      - discovery.type=single-node
+      - xpack.ml.enabled=false
+      - xpack.security.enabled=false   # not published: reachable only inside this network
+      - thread_pool.search.queue_size=5000
+      - logger.org.elasticsearch.discovery=ERROR
+      - "ES_JAVA_OPTS=-Xms${ELASTIC_MEMORY_SIZE:-2g} -Xmx${ELASTIC_MEMORY_SIZE:-2g}"
+    ulimits:
+      memlock: {soft: -1, hard: -1}
+      nofile: {soft: 65536, hard: 65536}
+    volumes: [esdata:/usr/share/elasticsearch/data]
+    mem_limit: 3g
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200/_cluster/health?wait_for_status=yellow >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 60
+
+  minio:
+    image: pgsty/silo:RELEASE.2026-11-12T00-00-00Z   # maintained MinIO build used by upstream
+    restart: "no"
+    command: server /data
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:?}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?}
+    volumes: [s3data:/data]
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+
+  rabbitmq:
+    image: rabbitmq:4.3.7-management
+    restart: "no"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:?}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:?}
+      RABBITMQ_NODENAME: rabbit01@localhost
+    volumes:
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - amqpdata:/var/lib/rabbitmq
+    mem_limit: 768m
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 5
+
+  opencti:
+    image: opencti/platform:7.261109.3
+    restart: "no"
+    environment:
+      - NODE_OPTIONS=--max-old-space-size=3072
+      - APP__PORT=8080
+      - APP__BASE_URL=http://127.0.0.1:8088
+      - APP__ADMIN__EMAIL=${OPENCTI_ADMIN_EMAIL:?}
+      - APP__ADMIN__PASSWORD=${OPENCTI_ADMIN_PASSWORD:?}
+      - APP__ADMIN__TOKEN=${OPENCTI_ADMIN_TOKEN:?}
+      - APP__ENCRYPTION_KEY=${OPENCTI_ENCRYPTION_KEY:?}
+      - APP__HEALTH_ACCESS_KEY=${OPENCTI_HEALTHCHECK_ACCESS_KEY:?}
+      - APP__TELEMETRY__FILIGRAN__ENABLED=false
+      - REDIS__HOSTNAME=redis
+      - REDIS__PORT=6379
+      - ELASTICSEARCH__URL=http://elasticsearch:9200
+      - ELASTICSEARCH__NUMBER_OF_REPLICAS=0
+      - MINIO__ENDPOINT=minio
+      - MINIO__PORT=9000
+      - MINIO__USE_SSL=false
+      - MINIO__ACCESS_KEY=${MINIO_ROOT_USER}
+      - MINIO__SECRET_KEY=${MINIO_ROOT_PASSWORD}
+      - RABBITMQ__HOSTNAME=rabbitmq
+      - RABBITMQ__PORT=5672
+      - RABBITMQ__PORT_MANAGEMENT=15672
+      - RABBITMQ__MANAGEMENT_SSL=false
+      - RABBITMQ__USERNAME=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ__PASSWORD=${RABBITMQ_DEFAULT_PASS}
+      - PROVIDERS__LOCAL__STRATEGY=LocalStrategy
+    ports:
+      - "127.0.0.1:8088:8080"   # never 0.0.0.0; 8080 belongs to other local work
+    depends_on:
+      redis: {condition: service_healthy}
+      elasticsearch: {condition: service_healthy}
+      minio: {condition: service_healthy}
+      rabbitmq: {condition: service_healthy}
+    mem_limit: 4g
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://opencti:8080/health?health_access_key=${OPENCTI_HEALTHCHECK_ACCESS_KEY}"]
+      interval: 15s
+      timeout: 5s
+      retries: 60
+
+  worker:
+    image: opencti/worker:7.261109.3
+    restart: "no"
+    environment:
+      OPENCTI_URL: http://opencti:8080
+      OPENCTI_TOKEN: ${OPENCTI_ADMIN_TOKEN}
+      WORKER_LOG_LEVEL: error
+    depends_on:
+      opencti: {condition: service_healthy}
+    mem_limit: 512m
+
+  # ---------------- connectors (external import) ----------------
+  connector-mitre:
+    <<: *connector
+    image: opencti/connector-mitre:7.261109.3
+    environment:
+      <<: *connector-env
+      CONNECTOR_ID: ${CONNECTOR_MITRE_ID:?}
+      CONNECTOR_NAME: MITRE ATT&CK
+      CONNECTOR_SCOPE: tool,report,malware,identity,campaign,intrusion-set,attack-pattern,course-of-action,x-mitre-data-source,x-mitre-data-component,x-mitre-matrix,x-mitre-tactic,x-mitre-collection
+      CONNECTOR_DURATION_PERIOD: P7D
+      MITRE_REMOVE_STATEMENT_MARKING: "true"
+      MITRE_ENTERPRISE_FILE_URL: https://raw.githubusercontent.com/mitre/cti/master/enterprise-attack/enterprise-attack.json
+      MITRE_MOBILE_ATTACK_FILE_URL: ""
+      MITRE_ICS_ATTACK_FILE_URL: ""
+      MITRE_CAPEC_FILE_URL: ""
+
+  connector-cisa-kev:
+    <<: *connector
+    image: opencti/connector-cisa-known-exploited-vulnerabilities:7.261109.3
+    environment:
+      <<: *connector-env
+      CONNECTOR_ID: ${CONNECTOR_KEV_ID:?}
+      CONNECTOR_NAME: CISA Known Exploited Vulnerabilities
+      CONNECTOR_SCOPE: cisa
+      CONNECTOR_DURATION_PERIOD: P1D
+      CISA_CREATE_INFRASTRUCTURES: "false"
+      CISA_TLP: TLP:CLEAR
+
+  connector-alienvault:
+    <<: *connector
+    image: opencti/connector-alienvault:7.261109.3
+    environment:
+      <<: *connector-env
+      CONNECTOR_ID: ${CONNECTOR_OTX_ID:?}
+      CONNECTOR_NAME: AlienVault OTX
+      CONNECTOR_SCOPE: alienvault
+      CONNECTOR_DURATION_PERIOD: PT6H
+      ALIENVAULT_BASE_URL: https://otx.alienvault.com
+      ALIENVAULT_API_KEY: ${OTX_API_KEY:?OTX_API_KEY missing in repo .env}
+      ALIENVAULT_TLP: White
+      ALIENVAULT_CREATE_OBSERVABLES: "true"
+      ALIENVAULT_CREATE_INDICATORS: "true"
+      # Lab: only recent pulses, otherwise the first run pulls years of data.
+      ALIENVAULT_PULSE_START_TIMESTAMP: ${OTX_PULSE_START:-2026-11-01T00:00:00}
+      ALIENVAULT_REPORT_TYPE: threat-report
+      ALIENVAULT_GUESS_MALWARE: "false"
+      ALIENVAULT_GUESS_CVE: "true"
+      ALIENVAULT_EXCLUDED_PULSE_INDICATOR_TYPES: FileHash-MD5,FileHash-SHA1
+
+  # ThreatFox / URLhaus: the official connectors read abuse.ch's anonymous CSV
+  # exports, which abuse.ch retired (HTTP 410, Nov 2026). HexBrief imports them via
+  # the authenticated APIs instead: scripts/abusech_import.py (ADR-004).
+
+  # On demand only (profile "misp"): needs the lab MISP running.
+  connector-misp:
+    <<: *connector
+    profiles: ["misp"]
+    image: opencti/connector-misp:7.261109.3
+    volumes:
+      - ../misp/upstream/ssl/ca.pem:/certs/misp-ca.pem:ro
+    environment:
+      <<: *connector-env
+      CONNECTOR_ID: ${CONNECTOR_MISP_ID:?}
+      CONNECTOR_DURATION_PERIOD: PT1H
+      MISP_URL: https://host.docker.internal:8443
+      MISP_REFERENCE_URL: https://127.0.0.1:8443
+      MISP_KEY: ${MISP_API_KEY:?MISP_API_KEY missing in repo .env}
+      # TLS stays verified: trust our lab CA (requests honours REQUESTS_CA_BUNDLE);
+      # the MISP cert includes host.docker.internal in its SANs.
+      MISP_SSL_VERIFY: "true"
+      REQUESTS_CA_BUNDLE: /certs/misp-ca.pem
+      SSL_CERT_FILE: /certs/misp-ca.pem
+      MISP_CREATE_REPORTS: "true"
+      MISP_CREATE_INDICATORS: "true"
+      MISP_CREATE_OBSERVABLES: "true"
+      MISP_CREATE_TAGS_AS_LABELS: "true"
+      MISP_ENFORCE_WARNING_LIST: "true"
+      MISP_IMPORT_FROM_DATE: ${MISP_IMPORT_FROM:-2026-01-01}
+      MISP_DATETIME_ATTRIBUTE: timestamp
+
+  # Pulls from our own lab TAXII server (medallion) to prove TAXII in; on demand.
+  connector-taxii2:
+    <<: *connector
+    profiles: ["taxii"]
+    image: opencti/connector-taxii2:7.261109.3
+    environment:
+      <<: *connector-env
+      CONNECTOR_ID: ${CONNECTOR_TAXII2_ID:?}
+      CONNECTOR_NAME: TAXII2 (lab medallion)
+      CONNECTOR_SCOPE: ipv4-addr,ipv6-addr,vulnerability,domain,url,file-sha256,file-md5,file-sha1
+      CONNECTOR_DURATION_PERIOD: PT1H
+      TAXII2_DISCOVERY_URL: http://host.docker.internal:5000/taxii2/
+      TAXII2_USERNAME: ${TAXII_USER:?}
+      TAXII2_PASSWORD: ${TAXII_PASSWORD:?}
+      TAXII2_V21: "true"
+      TAXII2_COLLECTIONS: "*.*"
+      TAXII2_INITIAL_HISTORY: "24"
+      TAXII2_VERIFY_SSL: "true"
+      TAXII2_CREATE_INDICATORS: "true"
+      TAXII2_CREATE_OBSERVABLES: "true"
+
+volumes:
+  esdata:
+  s3data:
+  redisdata:
+  amqpdata:
