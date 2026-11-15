@@ -6,6 +6,14 @@
 ## Session start
 Read this file, `docs/PROGRESS.md` and the latest `docs/LEARNING_LOG.md` entries, then say in three lines where we are.
 
+## Autonomy mode (owner's standing orders, 2026-11-15, until v1.0.0)
+These override the phase loop and the owner-quiz part of the merge gate below. The hard rules still apply in full.
+- **Decide:** take the option you would recommend, record it in one line in `docs/PROGRESS.md` (an ADR for real choices) and keep going. Don't wait for "go" between steps or phases.
+- **No quizzes or "you write it" tasks:** do them yourself. Per phase, add a short "what you need to know" plus the interview Q&A to `docs/INTERVIEW_PREP.md` for the owner to study later.
+- **Merge your own PR** when tests, ruff and gitleaks are green and you've done a review pass (pr-review-toolkit / code-review / security-guidance if installed). Keep one PR per phase.
+- **Report once per phase:** what's done, the PR link, anything that needs the owner.
+- **Stop only for owner-only actions, batched into one message:** signing in, OAuth approvals, typing passwords, new accounts; anything that costs money; stopping or deleting anything that isn't HexBrief (the owner's ACT project folders and its `act-*` containers, other folders); force-push or history rewrite on `main`; publishing anything that isn't TLP:CLEAR; Windows system settings beyond those already approved (.wslconfig, Docker disk on D:, OLLAMA_MODELS). If blocked, work around it or move to the next task while waiting.
+
 ## Phase loop (one phase at a time; stop at each checkpoint until the owner says "go")
 1. Primer (5 min, 3–5 terms, an analogy) → 2. Plan (steps, files, risks; OK needed for risky steps) → 3. Build together, explaining every command first (PowerShell on Windows, bash in WSL/containers; prefer committed scripts) → 4. One "you write it" task, reviewed honestly → 5. Three interview questions, answers corrected → 6. Checkpoint: done / learned / commit / next; update the docs below.
 
@@ -30,4 +38,4 @@ One branch per phase (`phase-N-topic`), small conventional commits (`feat:`, `fi
 Windows 11, i5-12450H 8C/12T, 23.7 GB RAM, RTX 3050 Laptop 4 GB VRAM, Docker Desktop + WSL2, Python 3.13 (3.12 available). Standard path: OpenCTI + Ollama local, MISP on demand and never during a heavy OpenCTI import. Docker data and Ollama models live on D:.
 
 ## Gate before any phase merges
-Tests green in CI · security review clean, PR reviewed · README section updated · LEARNING_LOG + PROGRESS updated · owner passed the 3 questions.
+Tests green in CI · security review clean, PR reviewed · README section updated · LEARNING_LOG + PROGRESS updated · owner passed the 3 questions (waived in autonomy mode; Q&A goes to `docs/INTERVIEW_PREP.md`).
