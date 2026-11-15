@@ -39,3 +39,6 @@ Desktop.ini
 
 # --- CLI outputs ---
 demo-bundle.json
+
+# --- MISP (upstream checkout + generated env) ---
+docker/misp/upstream/

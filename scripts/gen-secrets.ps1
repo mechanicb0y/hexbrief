@@ -29,10 +29,34 @@ function New-Secret([int]$Bytes = 32) {
     return [Convert]::ToBase64String($buf).TrimEnd('=').Replace('+', '-').Replace('/', '_')
 }
 
-# Keys this script may generate, and how.
+function New-Alnum([int]$Length) {
+    # MISP auth keys must be exactly 40 characters of [A-Za-z0-9].
+    $alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    $rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+    $buf = New-Object byte[] 1
+    $sb = New-Object System.Text.StringBuilder
+    try {
+        while ($sb.Length -lt $Length) {
+            $rng.GetBytes($buf)
+            if ($buf[0] -lt 248) { [void]$sb.Append($alphabet[$buf[0] % 62]) }  # 248 = 4*62: no modulo bias
+        }
+    } finally { $rng.Dispose() }
+    return $sb.ToString()
+}
+
+# Keys this script may generate, and how. Only keys present in the target file are touched.
 $generators = [ordered]@{
-    'TAXII_USER'     = { 'hexbrief' }
-    'TAXII_PASSWORD' = { New-Secret 32 }
+    'TAXII_USER'          = { 'hexbrief' }
+    'TAXII_PASSWORD'      = { New-Secret 32 }
+    # MISP (docker/misp/.env.misp)
+    'ADMIN_PASSWORD'      = { (New-Alnum 20) + '-' + (New-Secret 12) }  # meets MISP's complexity rule
+    'ADMIN_KEY'           = { New-Alnum 40 }
+    'MYSQL_PASSWORD'      = { New-Alnum 32 }
+    'MYSQL_ROOT_PASSWORD' = { New-Alnum 32 }
+    'REDIS_PASSWORD'      = { New-Alnum 32 }
+    'ENCRYPTION_KEY'      = { New-Alnum 32 }
+    'GPG_PASSPHRASE'      = { New-Alnum 32 }
+    'SUPERVISOR_PASSWORD' = { New-Alnum 32 }
 }
 
 $fullPath = (Resolve-Path -LiteralPath $Path).Path

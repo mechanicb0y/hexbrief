@@ -2,7 +2,7 @@
 
 > A self-updating threat-intel brief: public feeds in over STIX/TAXII, correlated in MISP and OpenCTI, written up each morning by a **local** LLM, and fact-checked so it never invents an indicator.
 
-**Status:** Phase 1 (STIX/TAXII toolkit). See [docs/PROGRESS.md](docs/PROGRESS.md).
+**Status:** Phase 2 (MISP). See [docs/PROGRESS.md](docs/PROGRESS.md).
 
 <!-- Demo GIF and link to today's sample brief go here (Phase 8). -->
 
@@ -36,6 +36,20 @@ hexbrief taxii push demo-bundle.json http://127.0.0.1:5000/hexbrief/ <collection
 pytest                                            # unit + round-trip tests
 ```
 
+## MISP (lab store)
+
+Official `MISP/misp-docker` pinned to MISP v2.5.51 ([ADR-003](docs/adr/003-misp-deployment.md)). It runs **on demand**, HTTPS on 127.0.0.1:8443 only, with generated secrets and a private lab CA so TLS stays verified.
+
+```powershell
+scripts\misp-up.ps1                       # start (first boot ~7 min on Windows)
+python scripts\misp_feeds.py fetch        # CIRCL OSINT + Botvrij (no abuse.ch feeds in MISP)
+hexbrief misp recent --hours 24           # counts only: events, attribute types, warninglist hits
+hexbrief misp stix 2 --out event.json     # one event as a validated STIX 2.1 bundle
+scripts\misp-down.ps1                     # stop; data is kept
+```
+
+The collector uses a **read-only** MISP user. Warninglist hits are flagged for scoring, not silently dropped.
+
 ## How the brief stays truthful
 
 _Phase 5._
@@ -52,6 +66,7 @@ _Phase 5._
 
 - [ADR-001: Hardware path and lab sizing](docs/adr/001-hardware-path.md)
 - [ADR-002: TAXII tooling (own client, pinned medallion)](docs/adr/002-taxii-tooling.md)
+- [ADR-003: MISP deployment, PyMISP pin and feeds](docs/adr/003-misp-deployment.md)
 
 ## License
 
