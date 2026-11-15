@@ -68,6 +68,9 @@ def _plant(text: str) -> dict:
         ("Archive served from payload.zip and loader.sh.", "domains"),
         ("SHA-512 " + "cd" * 64 + ".", "hashes"),
         ("Host evil{.}example{.}org.", "domains"),
+        ("Link hxxp[://]evil[.]example[.]org/a here.", "urls"),
+        ("Full form 2001:db8:0:0:0:0:0:99 seen.", "ips"),
+        ("Odd token ab:cd:ef.example.org seen.", "domains"),
     ],
 )
 def test_planted_fakes_fail(planted: str, kind: str) -> None:
