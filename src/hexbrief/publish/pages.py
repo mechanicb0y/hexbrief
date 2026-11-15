@@ -33,7 +33,7 @@ def write_brief(result: BriefResult, site: Path) -> Path:
         "llm_ok": result.llm_ok,
         "top": len(result.top),
     }
-    (briefs / f"{result.day}.meta.json").write_text(json.dumps(meta), encoding="utf-8")
+    (briefs / f"{result.day}.meta.json").write_text(json.dumps(meta) + "\n", encoding="utf-8")
     write_index(site)
     return page
 
