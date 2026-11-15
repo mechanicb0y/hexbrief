@@ -6,7 +6,14 @@ _Any new session reads this first._
 **Autonomy mode** (owner's standing orders, 2026-11-15, until v1.0.0). Decide, record in one line, keep going. Report once per phase. Merge own PRs when green and reviewed. Stop only for owner-only actions.
 
 ## Current phase
-**Phase 4 — Local LLM** (branch `phase-4-llm`), finishing. Next: Phase 5 brief engine.
+**Phase 5 — Brief engine** (branch `phase-5-engine`), finishing. Next: Phase 6 publish (HTML design, PDF, OpenCTI/TAXII push, Pages).
+
+## Decisions log (Phase 5)
+- Findings: reports, indicator clusters (by author + name), new KEV entries (direct feed), MISP events (after `fresh_only`). OpenCTI vulnerabilities are not standalone findings (KEV connector re-touches all).
+- Scoring weights live in `scoring.py` with written reasons. Broad target lists get 1/3 lens bonus.
+- Completeness is best effort (accepted after retries); faithfulness is a hard gate.
+- Prompt v2: no unsupported trend/role claims, cite lens findings, no technique names.
+- Brief TLP = most restrictive TLP among top findings (unknown → AMBER, fail safe).
 
 ## Decisions log (one line each)
 - 2026-11-15: OpenCTI version = community `7.261109.3`, not LTS. LTS needs a paid license (ADR-004).
