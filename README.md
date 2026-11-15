@@ -1,8 +1,8 @@
-# HexBrief
+﻿# HexBrief
 
 > A self-updating threat-intel brief: public feeds in over STIX/TAXII, correlated in MISP and OpenCTI, written up each morning by a **local** LLM, and fact-checked so it never invents an indicator.
 
-**Status:** Phase 3 (OpenCTI). See [docs/PROGRESS.md](docs/PROGRESS.md).
+**Status:** Phase 4 (local LLM). See [docs/PROGRESS.md](docs/PROGRESS.md).
 
 <!-- Demo GIF and link to today's sample brief go here (Phase 8). -->
 
@@ -64,7 +64,10 @@ scripts\opencti-down.ps1               # stop; data is kept
 
 ## How the brief stays truthful
 
-_Phase 5._
+- The narrative is written by a **local** model (`qwen3.5:4b` via Ollama, [ADR-005](docs/adr/005-llm-model.md)) with JSON-schema structured output and temperature 0.1. It only sees ranked findings and cites them as `[F#]`.
+- `hexbrief.validate` is a hard gate. It refangs the text, extracts every IP (v4/v6), domain, URL, hash (MD5â€“SHA-512), CVE and ATT&CK ID, and rejects anything not present in the input. Planted fakes are covered by tests.
+- On failure the engine retries twice with the errors fed back, then publishes a facts-only brief. Unchecked text is never published (Phase 5).
+- Benchmark: [`docs/benchmarks/llm-2026-11-15.md`](docs/benchmarks/llm-2026-11-15.md).
 
 ## Security and ethics
 
@@ -80,6 +83,7 @@ _Phase 5._
 - [ADR-002: TAXII tooling (own client, pinned medallion)](docs/adr/002-taxii-tooling.md)
 - [ADR-003: MISP deployment, PyMISP pin and feeds](docs/adr/003-misp-deployment.md)
 - [ADR-004: OpenCTI deployment, version and connectors](docs/adr/004-opencti-deployment.md)
+- [ADR-005: Local LLM for the brief narrative](docs/adr/005-llm-model.md)
 
 ## License
 
