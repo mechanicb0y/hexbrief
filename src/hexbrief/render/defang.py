@@ -32,6 +32,7 @@ def defang_url(value: str) -> str:
         return value.replace(".", "[.]")
     scheme, host, rest = m.groups()
     scheme = {"http": "hxxp", "https": "hxxps", "ftp": "fxp"}.get(scheme.lower(), scheme)
+    rest = RE_IPV4.sub(lambda m: defang_ip(m.group(0)), rest)  # IPs inside the path too
     return f"{scheme}://{host.replace('.', '[.]').replace(':', '[:]')}{rest}"
 
 

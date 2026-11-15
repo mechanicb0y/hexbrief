@@ -14,7 +14,11 @@ from hexbrief.stixkit.taxii import TaxiiClient
 
 
 def push_opencti(bundle: dict[str, Any], url: str, importer_token: str) -> None:
+    import os
+
     from pycti import OpenCTIApiClient
+
+    os.environ.setdefault("OPENCTI_TLS_REJECT_UNAUTHORIZED", "true")  # opt in to TLS checks
 
     if not importer_token:
         raise RuntimeError("OPENCTI_IMPORTER_TOKEN missing (scripts/opencti_setup.py)")

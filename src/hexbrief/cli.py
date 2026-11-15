@@ -306,5 +306,21 @@ def run_brief(
         typer.echo(f"  {k:6} {p}")
 
 
+@app.command("republish")
+def republish(
+    day: str = typer.Argument(..., help="YYYY-MM-DD of an existing out/<day>/brief.json"),
+    out: Path = typer.Option(Path("out"), help="Output root"),
+    site: Path = typer.Option(Path("site"), help="Public archive folder"),
+) -> None:
+    """Re-render the TLP:CLEAR public page for a past day from brief.json (no new run)."""
+    from hexbrief.engine import load_result
+    from hexbrief.publish.pages import write_brief
+    from hexbrief.publish.public import public_view
+
+    result = load_result(out / day / "brief.json")
+    page = write_brief(public_view(result), site)
+    typer.echo(f"wrote {page}")
+
+
 if __name__ == "__main__":  # pragma: no cover
     app()
