@@ -1,0 +1,22 @@
+# HexBrief overrides on top of upstream MISP/misp-docker (pinned in scripts/misp-up.ps1).
+# Applied with: docker compose -f upstream/docker-compose.yml -f compose.override.yml
+services:
+  # No outbound mail from the lab.
+  mail:
+    profiles: ["disabled"]
+
+  misp-nginx:
+    restart: "no"
+    # Upstream publishes 80 and 443 on all interfaces. Replace that with
+    # HTTPS on 127.0.0.1:8443 only (80 is taken by Windows, 8080 by other work).
+    ports: !override
+      - "127.0.0.1:8443:8443"
+
+  misp-core:
+    restart: "no"   # on-demand: started by misp-up.ps1, stopped by misp-down.ps1
+  misp-modules:
+    restart: "no"
+  db:
+    restart: "no"
+  redis:
+    restart: "no"

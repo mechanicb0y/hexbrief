@@ -16,6 +16,8 @@ taxii_app = typer.Typer(help="Talk to TAXII 2.1 servers.", no_args_is_help=True)
 stix_app = typer.Typer(help="Build and validate STIX 2.1 bundles.", no_args_is_help=True)
 app.add_typer(taxii_app, name="taxii")
 app.add_typer(stix_app, name="stix")
+misp_app = typer.Typer(help="Read from the lab MISP (read-only).", no_args_is_help=True)
+app.add_typer(misp_app, name="misp")
 
 MITRE_DISCOVERY = "https://attack-taxii.mitre.org/taxii2/"
 
@@ -26,7 +28,9 @@ REPO_ENV = Path(__file__).resolve().parents[2] / ".env"
 # Only these keys are read. Loading everything would let a .env set things like
 # HTTPS_PROXY or SSL_CERT_FILE and silently redirect or weaken TLS. (Phase 5 moves
 # config to pydantic-settings.)
-_ENV_ALLOW = frozenset({"TAXII_USER", "TAXII_PASSWORD"})
+_ENV_ALLOW = frozenset(
+    {"TAXII_USER", "TAXII_PASSWORD", "MISP_URL", "MISP_API_KEY", "MISP_VERIFY_SSL"}
+)
 
 
 def _load_env_file(path: Path = REPO_ENV) -> None:
@@ -140,6 +144,61 @@ def stix_demo_bundle(
         typer.echo(f"  {line}")
     if not report.is_valid:
         raise typer.Exit(1)
+
+
+def _misp():  # -> MispSearch
+    from hexbrief.collectors.misp import connect
+
+    _load_env_file()
+    url, key = os.environ.get("MISP_URL", ""), os.environ.get("MISP_API_KEY", "")
+    if not url or not key or key == "__replace_me__":
+        raise typer.BadParameter("MISP_URL / MISP_API_KEY not set in .env")
+    raw_verify = os.environ.get("MISP_VERIFY_SSL", "true")
+    # true/false, or a path to MISP's certificate (preferred for the self-signed lab cert)
+    verify: bool | str = {"true": True, "false": False}.get(raw_verify.lower(), raw_verify)
+    if verify is False:
+        typer.echo("WARNING: TLS verification is off for MISP (lab only).", err=True)
+    return connect(url, key, verify=verify)
+
+
+@misp_app.command("recent")
+def misp_recent(
+    hours: int = typer.Option(24, help="Window in hours (by publish time)"),
+    all_attributes: bool = typer.Option(False, help="Include non-IDS context attributes"),
+) -> None:
+    """Summarize what MISP published in the window (counts only, no values)."""
+    from hexbrief.collectors.misp import collect_window
+
+    window = collect_window(_misp(), hours=hours, ids_only=not all_attributes)
+    typer.echo(f"Window: last {hours} h")
+    typer.echo(f"Events published: {len(window.events)}")
+    for ev in window.events[:10]:
+        typer.echo(f"  #{ev.get('id')}  {str(ev.get('info', ''))[:90]}")
+    typer.echo(
+        f"Attributes: {len(window.attributes)} ({window.ids_attributes} to_ids, "
+        f"{window.warninglist_hits} warninglist hits)"
+    )
+    for attr_type, n in window.attribute_types.most_common(10):
+        typer.echo(f"  {n:>6}  {attr_type}")
+
+
+@misp_app.command("stix")
+def misp_stix(
+    event_id: str = typer.Argument(..., help="MISP event id"),
+    out: Path = typer.Option(Path("misp-event.stix.json"), help="Output file"),
+) -> None:
+    """Export one MISP event as a STIX 2.1 bundle and validate it."""
+    from hexbrief.collectors.misp import event_as_stix
+
+    bundle = event_as_stix(_misp(), event_id)
+    report = validate(bundle)
+    out.write_text(json.dumps(bundle, indent=2), encoding="utf-8")
+    types = count_by_type(bundle.get("objects", []))
+    typer.echo(f"Wrote {out}: {sum(types.values())} objects, valid={report.is_valid}")
+    for stix_type, n in types.most_common():
+        typer.echo(f"  {n:>5}  {stix_type}")
+    for line in report.errors[:10]:
+        typer.echo(f"  ERROR {line}")
 
 
 if __name__ == "__main__":  # pragma: no cover
