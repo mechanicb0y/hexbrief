@@ -53,10 +53,23 @@ if (-not (Test-Path (Join-Path $sslDir 'cert.pem'))) {
 Write-Host "MISP CA for clients: $(Join-Path $sslDir 'ca.pem')  (set MISP_VERIFY_SSL to this path)"
 
 # 4. start
-docker compose -p hexbrief-misp --env-file $envFile `
-    -f (Join-Path $upstream 'docker-compose.yml') -f (Join-Path $mispDir 'compose.override.yml') `
-    up -d
-if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+# Upstream healthchecks are tight (misp-modules ~11 s, misp-core ~75 s), but on
+# Windows misp-core re-syncs its files into the bind mount on EVERY start, which
+# takes several minutes. Compose then gives up with "dependency ... is unhealthy"
+# even though the containers keep starting. `up -d` is idempotent, so keep
+# re-running it until everything is up (max 20 min).
+$deadline = (Get-Date).AddMinutes(20)
+$try = 0
+while ($true) {
+    $try++
+    docker compose -p hexbrief-misp --env-file $envFile `
+        -f (Join-Path $upstream 'docker-compose.yml') -f (Join-Path $mispDir 'compose.override.yml') `
+        up -d   # no 2>&1 here: PS 5.1 + ErrorAction Stop turns compose's stderr warnings into errors
+    if ($LASTEXITCODE -eq 0) { break }
+    if ((Get-Date) -gt $deadline) { Write-Host 'MISP did not come up within 20 min.'; exit 1 }
+    Write-Host "attempt ${try}: still starting (healthchecks not passing yet); retrying in 30 s..."
+    Start-Sleep -Seconds 30
+}
 
 if (-not $NoWait) {
     Write-Host 'Waiting for MISP to answer on https://127.0.0.1:8443 (first start can take 5-10 min)...'
