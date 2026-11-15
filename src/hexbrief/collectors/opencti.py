@@ -116,6 +116,101 @@ def collect_window(
     return OpenCTIWindow(hours=hours, since=since, entities=entities)
 
 
+REPORT_ATTRS = """
+    id
+    standard_id
+    name
+    description
+    published
+    created
+    updated_at
+    confidence
+    report_types
+    createdBy { ... on Identity { id name } }
+    objectMarking { id definition_type definition }
+    objectLabel { id value }
+    externalReferences { edges { node { id source_name url } } }
+    objects(all: true) {
+        edges {
+            node {
+                ... on BasicObject { id entity_type }
+                ... on StixObject { standard_id }
+                ... on AttackPattern { name x_mitre_id }
+                ... on Vulnerability { name }
+                ... on Malware { name }
+                ... on IntrusionSet { name }
+                ... on ThreatActor { name }
+                ... on Sector { name }
+                ... on Country { name }
+                ... on Region { name }
+                ... on Indicator { name pattern pattern_type }
+            }
+        }
+    }
+"""
+
+INDICATOR_ATTRS = """
+    id
+    standard_id
+    name
+    pattern
+    pattern_type
+    created
+    updated_at
+    confidence
+    x_opencti_score
+    createdBy { ... on Identity { id name } }
+    objectMarking { id definition_type definition }
+    objectLabel { id value }
+    externalReferences { edges { node { id source_name url } } }
+"""
+
+VULN_ATTRS = """
+    id
+    standard_id
+    name
+    description
+    created
+    updated_at
+    confidence
+    x_opencti_cisa_kev
+    createdBy { ... on Identity { id name } }
+    objectMarking { id definition_type definition }
+    objectLabel { id value }
+"""
+
+
+def collect_for_brief(
+    api: OpenCTIReader, hours: int = 24, *, now: datetime | None = None
+) -> OpenCTIWindow:
+    """Reports (with their objects), indicators and vulnerabilities for the brief.
+
+    Uses custom attribute sets so one query per type returns everything the
+    normalizer needs (ATT&CK ids, CVE names, patterns, markings, authors).
+    """
+    if hours <= 0:
+        raise ValueError("hours must be positive")
+    now = now or datetime.now(UTC)
+    since = (now - timedelta(hours=hours)).strftime("%Y-%m-%dT%H:%M:%S.000Z")
+    entities: dict[str, list[dict[str, Any]]] = {}
+    for kind, attrs in (
+        ("report", REPORT_ATTRS),
+        ("indicator", INDICATOR_ATTRS),
+        ("vulnerability", VULN_ATTRS),
+    ):
+        rows = getattr(api, kind).list(
+            filters=window_filter(since),
+            getAll=True,
+            customAttributes=attrs,
+            orderBy="updated_at",
+            orderMode="desc",
+        )
+        if rows is None:
+            raise RuntimeError(f"OpenCTI returned nothing for {kind!r} (auth or API error?)")
+        entities[kind] = [dict(r) for r in rows]
+    return OpenCTIWindow(hours=hours, since=since, entities=entities)
+
+
 def tlp_of(entity: dict[str, Any]) -> str | None:
     """The entity's TLP marking (``TLP:CLEAR`` etc.), or None if it has none."""
     for marking in entity.get("objectMarking") or []:
