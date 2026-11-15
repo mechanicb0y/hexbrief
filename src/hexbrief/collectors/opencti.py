@@ -143,7 +143,10 @@ REPORT_ATTRS = """
                 ... on Sector { name }
                 ... on Country { name }
                 ... on Region { name }
-                ... on Indicator { name pattern pattern_type }
+                ... on Indicator {
+                    name pattern pattern_type
+                    objectMarking { id definition_type definition }
+                }
             }
         }
     }
