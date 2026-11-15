@@ -75,3 +75,22 @@ Study notes for each phase: what you need to know, then likely interview questio
 3. *How did you apply least privilege?* The collector uses a dedicated "HexBrief reader" role (KNOWLEDGE read + API token + TAXII read, nothing else) with a 365-day token minted by that user. The admin token is only used for one-time setup. Everything listens on 127.0.0.1, and the backing services aren't published at all.
 4. *You chose LTS but run the community release. Why?* The LTS images block the API until a paid license is activated. The project rule is free/open-source only, so I recorded the change in ADR-004 and pinned the latest community patch, with every image on one tag.
 5. *Why not run MISP and OpenCTI together?* RAM: OpenCTI's minimums alone are ~18 GB, and my WSL cap is 14 GB. MISP runs on demand, and the MISP→OpenCTI connector runs only in a deliberate `-WithMisp` session.
+
+---
+
+## Phase 4: Local LLM
+
+**What you need to know**
+- **Why LLMs hallucinate:** they predict likely text, not true text. An IP that "looks right" is very likely. HexBrief's answer: the model never sources facts. It writes prose about given findings, cites them by `[F#]`, and a validator blocks any IP/domain/URL/hash/CVE/ATT&CK ID that is not in the input.
+- **Structured output:** Ollama's `format` takes a JSON schema and constrains decoding, so the output is always parseable and the right shape (36/36 attempts valid in the benchmark).
+- **Temperature** ≤ 0.2 (enforced in code): low randomness, so answers stay faithful and repeatable.
+- **Quantization** (Q4) shrinks weights about 4×. **Context window / KV cache**: an 8k context costs extra VRAM, so even a 3–4B model spilled to the CPU on a 4 GB GPU.
+- **Why local:** TLP (intel never leaves the machine), privacy, no per-token cost, works offline.
+- **Faithful ≠ complete:** all three models passed the validator, but llama3.2:3b *omitted* the education finding. Validators catch inventions, not omissions, so Phase 5 adds a completeness check.
+- **Validator bypasses I closed** (security review): IPv6, SHA-512, `(dot)`/`{.}` defangs, lowercase `t1055`, TLD-like extensions (`.zip`, `.sh`), unparseable IPs (fail closed), sentence-ending IPs.
+
+**Q&A**
+1. *How do you stop an LLM from inventing IOCs?* Facts come from data and the model only writes prose, with structured output and low temperature. A hard gate regex-extracts every indicator/CVE/technique from the text, refangs first, and requires each one to exist in the input. It retries twice with the errors fed back, then falls back to a facts-only brief. Unchecked text is never published.
+2. *How did you pick the model?* I benchmarked llama3.2:3b, qwen3.5:4b and qwen3.5:9b on a fixed fixture (time, JSON validity, facts surviving validation). All were faithful, so quality decided: qwen3.5:4b covered more threats and caught the education angle in ~90 s, which is fine for a 07:00 batch job (ADR-005).
+3. *What can't your validator catch?* Omissions and wrong-but-allowed claims, e.g. calling a phishing IP a "C2". Mitigations: deterministic tables rendered from data, a completeness check, a prompt rule against unsupported trend claims, and a human reading the brief.
+4. *Why not a cloud model?* TLP:GREEN+ intel must not leave the machine. A cloud model would be allowed only for TLP:CLEAR data and only with explicit approval.
