@@ -130,7 +130,7 @@ def main() -> int:
     ]
     out = REPO / "docs" / "benchmarks" / f"llm-{day}.md"
     out.parent.mkdir(exist_ok=True)
-    out.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    out.write_text("\n".join(lines) + "\n", encoding="utf-8")  # UTF-8 for the em dash
     print(f"wrote {out.relative_to(REPO)}")
     return 0
 
