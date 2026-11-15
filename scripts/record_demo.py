@@ -38,14 +38,18 @@ def main() -> int:
         d.pop("score", None)
         d.pop("reasons", None)
         d["iocs"] = d["iocs"][:40]
+    _ = [finding_json(finding_from_json(r)) for r in rows]  # round-trip check before writing
     DEMO.mkdir(exist_ok=True)
     meta = {"recorded_from": data["day"], "now": data["window"][1]}
-    (DEMO / "findings.json").write_text(
+    fixture = DEMO / "findings.json"
+    previous = fixture.read_text(encoding="utf-8") if fixture.is_file() else None
+    fixture.write_text(
         json.dumps({"meta": meta, "findings": rows}, indent=1, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
     print(f"recorded {len(rows)} TLP:CLEAR findings")
     if args.no_llm:
+        print("note: narrative.json was not re-recorded and may no longer match")
         return 0
 
     from hexbrief.demo_mode import demo_run
@@ -53,14 +57,17 @@ def main() -> int:
 
     with OllamaWriter("qwen3.5:4b") as w:
         result = demo_run(writer=w)
-    if not result.llm_ok:
-        print("model did not produce a faithful narrative; narrative not recorded")
+    if not (result.llm_ok and result.run_log["llm"].get("complete")):
+        # Keep findings.json and narrative.json in step: the narrative's [F#] ids
+        # only make sense against the findings it was written for.
+        if previous is not None:
+            fixture.write_text(previous, encoding="utf-8")
+        print("no faithful and complete narrative; fixture left unchanged")
         return 1
     (DEMO / "narrative.json").write_text(
         json.dumps(result.narrative, indent=1, ensure_ascii=False) + "\n", encoding="utf-8"
     )
     print("recorded a validated narrative")
-    _ = [finding_json(finding_from_json(r)) for r in rows]  # round-trip sanity check
     return 0
 
 
