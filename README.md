@@ -1,8 +1,8 @@
-﻿# HexBrief
+# HexBrief
 
 > A self-updating threat-intel brief: public feeds in over STIX/TAXII, correlated in MISP and OpenCTI, written up each morning by a **local** LLM, and fact-checked so it never invents an indicator.
 
-**Status:** Phase 4 (local LLM). See [docs/PROGRESS.md](docs/PROGRESS.md).
+**Status:** Phase 5 (brief engine): `hexbrief run` produces a validated daily brief end to end. See [docs/PROGRESS.md](docs/PROGRESS.md).
 
 <!-- Demo GIF and link to today's sample brief go here (Phase 8). -->
 
@@ -66,7 +66,18 @@ scripts\opencti-down.ps1               # stop; data is kept
 
 - The narrative is written by a **local** model (`qwen3.5:4b` via Ollama, [ADR-005](docs/adr/005-llm-model.md)) with JSON-schema structured output and temperature 0.1. It only sees ranked findings and cites them as `[F#]`.
 - `hexbrief.validate` is a hard gate. It refangs the text, extracts every IP (v4/v6), domain, URL, hash (MD5â€“SHA-512), CVE and ATT&CK ID, and rejects anything not present in the input. Planted fakes are covered by tests.
-- On failure the engine retries twice with the errors fed back, then publishes a facts-only brief. Unchecked text is never published (Phase 5).
+- On failure the engine retries twice with the errors **and the rejected answer** fed back, then tries the fallback model, then publishes a **facts-only** brief. Unchecked text is never published.
+- A completeness check (top-3 findings covered; education/Malaysia/ASEAN findings cited in the watch section) catches omissions the faithfulness check can't see.
+
+## Run it
+
+```powershell
+scripts\opencti-up.ps1          # data source (MISP optional: scripts\misp-up.ps1)
+hexbrief run                    # today's brief → out\YYYY-MM-DD\brief.{md,html,json,stix.json}
+hexbrief run --no-llm           # facts-only, no model
+```
+
+Pipeline: collect (OpenCTI, CISA KEV, MISP) → normalize to findings → KEV cross-check → dedupe (shared CVE/IOC) → rule-based score ([`scoring.py`](src/hexbrief/scoring.py)) → top 8 to the local LLM → validate → render (defanged for humans, real values in JSON/STIX) → run log in `runs/`. One failing source never stops the brief.
 - Benchmark: [`docs/benchmarks/llm-2026-11-15.md`](docs/benchmarks/llm-2026-11-15.md).
 
 ## Security and ethics

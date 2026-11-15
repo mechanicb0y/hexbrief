@@ -70,6 +70,19 @@ Every error we hit, with the log lines, the cause and the fix.
 - **Cause:** the bundle contains the TLP:CLEAR `marking-definition`. Creating markings needs `SETTINGS_SETMARKINGS`, which the least-privilege importer intentionally lacks.
 - **Fix:** strip `marking-definition` objects before import. OpenCTI already has TLP 2.0 markings with the same OASIS ids, so `object_marking_refs` still resolve.
 
+### First LLM call: Ollama HTTP 500 (2026-11-15, Phase 5)
+- **Symptom:** the first `/api/chat` of a run returned 500 after ~30 s. The retries succeeded.
+- **Cause:** a cold model load next to a running OpenCTI (RAM pressure). Ollama answers 500 while it is still loading.
+- **Fix:** the writer waits 10 s and retries once on 5xx before counting a failed attempt. The engine's validator retries cover the rest.
+
+### OpenCTI collector: `KeyError: 'id'` / `'list' object has no attribute 'get'` (2026-11-15, Phase 5)
+- **Cause:** pycti post-processes results. It needs `id` inside `createdBy`/`objectMarking`/`objectLabel`/`externalReferences` when you pass `customAttributes`, and it flattens `{edges: [{node}]}` into plain lists.
+- **Fix:** request those ids, and normalize both shapes with `normalize._nodes()`.
+
+### Everything looked like news: 1,797 KEV vulnerabilities "updated today" (2026-11-15, Phase 5)
+- **Cause:** the KEV connector re-touches the whole catalogue, so `updated_at` says nothing about news.
+- **Fix:** OpenCTI vulnerabilities are not standalone findings. New KEV entries come from the direct KEV collector (`dateAdded`), and the catalogue is used as a cross-check (`exploited`).
+
 ## Template
 
 ### <short error title> (YYYY-MM-DD, Phase N)
