@@ -7,82 +7,120 @@
 <meta name="referrer" content="no-referrer">
 <title>HexBrief {{ day }}</title>
 <style>
-:root { --bg:#f7f7f5; --fg:#1b1d1f; --muted:#5d6166; --line:#d9dad6; --card:#fff; --accent:#0f766e;
-        --clear:#e9f7ef; --clear-fg:#14532d; --warn:#fff4e5; --warn-fg:#7c2d12; }
-@media (prefers-color-scheme: dark) { :root { --bg:#111315; --fg:#e7e7e4; --muted:#a2a6aa; --line:#2b2e31;
-        --card:#181b1d; --accent:#2dd4bf; --clear:#0f2a1c; --clear-fg:#86efac; --warn:#2a1a0b; --warn-fg:#fdba74; } }
-* { box-sizing:border-box } body { margin:0; background:var(--bg); color:var(--fg);
-  font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif }
-main { max-width:860px; margin:0 auto; padding:24px 16px 64px }
-h1 { font-size:1.6rem; margin:.2em 0 } h2 { font-size:1.15rem; margin:2em 0 .6em; border-bottom:1px solid var(--line); padding-bottom:.3em }
-h3 { font-size:1.02rem; margin:1.4em 0 .3em }
-.tlp { display:inline-block; padding:.2em .7em; border-radius:4px; font-weight:700; letter-spacing:.03em }
-.tlp.clear { background:var(--clear); color:var(--clear-fg) } .tlp.other { background:var(--warn); color:var(--warn-fg) }
-.meta, .muted { color:var(--muted); font-size:.92rem }
-.card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px 16px; margin:12px 0 }
-.bluf { border-left:4px solid var(--accent) }
-code, .ioc { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:.88em; word-break:break-all }
-table { width:100%; border-collapse:collapse; font-size:.92rem } th, td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); vertical-align:top }
-.tags span { display:inline-block; border:1px solid var(--line); border-radius:999px; padding:0 .55em; margin:2px; font-size:.82rem }
-a { color:var(--accent) }
+/* HexBrief brief. The identity is the TLP 2.0 strip: the label in its official FIRST
+   colour on black, at the top and bottom of every page, on screen and in print.
+   Everything else stays quiet: one column, rules instead of cards, system fonts only
+   (strict CSP). Bahnschrift (Windows' DIN) carries headings and ranks. */
+:root{
+  --paper:#f3f5f7; --ink:#14181d; --soft:#4a5563; --rule:#cbd2d9; --wash:#e6eaee;
+  --signal:#1d4ed8; --kev:#9a3412;
+  --tlp-ink:#ffffff; /* TLP:CLEAR */
+  --display:"Bahnschrift","DIN Alternate","Arial Narrow",system-ui,sans-serif;
+  --text:"Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
+  --code:Consolas,"Cascadia Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root{
+  --paper:#12161b; --ink:#e8ecf0; --soft:#9aa5b1; --rule:#2c343d; --wash:#1b2128;
+  --signal:#7aa2ff; --kev:#fb923c; }}
+.tlp-green{--tlp-ink:#33ff00} .tlp-amber{--tlp-ink:#ffc000} .tlp-red{--tlp-ink:#ff2b2b}
+*{box-sizing:border-box}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 var(--text)}
+.strip{background:#000;color:var(--tlp-ink);font:600 15px/1 var(--display);letter-spacing:.06em;
+  padding:9px 16px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.strip span:last-child{color:#c9d1d9;font-weight:400;letter-spacing:0}
+main{max-width:46rem;margin:0 auto;padding:28px 16px 48px}
+h1{font:600 2.1rem/1.15 var(--display);margin:.2em 0 .25em;letter-spacing:-.005em}
+.when{color:var(--soft);margin:0 0 28px;font-size:.95rem}
+h2{font:600 1.25rem/1.3 var(--display);margin:2.4em 0 .7em;padding-top:.6em;border-top:2px solid var(--ink)}
+h3{font:600 1.08rem/1.35 var(--text);margin:0 0 .35em}
+p{margin:.5em 0}
+a{color:var(--signal)} a:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.bluf{font-size:1.2rem;line-height:1.55;border-left:4px solid var(--ink);padding:.15em 0 .15em 1em;margin:0}
+.threats{list-style:none;padding:0;margin:0;counter-reset:rank}
+.threats>li{display:grid;grid-template-columns:3.2rem 1fr;gap:0 .9rem;padding:1.1em 0;
+  border-bottom:1px solid var(--rule);break-inside:avoid}
+.threats>li::before{counter-increment:rank;content:counter(rank);font:600 2.4rem/1 var(--display);
+  color:var(--soft);text-align:right}
+.refs{font-size:.88rem;color:var(--soft);margin:.1em 0 .5em}
+.actions{margin:.6em 0 0;padding-left:1.1em} .actions li{margin:.2em 0}
+.actions li::marker{color:var(--signal)}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th{font:600 .9rem var(--display);text-align:left;color:var(--soft);border-bottom:2px solid var(--ink);padding:6px 8px}
+td{padding:7px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
+td.cve,.ioc{font-family:var(--code);font-size:.86em;word-break:break-all}
+.kev td.cve{color:var(--kev);white-space:nowrap}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:0;margin:0;list-style:none}
+.chips li{font:.85rem var(--code);border:1px solid var(--rule);padding:2px 8px}
+.chips li small{color:var(--soft);font-family:var(--text)}
+.watch{background:var(--wash);padding:14px 16px;margin:0}
+.finding{padding:1em 0;border-bottom:1px solid var(--rule);break-inside:avoid}
+.finding h3 b{font-family:var(--display);color:var(--soft);font-weight:600;margin-right:.4em}
+.why{font-size:.88rem;color:var(--soft);margin:.2em 0}
+.ids{font:.84rem var(--code);color:var(--soft)}
+.muted{color:var(--soft);font-size:.92rem}
+.method{margin-top:2.6em;padding-top:1em;border-top:1px solid var(--rule);color:var(--soft);font-size:.9rem}
+@media (max-width:520px){h1{font-size:1.7rem}.threats>li{grid-template-columns:2.2rem 1fr}
+  .threats>li::before{font-size:1.8rem}}
+@media print{body{font-size:11pt;background:#fff;color:#000}main{max-width:none;padding:12px 0}
+  :root{--paper:#fff;--ink:#000;--soft:#444;--rule:#bbb;--wash:#f1f1f1}
+  h2{break-after:avoid} a{color:#000;text-decoration:none}}
 </style>
 </head>
-<body><main>
-<p><span class="tlp {{ 'clear' if tlp == 'TLP:CLEAR' else 'other' }}">{{ tlp }}</span>
-<span class="meta">{% if tlp == "TLP:CLEAR" %}May be shared publicly.{% else %}Limited distribution. Do not publish.{% endif %}</span></p>
-<h1>HexBrief daily threat brief: {{ day }}</h1>
-<p class="meta">Window {{ window_start }} → {{ window_end }} (Asia/Kuala_Lumpur) · generated {{ generated }}</p>
+<body class="tlp-{{ tlp.split(':')[-1] | lower | replace('+strict','') }}">
+<div class="strip" role="note"><span>{{ tlp }}</span><span>{% if tlp == "TLP:CLEAR" %}May be shared publicly.{% else %}Limited distribution. Do not publish.{% endif %}</span></div>
+<main>
+<h1>Daily threat brief, {{ day }}</h1>
+<p class="when">Covers {{ window_start }} to {{ window_end }} Malaysia time. Generated {{ generated }} by HexBrief.</p>
 
-<h2>Bottom line up front</h2>
-<div class="card bluf">{{ narrative.bluf }}</div>
+<p class="bluf">{{ narrative.bluf }}</p>
 
 <h2>Top threats</h2>
-{% for t in narrative.top_threats %}
-<div class="card">
-<h3>{{ loop.index }}. {{ t.headline }}</h3>
-<p class="muted">Findings: {% for fid in t.finding_ids %}<a href="#{{ fid | lower }}">{{ fid }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</p>
+<ol class="threats">
+{% for t in narrative.top_threats %}<li><div>
+<h3>{{ t.headline }}</h3>
+<p class="refs">Based on {% for fid in t.finding_ids %}<a href="#{{ fid | lower }}">{{ fid }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</p>
 <p>{{ t.why_it_matters }}</p>
-<strong>Recommended actions</strong>
-<ul>{% for a in t.actions %}<li>{{ a }}</li>{% endfor %}</ul>
-</div>
-{% endfor %}
+<ul class="actions">{% for a in t.actions %}<li>{{ a }}</li>{% endfor %}</ul>
+</div></li>
+{% endfor %}</ol>
 
-<h2>New CISA KEV entries</h2>
-{% if kev %}<table><tr><th>CVE</th><th>Vulnerability</th><th>Ransomware</th></tr>
-{% for k in kev %}<tr><td><code>{{ k.cve }}</code></td><td>{{ k.title }}</td><td>{{ "known" if k.ransomware else "" }}</td></tr>{% endfor %}
-</table>{% else %}<p class="muted">No new KEV entries in this window.</p>{% endif %}
+<h2>Newly exploited vulnerabilities (CISA KEV)</h2>
+{% if kev %}<table class="kev"><thead><tr><th>CVE</th><th>Vulnerability</th><th>Ransomware use</th></tr></thead><tbody>
+{% for k in kev %}<tr><td class="cve">{{ k.cve }}</td><td>{{ k.title }}</td><td>{{ "Known" if k.ransomware else "Not reported" }}</td></tr>{% endfor %}
+</tbody></table>{% else %}<p class="muted">CISA added no vulnerabilities in this window.</p>{% endif %}
 
-<h2>ATT&amp;CK techniques seen</h2>
-{% if techniques %}<p class="tags">{% for tid, n in techniques %}<span><code>{{ tid }}</code> ×{{ n }}</span>{% endfor %}</p>
-{% else %}<p class="muted">None mapped in this window.</p>{% endif %}
+<h2>ATT&amp;CK techniques in today's findings</h2>
+{% if techniques %}<ul class="chips">{% for tid, n in techniques %}<li>{{ tid }} <small>×{{ n }}</small></li>{% endfor %}</ul>
+{% else %}<p class="muted">No findings were mapped to ATT&amp;CK today.</p>{% endif %}
 
-<h2>Education and Malaysia/ASEAN watch</h2>
-<div class="card">{{ narrative.education_asean_watch }}</div>
+<h2>Education, Malaysia and ASEAN</h2>
+<p class="watch">{{ narrative.education_asean_watch }}</p>
 
-<h2>Trends</h2>
-<p>{{ narrative.trends or "Nothing notable today." }}</p>
+{% if narrative.trends %}<h2>Trends</h2>
+<p>{{ narrative.trends }}</p>{% endif %}
 
 <h2>Findings</h2>
-{% for f in top %}
-<div class="card" id="{{ f.fid | lower }}">
-<h3>{{ f.fid }}: {{ f.title }}</h3>
-<p class="muted">Score {{ f.score }}: {{ f.reasons | join(", ") }}<br>
-Sources: {{ f.sources | join(", ") }} · {{ f.tlp }} · confidence {{ f.confidence }}</p>
-{% if f.cves %}<p>CVEs: {% for c in f.cves %}<code>{{ c }}</code> {% endfor %}</p>{% endif %}
-{% if f.attack_ids %}<p>ATT&amp;CK: {% for a in f.attack_ids %}<code>{{ a }}</code> {% endfor %}</p>{% endif %}
+{% for f in top %}<section class="finding" id="{{ f.fid | lower }}">
+<h3><b>{{ f.fid }}</b>{{ f.title }}</h3>
+<p class="why">Score {{ f.score }}: {{ f.reasons | join(", ") }}</p>
+<p class="why">{{ f.sources | join(", ") }}. {{ f.tlp }}, source confidence {{ f.confidence }}.</p>
+{% if f.cves or f.attack_ids %}<p class="ids">{{ (f.cves + f.attack_ids) | join("  ") }}</p>{% endif %}
 {% if f.summary %}<p>{{ f.summary }}</p>{% endif %}
-</div>
+</section>
 {% endfor %}
 
-<h2>IOC appendix (defanged)</h2>
-{% if iocs %}<table><tr><th>Finding</th><th>Type</th><th>Indicator</th></tr>
+<h2>Indicators (defanged)</h2>
+{% if iocs %}<table><thead><tr><th>Finding</th><th>Type</th><th>Indicator</th></tr></thead><tbody>
 {% for row in iocs %}<tr><td>{{ row.fid }}</td><td>{{ row.type }}</td><td class="ioc">{{ row.value }}</td></tr>{% endfor %}
-</table>{% if iocs_truncated %}<p class="muted">{{ iocs_truncated }} more indicators are in brief.json / brief.stix.json.</p>{% endif %}
-{% else %}<p class="muted">No indicators in the top findings.</p>{% endif %}
+</tbody></table>{% if iocs_truncated %}<p class="muted">{{ iocs_truncated }} more indicators are in brief.json and brief.stix.json.</p>{% endif %}
+{% else %}<p class="muted">The top findings carry no indicators.</p>{% endif %}
 
 <h2>Sources</h2>
 <ul>{% for s in sources %}<li>{{ s }}</li>{% endfor %}</ul>
 
-<h2>Method</h2>
-<p class="muted">{{ method_note }} Ranking is rule-based: KEV, exploitation, recency, independent sources, confidence, education/Malaysia/ASEAN relevance, and warninglist hits. {{ others_count }} lower-ranked findings are listed in brief.json.</p>
-</main></body></html>
+<p class="method">{{ method_note }} Findings are ranked by fixed rules, not by the model: CISA KEV listing, evidence of exploitation, recency, independent sources, confidence, and relevance to education, Malaysia and ASEAN. {{ others_count }} lower-ranked findings are listed in brief.json.</p>
+</main>
+<div class="strip" role="note"><span>{{ tlp }}</span><span>HexBrief</span></div>
+</body>
+</html>
