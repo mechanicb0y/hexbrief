@@ -48,6 +48,20 @@ Every error we hit, with the log lines, the cause and the fix.
 - **Effect:** the owner's new password would quietly revert to the generated one at the next `misp-up.ps1`.
 - **Fix:** after the first login, the `ADMIN_PASSWORD` line is removed from `docker/misp/.env.misp` (that path logs "setting admin password skipped"). The template says so too.
 
+### OpenCTI LTS: "LTS_REQUIRED_ACTIVATION: You must activate your LTS license" (2026-11-15, Phase 3)
+- **Symptom:** the platform container reported healthy, but every GraphQL call (pycti, every connector) failed. Connectors exited with "OpenCTI API is not reachable".
+- **Cause:** the `-lts` images are licensed: the API is blocked until an LTS license is activated.
+- **Fix:** switched to the community release `7.261109.3` (ADR-004). No license is needed.
+
+### OpenCTI connectors exit at start: "OpenCTI API is not reachable" (2026-11-15, Phase 3)
+- **Cause:** the health endpoint passes slightly before the API accepts connector registrations.
+- **Fix:** connectors use `restart: "on-failure:20"` (bounded), so they retry until the platform is ready.
+
+### ThreatFox / URLhaus connectors: HTTP 410 Gone (2026-11-15, Phase 3)
+- **Symptom:** both connectors logged errors and imported nothing.
+- **Cause:** abuse.ch retired the anonymous CSV exports (`/export/csv/recent/`, `/downloads/csv_recent/` → 410). The APIs still work, but they require the free Auth-Key.
+- **Fix:** removed those two connectors. `collectors/abusech.py` + `scripts/abusech_import.py` use the APIs, with the Auth-Key sent as a header.
+
 ## Template
 
 ### <short error title> (YYYY-MM-DD, Phase N)
