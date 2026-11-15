@@ -322,5 +322,27 @@ def republish(
     typer.echo(f"wrote {page}")
 
 
+@app.command("doctor")
+def doctor(
+    services: bool = typer.Option(True, help="Also probe OpenCTI/MISP/TAXII/Ollama"),
+) -> None:
+    """Check keys, Docker, services, model, disk and the last run (no secrets shown)."""
+    from hexbrief.doctor import render, run_checks
+
+    raise typer.Exit(render(run_checks(services=services), typer.echo))
+
+
+@misp_app.command("snapshot")
+def misp_snapshot(hours: int = typer.Option(24, help="Window in hours")) -> None:
+    """Save today's fresh MISP findings to runs/ for a run while MISP is down."""
+    from datetime import UTC, datetime
+
+    from hexbrief.pipeline import save_misp_snapshot
+
+    _load_env_file()
+    path, n = save_misp_snapshot(datetime.now(UTC), hours)
+    typer.echo(f"{n} MISP findings -> {path}")
+
+
 if __name__ == "__main__":  # pragma: no cover
     app()

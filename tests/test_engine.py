@@ -207,3 +207,15 @@ def test_facts_only_without_llm(tmp_path: Path) -> None:
     assert not res.llm_ok
     md = write_outputs(res, tmp_path / "o", tmp_path / "r")["md"].read_text("utf-8")
     assert "Facts-only brief" in md
+
+
+def test_misp_snapshot_round_trip(tmp_path: Path, monkeypatch) -> None:  # noqa: ANN001
+    from hexbrief import pipeline
+    from hexbrief.engine import finding_json
+
+    monkeypatch.setattr(pipeline, "RUNS", tmp_path)
+    f = report_finding()
+    pipeline.snapshot_path(NOW).write_text(json.dumps([finding_json(f)]), encoding="utf-8")
+    loaded = pipeline.load_misp_snapshot(NOW)
+    assert loaded and loaded[0].iocs == f.iocs and loaded[0].cves == f.cves
+    assert pipeline.load_misp_snapshot(NOW + timedelta(days=2)) is None

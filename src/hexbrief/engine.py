@@ -265,28 +265,29 @@ def write_outputs(result: BriefResult, out_dir: Path, runs_dir: Path) -> dict[st
     return paths
 
 
-def load_result(brief_json: Path) -> BriefResult:
-    """Rebuild a BriefResult from brief.json (re-render / re-publish without a new run)."""
+def finding_from_json(d: dict[str, Any]) -> Finding:
+    """Inverse of ``finding_json``."""
     from hexbrief.model import Ioc
 
+    f = Finding(key=d["key"], kind=d["kind"], title=d["title"])
+    for k, v in d.items():
+        if k in ("fid", "key", "kind", "title"):
+            continue
+        if k == "iocs":
+            v = [Ioc(i["type"], i["value"]) for i in v]
+        elif k == "first_seen":
+            v = datetime.fromisoformat(v) if v else None
+        elif k in ("cves", "attack_ids", "malware", "actors", "sectors", "countries"):
+            v = set(v)
+        setattr(f, k, v)
+    return f
+
+
+def load_result(brief_json: Path) -> BriefResult:
+    """Rebuild a BriefResult from brief.json (re-render / re-publish without a new run)."""
     data = json.loads(brief_json.read_text(encoding="utf-8"))
-
-    def finding(d: dict[str, Any]) -> Finding:
-        f = Finding(key=d["key"], kind=d["kind"], title=d["title"])
-        for k, v in d.items():
-            if k in ("fid", "key", "kind", "title"):
-                continue
-            if k == "iocs":
-                v = [Ioc(i["type"], i["value"]) for i in v]
-            elif k == "first_seen":
-                v = datetime.fromisoformat(v) if v else None
-            elif k in ("cves", "attack_ids", "malware", "actors", "sectors", "countries"):
-                v = set(v)
-            setattr(f, k, v)
-        return f
-
-    top = [(d["fid"], finding(d)) for d in data["top"]]
-    others = [finding(d) for d in data["others"]]
+    top = [(d["fid"], finding_from_json(d)) for d in data["top"]]
+    others = [finding_from_json(d) for d in data["others"]]
     return BriefResult(
         day=data["day"],
         window_start=data["window"][0],
