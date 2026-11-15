@@ -1,0 +1,71 @@
+# HexBrief daily threat brief: {{ day }}
+
+> **{{ tlp }}**{% if tlp == "TLP:CLEAR" %}: may be shared publicly.{% else %}: limited distribution, do not publish.{% endif %}
+> Window: {{ window_start }} → {{ window_end }} (Asia/Kuala_Lumpur). Generated {{ generated }}.
+
+## Bottom line up front
+
+{{ narrative.bluf }}
+
+## Top threats
+{% for t in narrative.top_threats %}
+### {{ loop.index }}. {{ t.headline }}
+
+*Findings: {% for fid in t.finding_ids %}[{{ fid }}](#{{ fid | lower }}){% if not loop.last %}, {% endif %}{% endfor %}*
+
+{{ t.why_it_matters }}
+
+**Recommended actions**
+{% for a in t.actions %}- {{ a }}
+{% endfor %}{% endfor %}
+## New CISA KEV entries
+{% if kev %}
+| CVE | Vulnerability | Ransomware |
+|---|---|---|
+{% for k in kev %}| {{ k.cve }} | {{ k.title }} | {{ "known" if k.ransomware else "" }} |
+{% endfor %}{% else %}
+No new KEV entries in this window.
+{% endif %}
+## ATT&CK techniques seen
+{% if techniques %}
+{% for tid, n in techniques %}`{{ tid }}` ({{ n }}){% if not loop.last %} · {% endif %}{% endfor %}
+{% else %}
+None mapped in this window.
+{% endif %}
+## Education and Malaysia/ASEAN watch
+
+{{ narrative.education_asean_watch }}
+
+## Trends
+
+{{ narrative.trends or "Nothing notable today." }}
+
+## Findings
+{% for f in top %}
+### <a id="{{ f.fid | lower }}"></a>{{ f.fid }}: {{ f.title }}
+
+- **Score {{ f.score }}**: {{ f.reasons | join(", ") }}
+- **Sources:** {{ f.sources | join(", ") }} · **TLP:** {{ f.tlp }} · **Confidence:** {{ f.confidence }}
+{% if f.cves %}- **CVEs:** {{ f.cves | join(", ") }}
+{% endif %}{% if f.attack_ids %}- **ATT&CK:** {{ f.attack_ids | join(", ") }}
+{% endif %}{% if f.malware %}- **Malware:** {{ f.malware | join(", ") }}
+{% endif %}{% if f.summary %}
+{{ f.summary }}
+{% endif %}{% endfor %}
+## IOC appendix (defanged)
+{% if iocs %}
+| Finding | Type | Indicator |
+|---|---|---|
+{% for row in iocs %}| {{ row.fid }} | {{ row.type }} | `{{ row.value }}` |
+{% endfor %}{% if iocs_truncated %}
+_{{ iocs_truncated }} more indicators are in `brief.json` / `brief.stix.json`._
+{% endif %}{% else %}
+No indicators in the top findings.
+{% endif %}
+## Sources
+{% for s in sources %}- {{ s }}
+{% endfor %}
+## Method
+
+{{ method_note }}
+Ranking is rule-based (`scoring.py`): KEV, exploitation, recency, independent sources, confidence, education/Malaysia/ASEAN relevance, and warninglist hits. {{ others_count }} lower-ranked findings are listed in `brief.json`.
