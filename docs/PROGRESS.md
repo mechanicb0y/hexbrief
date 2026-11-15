@@ -15,6 +15,9 @@ _Any new session reads this first._
 - 2026-11-15: The OpenCTI collector uses a dedicated read-only user/token. The admin token is used for setup only.
 - 2026-11-15: MISP lab cert re-issued with a `host.docker.internal` SAN so the MISP connector verifies TLS.
 - 2026-11-15: OpenCTI dashboard screenshot moved to Phase 8 (README visuals pass) to avoid scripted logins now.
+- 2026-11-15: abuse.ch retired its anonymous CSV exports (410), so ThreatFox/URLhaus come in through our own API importer with a least-privilege importer user (confidence ≤ 50).
+- 2026-11-15: MISP→OpenCTI connector runs in a deliberate `-WithMisp` session (RAM). First run scheduled with Phase 7's daily job.
+- 2026-11-15: Phase 3 done-criteria met: OpenCTI holds data from 5 sources (MITRE, CISA KEV, AlienVault OTX, abuse.ch, HexBrief via TAXII2/medallion) with ATT&CK links.
 
 ## Done
 - 2026-11-14: Hardware check, Standard path ([ADR-001](adr/001-hardware-path.md)). Docker disk on D:, `.wslconfig` (14 GB/8 CPU), Ollama models on D: (old C: copy kept until the owner says).

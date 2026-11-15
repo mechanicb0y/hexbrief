@@ -62,6 +62,14 @@ Every error we hit, with the log lines, the cause and the fix.
 - **Cause:** abuse.ch retired the anonymous CSV exports (`/export/csv/recent/`, `/downloads/csv_recent/` → 410). The APIs still work, but they require the free Auth-Key.
 - **Fix:** removed those two connectors. `collectors/abusech.py` + `scripts/abusech_import.py` use the APIs, with the Auth-Key sent as a header.
 
+### OpenCTI TAXII2 connector can't reach medallion: "127.0.0.1:5000 … connection refused" (2026-11-15, Phase 3)
+- **Cause:** medallion's discovery listed *absolute* API roots (`http://127.0.0.1:5000/hexbrief/`). Inside a container, 127.0.0.1 is the container itself.
+- **Fix:** `docker/taxii/data.json` lists **relative** roots (`/hexbrief/`), so every client resolves them against the URL it used. That's `host.docker.internal` for the connector and 127.0.0.1 for us. Our own client already handled relative roots.
+
+### abuse.ch import: FORBIDDEN_ACCESS with the importer token (2026-11-15, Phase 3)
+- **Cause:** the bundle contains the TLP:CLEAR `marking-definition`. Creating markings needs `SETTINGS_SETMARKINGS`, which the least-privilege importer intentionally lacks.
+- **Fix:** strip `marking-definition` objects before import. OpenCTI already has TLP 2.0 markings with the same OASIS ids, so `object_marking_refs` still resolve.
+
 ## Template
 
 ### <short error title> (YYYY-MM-DD, Phase N)
