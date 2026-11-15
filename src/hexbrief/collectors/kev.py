@@ -59,6 +59,7 @@ def findings_added_since(catalog: dict[str, Any], since: date) -> list[Finding]:
                 confidence=95,
                 cves={cve},
                 in_kev=True,
+                kev_new={cve: str(v.get("vulnerabilityName") or cve)},
                 exploited=True,
                 ransomware=ransomware,
             )

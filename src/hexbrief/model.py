@@ -67,6 +67,8 @@ class Finding:
     sectors: set[str] = field(default_factory=set)
     countries: set[str] = field(default_factory=set)
     in_kev: bool = False
+    # CVEs newly added to KEV in the window -> vulnerability name (survives merges)
+    kev_new: dict[str, str] = field(default_factory=dict)
     exploited: bool = False
     ransomware: bool = False
     warninglist_hits: int = 0
@@ -91,6 +93,7 @@ class Finding:
         self.sectors |= other.sectors
         self.countries |= other.countries
         self.in_kev |= other.in_kev
+        self.kev_new.update(other.kev_new)
         self.exploited |= other.exploited
         self.ransomware |= other.ransomware
         self.warninglist_hits += other.warninglist_hits
