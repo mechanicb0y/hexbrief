@@ -27,6 +27,22 @@ Every error we hit, with the log lines, the cause and the fix.
 - **Cause:** Windows PowerShell 5.1 reads UTF-8 files without a BOM as ANSI.
 - **Fix:** edit text files with an editor, or with `[IO.File]::ReadAllText/WriteAllLines` and an explicit `UTF8Encoding($false)`.
 
+### MISP nginx exits: "BASE_URL starts with https://, but SSL certificate is NOT present" (2026-11-14, Phase 2)
+- **Cause:** misp-docker expects `ssl/cert.pem` and `ssl/key.pem` when BASE_URL is https.
+- **Fix:** `misp-up.ps1` creates a private lab CA and a server cert for 127.0.0.1 once (`docker/misp/make-cert.sh`) and discards the CA key. Clients trust `ca.pem`, so TLS verification stays on. Python 3.13's strict X.509 checks pass because the CA has proper `basicConstraints`/`keyUsage`.
+- **Note:** `curl.exe --cacert` on Windows (schannel) ignores the file. Test with Python/httpx instead.
+
+### `misp-up.ps1`: "dependency misp-modules/misp-core failed to start: unhealthy" (2026-11-15, Phase 2)
+- **Cause:** on Windows, misp-core re-syncs its files into the bind mount on **every** start, which takes ~7 minutes. Upstream healthchecks give up after ~11 s (modules) and ~75 s (core), and Compose aborts while the containers keep starting.
+- **Fix:** `misp-up.ps1` re-runs `docker compose up -d` (idempotent) every 30 s for up to 20 minutes.
+- **Gotcha:** `docker compose ... 2>&1` under `$ErrorActionPreference='Stop'` in PS 5.1 turns compose's stderr warnings into terminating errors. Don't redirect stderr there.
+
+### MISP collector returned only 974 attributes (2026-11-15, Phase 2)
+- **Symptom:** `hexbrief misp recent` reported 974 attributes while the DB held 615k, all inside the window.
+- **Cause:** with `enforceWarninglist`, MISP filters attributes **after** paging. Page 1 (`limit=1000`) came back with 974 rows, and the "short page = last page" rule stopped the loop. Probe: `limit=5000` returned 4,760 rows with the filter, 5,000 without, and 240 rows had `warnings`.
+- **Fix:** request `includeWarninglistHits=True`, keep every row, and flag hits (`MispWindow.warninglist_hits`) so scoring can subtract them. There is a regression test for it.
+- **Lesson:** any server-side filter applied after pagination breaks "short page = done".
+
 ## Template
 
 ### <short error title> (YYYY-MM-DD, Phase N)

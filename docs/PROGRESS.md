@@ -3,14 +3,12 @@
 _Any new session reads this first._
 
 ## Current phase
-**Phase 2 — MISP** (branch `phase-2-misp`, pushed, no PR yet). **Paused 2026-11-15 06:30 MYT** at a safe point.
+**Phase 2 — MISP** (branch `phase-2-misp`). Resumed 2026-11-15.
 
-## Resume here (next session)
-1. Start Docker Desktop, then `scripts\misp-up.ps1`. Data is kept in the `hexbrief-misp_*` volumes and the first boot is already done, so it starts much faster this time.
-2. **Owner:** if not already done, log in at https://127.0.0.1:8443 as `admin@hexbrief.lab` (password = `ADMIN_PASSWORD` in `docker\misp\.env.misp`) and change the password.
-3. **The feed fetch was interrupted.** At the stop point the DB was 900 MB with 1,376 events and 202,660 attributes, so CIRCL OSINT + Botvrij were partly loaded. Re-run `.venv\Scripts\python.exe scripts\misp_feeds.py fetch`. MISP skips events it already has, so it resumes. Watch the DB size and stop at 5 GB.
-4. Then: schedule the daily feed fetch, update the docs (README MISP section, troubleshooting, learning log), run the pre-push checks, the owner's task + 3 questions, checkpoint, PR.
-5. When done for the day: `scripts\misp-down.ps1` (never `down -v`).
+## Next (Phase 2)
+- [ ] Owner: log in at https://127.0.0.1:8443 and change the admin password (if not done)
+- [ ] Owner's task + 3 questions, checkpoint, PR
+- When done for the day: `scripts\misp-down.ps1` (never `down -v`). Start: `scripts\misp-up.ps1` (~7 min on Windows).
 
 ## Done
 - 2026-11-14: Hardware check done (owner ran it). Standard path chosen, see [ADR-001](adr/001-hardware-path.md).
@@ -21,7 +19,8 @@ _Any new session reads this first._
   - misp-docker pinned to `2efbdce`, images MISP v2.5.51 / modules v3.1.4, HTTPS on 127.0.0.1:8443 only, generated secrets in `docker\misp\.env.misp`, `misp-up.ps1` / `misp-down.ps1`.
   - Lab CA + server cert (`docker\misp\upstream\ssl\ca.pem`), so TLS is verified. The CA key was discarded.
   - PyMISP pinned to 2.5.34.4 (3.0.0 targets MISP 3.0).
-  - 225 warninglists enabled; CIRCL OSINT + Botvrij cached, fetch partly done.
+  - 225 warninglists enabled. CIRCL OSINT + Botvrij fully fetched on 2026-11-15: 2,112 events, 615,190 attributes, DB 1.44 GB (no limit needed). Daily fetch/cache interval set (MISP's scheduler, while MISP runs; Phase 7 starts it daily).
+  - The collector now flags warninglist hits instead of using `enforceWarninglist`, which broke paging (see TROUBLESHOOTING).
   - Read-only `automation@hexbrief.lab`; its key is in `.env` (`MISP_API_KEY`, never printed).
   - `collectors/misp.py` + `hexbrief misp recent|stix`; 50 tests green.
 
