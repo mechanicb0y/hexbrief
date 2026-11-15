@@ -1,6 +1,6 @@
 # Lab-only TAXII 2.1 server: OASIS medallion, pinned to a commit (see ADR-002).
 # medallion has had no release since 3.0.0 (2020); the last commit is from 2023.
-FROM python:3.12-slim
+FROM python:3.15-slim
 
 ARG MEDALLION_COMMIT=39e76bf18be5371e9570de7e5f340c3937b69c0d
 
