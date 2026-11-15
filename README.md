@@ -86,6 +86,8 @@ scripts\install-schedule.ps1   # daily at 07:00 MYT
 
 [ADR-001 hardware path](docs/adr/001-hardware-path.md) · [ADR-002 TAXII tooling](docs/adr/002-taxii-tooling.md) · [ADR-003 MISP](docs/adr/003-misp-deployment.md) · [ADR-004 OpenCTI](docs/adr/004-opencti-deployment.md) · [ADR-005 local LLM](docs/adr/005-llm-model.md) · [ADR-006 automation & CI](docs/adr/006-automation.md)
 
+Write-up: [How I built a self-updating threat intel brief](docs/launch/writeup.md) · [Changelog](CHANGELOG.md)
+
 ## Roadmap
 
 ATT&CK Navigator layer weekly · cloud-lite mode in Actions (KEV + abuse.ch + ATT&CK) · blocklist export for my StockFW firewall · sightings from a home lab · a PIR file that drives scoring.
