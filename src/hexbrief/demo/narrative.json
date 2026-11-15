@@ -1,0 +1,69 @@
+{
+ "bluf": "AI-driven attack frameworks like BOSSAI and CyberStrikeAI are actively targeting the education sector, while critical infrastructure vulnerabilities in UnrealIRCd and Check Point products remain on CISA's KEV list. Universities must prioritize patching known CVEs and monitoring for credential theft operations that exploit misconfigured cloud services.",
+ "top_threats": [
+  {
+   "finding_ids": [
+    "F3"
+   ],
+   "headline": "BOSSAI AI Mesh Targets Education and Emergency Services",
+   "why_it_matters": "The BOSSAI campaign utilizes a mesh of 12 AI agents to exfiltrate student data from Thai universities and medical records from Taiwan, demonstrating the threat of autonomous AI orchestration in education.",
+   "actions": [
+    "Monitor for C2 activity associated with identified BOSSAI infrastructure.",
+    "Review access controls for cloud services handling student data.",
+    "Implement network segmentation to limit lateral movement."
+   ]
+  },
+  {
+   "finding_ids": [
+    "F7"
+   ],
+   "headline": "CyberStrikeAI Framework Targets Educational Institutions",
+   "why_it_matters": "This open-source framework combines LLM orchestration with traditional C2 to perform reconnaissance, privilege escalation, and data exfiltration against educational institutions in Africa and Latin America.",
+   "actions": [
+    "Block identified CyberStrikeAI C2 servers at the perimeter.",
+    "Scan for compromised SQL Server infrastructure.",
+    "Deploy endpoint detection for credential dumping."
+   ]
+  },
+  {
+   "finding_ids": [
+    "F5",
+    "F6"
+   ],
+   "headline": "Critical Vulnerabilities Added to CISA KEV",
+   "why_it_matters": "CVE-2026-114713 in UnrealIRCd and CVE-2026-123039 in Check Point products allow remote code execution or root command injection, with federal due dates set for 2026-11-16.",
+   "actions": [
+    "Patch UnrealIRCd and Check Point systems immediately.",
+    "Disable world-writable sockets on Gaia OS DynamicCLI daemons.",
+    "Verify server-to-server communication protocols."
+   ]
+  },
+  {
+   "finding_ids": [
+    "F1"
+   ],
+   "headline": "KeyHunter Operation Targets Academic Credentials",
+   "why_it_matters": "The KeyHunter actor harvested 2,233 API keys from misconfigured cloud infrastructure and created fraudulent student accounts at major universities.",
+   "actions": [
+    "Audit cloud configurations for exposed API keys on Vercel, Netlify, and Railway.",
+    "Enable multi-factor authentication for all administrative accounts.",
+    "Monitor for unauthorized student account creation."
+   ]
+  },
+  {
+   "finding_ids": [
+    "F2"
+   ],
+   "headline": "Opportunistic Scanning of AI Development Platforms",
+   "why_it_matters": "Attackers are scanning Langflow and other AI platforms for unauthenticated remote code execution vulnerabilities to harvest cloud credentials and model API keys.",
+   "actions": [
+    "Patch identified CVEs in AI development platforms.",
+    "Implement network segmentation for AI/ML tools.",
+    "Monitor for probing activity on application-building platforms."
+   ]
+  }
+ ],
+ "trends": "AI-driven automation is converging with traditional attack vectors to target education and critical infrastructure.",
+ "education_asean_watch": "The BOSSAI campaign [F3] confirmed breaches involving student data from Thai universities, indicating active targeting of the ASEAN region's educational sector alongside Taiwan and Mexico.",
+ "confidence_note": "Data is limited to AlienVault OTX and HexBrief reports; specific victim institutions in Malaysia are not identified in these findings."
+}
