@@ -229,5 +229,74 @@ def opencti_recent(hours: int = typer.Option(24, help="Window in hours (by updat
         typer.echo(f"  {n:>6}  {author}")
 
 
+@app.command("run")
+def run_brief(
+    date: str = typer.Option("today", help="'today' (now) or YYYY-MM-DD (window ends 07:00 MYT)"),
+    hours: int = typer.Option(24, help="Window length in hours"),
+    top: int = typer.Option(8, help="Findings sent to the LLM"),
+    no_llm: bool = typer.Option(False, "--no-llm", help="Facts-only brief, no model"),
+    out: Path = typer.Option(Path("out"), help="Output root (git-ignored)"),
+) -> None:
+    """Build today's brief: collect, score, write (local LLM), validate, render."""
+    import logging
+    from datetime import UTC, datetime
+    from zoneinfo import ZoneInfo
+
+    from hexbrief.engine import run, write_outputs
+    from hexbrief.llm.client import OllamaWriter
+    from hexbrief.pipeline import build_collectors
+
+    logging.basicConfig(level=logging.WARNING, format="%(levelname)s %(name)s: %(message)s")
+    _load_env_file()
+    if date == "today":
+        now = datetime.now(UTC)
+    else:
+        day = datetime.strptime(date, "%Y-%m-%d").replace(
+            hour=7, tzinfo=ZoneInfo("Asia/Kuala_Lumpur")
+        )
+        now = day.astimezone(UTC)
+    collectors, enrich = build_collectors()
+    host = os.environ.get("OLLAMA_HOST", "http://127.0.0.1:11434")
+    writer = fallback = None
+    if not no_llm:
+        writer = OllamaWriter(os.environ.get("OLLAMA_MODEL", "qwen3.5:4b"), host=host)
+        fb = os.environ.get("OLLAMA_FALLBACK_MODEL")
+        fallback = OllamaWriter(fb, host=host) if fb else None
+    try:
+        result = run(
+            collectors,
+            now=now,
+            hours=hours,
+            top_n=top,
+            writer=writer,
+            fallback_writer=fallback,
+            enrich=enrich,
+        )
+    finally:
+        for w in (writer, fallback):
+            if w is not None:
+                w.close()
+    paths = write_outputs(result, out / result.day, Path("runs"))
+    rl = result.run_log
+    for name, s in rl["sources"].items():
+        status = f"{s['findings']} findings" if s.get("ok") else f"FAILED ({s.get('error')})"
+        typer.echo(f"  source {name:9} {status}")
+    typer.echo(
+        f"findings {rl['findings_in']} -> {rl['after_dedupe']} after dedupe; "
+        f"top {len(result.top)} to the LLM"
+    )
+    llm = rl["llm"]
+    typer.echo(
+        f"LLM: {'validated narrative' if result.llm_ok else 'FACTS-ONLY fallback'} "
+        f"after {len(llm['attempts'])} attempt(s); first try "
+        f"{'passed' if llm['first_try_pass'] else 'failed'}"
+    )
+    typer.echo(
+        f"TLP {result.tlp}; STIX valid: {rl.get('stix_valid')}; runtime {rl['runtime_seconds']}s"
+    )
+    for k, p in paths.items():
+        typer.echo(f"  {k:6} {p}")
+
+
 if __name__ == "__main__":  # pragma: no cover
     app()
