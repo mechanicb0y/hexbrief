@@ -2,29 +2,43 @@
 
 _Any new session reads this first._
 
-## Current phase
-**Phase 2 — MISP** (branch `phase-2-misp`). Resumed 2026-11-15.
+## Mode
+**Autonomy mode** (owner's standing orders, 2026-11-15, until v1.0.0). Decide, record in one line, keep going. Report once per phase. Merge own PRs when green and reviewed. Stop only for owner-only actions.
 
-## Next
-- Phase 2 checkpoint passed 2026-11-15: owner changed the admin password (ADMIN_PASSWORD removed from `.env.misp`), owner's `fresh_only()` (b10333a) reviewed, 3 questions answered (with help). PR #4 merged.
-- **Phase 3 — OpenCTI** next. MISP runs on demand: `scripts\misp-up.ps1` (~7 min) / `scripts\misp-down.ps1` (never `down -v`).
+## Current phase
+**Phase 3 — OpenCTI** (branch `phase-3-opencti`).
+
+## Decisions log (one line each)
+- 2026-11-15: OpenCTI version = community `7.261109.3`, not LTS. LTS needs a paid license (ADR-004).
+- 2026-11-15: PyMISP pinned to 2.5.34.1 so it shares `requests<2.34` with pycti (ADR-004).
+- 2026-11-15: abuse.ch via public *recent* CSV exports in OpenCTI connectors, so no Auth-Key goes into a URL (ADR-004).
+- 2026-11-15: The OpenCTI collector uses a dedicated read-only user/token. The admin token is used for setup only.
+- 2026-11-15: MISP lab cert re-issued with a `host.docker.internal` SAN so the MISP connector verifies TLS.
+- 2026-11-15: OpenCTI dashboard screenshot moved to Phase 8 (README visuals pass) to avoid scripted logins now.
+- 2026-11-15: abuse.ch retired its anonymous CSV exports (410), so ThreatFox/URLhaus come in through our own API importer with a least-privilege importer user (confidence ≤ 50).
+- 2026-11-15: MISP→OpenCTI connector runs in a deliberate `-WithMisp` session (RAM). First run scheduled with Phase 7's daily job.
+- 2026-11-15: Phase 3 done-criteria met: OpenCTI holds data from 5 sources (MITRE, CISA KEV, AlienVault OTX, abuse.ch, HexBrief via TAXII2/medallion) with ATT&CK links.
 
 ## Done
-- 2026-11-14: Hardware check done (owner ran it). Standard path chosen, see [ADR-001](adr/001-hardware-path.md).
-- 2026-11-14: Repo skeleton, Docker disk on D:, `.wslconfig` (14 GB/8 CPU; `vm.max_map_count` runtime fix, see TROUBLESHOOTING), Ollama models on D: (old C: copy kept until the owner says), gh + gitleaks + pre-commit.
-- 2026-11-14: **Phase 0 merged** (PR #1). Issue #2 open (check-env unclosed quote, fix in Phase 7).
-- 2026-11-14: **Phase 1 merged** (PR #3): stixkit (httpx TAXII 2.1 client, TLP 2.0 markings, validated bundles), medallion on 127.0.0.1:5000, owner's `summarize_attack()`. Enterprise ATT&CK cached in `data/attack/` (26,699 objects).
-- 2026-11-14: Phase 2 so far (ADR-003):
-  - misp-docker pinned to `2efbdce`, images MISP v2.5.51 / modules v3.1.4, HTTPS on 127.0.0.1:8443 only, generated secrets in `docker\misp\.env.misp`, `misp-up.ps1` / `misp-down.ps1`.
-  - Lab CA + server cert (`docker\misp\upstream\ssl\ca.pem`), so TLS is verified. The CA key was discarded.
-  - PyMISP pinned to 2.5.34.4 (3.0.0 targets MISP 3.0).
-  - 225 warninglists enabled. CIRCL OSINT + Botvrij fully fetched on 2026-11-15: 2,112 events, 615,190 attributes, DB 1.44 GB (no limit needed). Daily fetch/cache interval set (MISP's scheduler, while MISP runs; Phase 7 starts it daily).
-  - The collector now flags warninglist hits instead of using `enforceWarninglist`, which broke paging (see TROUBLESHOOTING).
-  - Read-only `automation@hexbrief.lab`; its key is in `.env` (`MISP_API_KEY`, never printed).
-  - `collectors/misp.py` + `hexbrief misp recent|stix`; 50 tests green.
+- 2026-11-14: Hardware check, Standard path ([ADR-001](adr/001-hardware-path.md)). Docker disk on D:, `.wslconfig` (14 GB/8 CPU), Ollama models on D: (old C: copy kept until the owner says).
+- 2026-11-14: **Phase 0 merged** (PR #1). Issue #2 open (check-env unclosed quote → Phase 7).
+- 2026-11-14: **Phase 1 merged** (PR #3): stixkit, medallion on 127.0.0.1:5000, Enterprise ATT&CK cached in `data/attack/`.
+- 2026-11-15: **Phase 2 merged** (PR #4): MISP v2.5.51 on 127.0.0.1:8443 (on demand), lab CA, 2,112 feed events / 615k attributes, read-only MISP collector.
+- 2026-11-15: Phase 3 so far:
+  - Trimmed OpenCTI compose on 127.0.0.1:8088 with generated secrets, `opencti-up.ps1` / `opencti-down.ps1` (ADR-004).
+  - Connectors running: MITRE, CISA KEV, OTX, ThreatFox, URLhaus; MISP/TAXII2 run on demand.
+  - `scripts/opencti_setup.py`: label `hexbrief`, TAXII collection `daily-briefs`, read-only reader + 365-day token in `.env`.
+  - `collectors/opencti.py` + `hexbrief opencti recent`.
+
+## Next
+- Phase 4 — local LLM benchmark (Ollama; 4 GB VRAM).
 
 ## Notes for Phase 5
-- `publish_timestamp` is when **our** MISP published an event, so a feed fetch makes 2015 events look new. The daily window must also check the source timestamp/date.
+- `publish_timestamp` is when **our** MISP published an event, so a feed fetch makes 2015 events look new. Use the attribute's own timestamp/first_seen (`fresh_only`).
+- OpenCTI window uses `updated_at`.
+
+## Owner-only items pending
+- Add the "Autonomy mode" section to CLAUDE.md (my edit was blocked by the auto-mode safety check).
 
 ## Blockers
 - None.

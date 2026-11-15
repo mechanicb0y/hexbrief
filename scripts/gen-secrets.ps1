@@ -57,7 +57,16 @@ $generators = [ordered]@{
     'ENCRYPTION_KEY'      = { New-Alnum 32 }
     'GPG_PASSPHRASE'      = { New-Alnum 32 }
     'SUPERVISOR_PASSWORD' = { New-Alnum 32 }
+    # OpenCTI (docker/opencti/.env.opencti)
+    'OPENCTI_ADMIN_PASSWORD'         = { (New-Alnum 20) + '-' + (New-Secret 12) }
+    'OPENCTI_ADMIN_TOKEN'            = { [guid]::NewGuid().ToString() }
+    'OPENCTI_ENCRYPTION_KEY'         = { $b = New-Object byte[] 32; $r = [System.Security.Cryptography.RandomNumberGenerator]::Create(); try { $r.GetBytes($b) } finally { $r.Dispose() }; [Convert]::ToBase64String($b) }
+    'OPENCTI_HEALTHCHECK_ACCESS_KEY' = { New-Alnum 32 }
+    'MINIO_ROOT_PASSWORD'            = { New-Alnum 32 }
+    'RABBITMQ_DEFAULT_PASS'          = { New-Alnum 32 }
 }
+# Connector ids: any CONNECTOR_*_ID gets a fresh UUIDv4 (kept afterwards).
+$uuidKey = '^CONNECTOR_[A-Z0-9_]+_ID$'
 
 $fullPath = (Resolve-Path -LiteralPath $Path).Path
 $lines = [System.IO.File]::ReadAllLines($fullPath)
@@ -66,10 +75,12 @@ for ($i = 0; $i -lt $lines.Count; $i++) {
     $parts = $lines[$i] -split '=', 2
     if ($parts.Count -lt 2) { continue }
     $key = $parts[0].Trim()
-    if (-not $generators.Contains($key)) { continue }
+    $isUuid = $key -match $uuidKey
+    if (-not $isUuid -and -not $generators.Contains($key)) { continue }
     $value = ($parts[1] -replace '(^|\s)#.*$', '').Trim().Trim('"')
     if ($value -eq '' -or $value -eq '__replace_me__') {
-        $lines[$i] = "$key=" + (& $generators[$key])
+        $new = if ($isUuid) { [guid]::NewGuid().ToString() } else { & $generators[$key] }
+        $lines[$i] = "$key=$new"
         $changed += $key
     }
 }
