@@ -226,16 +226,21 @@ def write_outputs(result: BriefResult, out_dir: Path, runs_dir: Path) -> dict[st
     }
     paths["md"].write_text(md, encoding="utf-8")
     paths["html"].write_text(to_html(result), encoding="utf-8")
+    # brief.json also carries lower-ranked findings, so its label must cover them too.
+    exported_others = result.others[:500]
+    json_tlp = max_tlp(result.tlp, *(f.tlp for f in exported_others))
+    result.run_log["json_tlp"] = json_tlp
     paths["json"].write_text(
         json.dumps(
             {
                 "day": result.day,
-                "tlp": result.tlp,
+                "tlp": json_tlp,
+                "tlp_top": result.tlp,
                 "llm_ok": result.llm_ok,
                 "window": [result.window_start, result.window_end],
                 "narrative": result.narrative,
                 "top": [finding_json(f, fid) for fid, f in result.top],
-                "others": [finding_json(f) for f in result.others[:500]],
+                "others": [finding_json(f) for f in exported_others],
             },
             indent=1,
             ensure_ascii=False,

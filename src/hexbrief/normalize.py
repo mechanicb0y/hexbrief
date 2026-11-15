@@ -213,8 +213,11 @@ def from_misp(window: Any) -> list[Finding]:
         iocs, wl = [], 0
         for a in attrs:
             t = kind_map.get(str(a.get("type")))
+            value = str(a.get("value"))
+            if t == "ipv4" and ":" in value:
+                t = "ipv6"  # MISP uses ip-dst/ip-src for both families
             if t:
-                iocs.append(Ioc(t, str(a.get("value"))))
+                iocs.append(Ioc(t, value))
             wl += bool(a.get("warnings"))
         tags = {str(t.get("name", "")).lower() for t in ev.get("Tag") or []}
         tlp = next((t.upper() for t in tags if t.startswith("tlp:")), "tlp:clear").upper()
@@ -231,7 +234,7 @@ def from_misp(window: Any) -> list[Finding]:
                 iocs=sorted(set(iocs))[:200],
                 warninglist_hits=wl,
                 attack_ids={
-                    t.split("=")[-1].strip('"').split(" - ")[-1]
+                    t.split("=")[-1].strip('"').split(" - ")[-1].upper()  # tags were lowercased
                     for t in tags
                     if "mitre-attack-pattern" in t and " - t" in t
                 },

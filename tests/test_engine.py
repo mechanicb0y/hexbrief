@@ -170,6 +170,38 @@ def test_outputs_defanged_for_humans_real_for_machines(tmp_path: Path) -> None:
     assert "Narrative written by a local AI model" in md
 
 
+def test_markdown_neutralises_injected_links_and_html(tmp_path: Path) -> None:
+    evil = report_finding()
+    evil.title = "Click [here](javascript:alert(1)) <img src=x onerror=alert(1)> | # fake"
+    cols = {"opencti": lambda now, h: [evil]}
+    res = run(cols, now=NOW, writer=None)
+    md = write_outputs(res, tmp_path / "o", tmp_path / "r")["md"].read_text("utf-8")
+    assert "](javascript:" not in md and "<img" not in md
+    html = (tmp_path / "o" / "brief.html").read_text("utf-8")
+    assert "<img src=x" not in html
+
+
+def test_json_label_covers_lower_ranked_findings(tmp_path: Path) -> None:
+    amber = cluster_finding()
+    amber.tlp = "TLP:AMBER"
+    amber.confidence = 1
+    cols = {"kev": lambda now, h: [kev_finding()], "x": lambda now, h: [amber]}
+    res = run(cols, now=NOW, writer=None, top_n=1)
+    assert res.tlp == "TLP:CLEAR"
+    data = json.loads(write_outputs(res, tmp_path / "o", tmp_path / "r")["json"].read_text())
+    assert data["tlp"] == "TLP:AMBER" and data["tlp_top"] == "TLP:CLEAR"
+
+
+def test_kev_table_survives_merge_into_report(tmp_path: Path) -> None:
+    kev = kev_finding()
+    kev.kev_new = {"CVE-2026-20001": "VPN RCE"}
+    cols = {"kev": lambda now, h: [kev], "opencti": lambda now, h: [report_finding()]}
+    res = run(cols, now=NOW, writer=None)
+    assert res.run_log["after_dedupe"] == 1
+    md = write_outputs(res, tmp_path / "o", tmp_path / "r")["md"].read_text("utf-8")
+    assert "| CVE-2026-20001 | VPN RCE |" in md
+
+
 def test_facts_only_without_llm(tmp_path: Path) -> None:
     res = run(COLLECTORS, now=NOW, writer=None)
     assert not res.llm_ok
