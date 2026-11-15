@@ -5,10 +5,9 @@ _Any new session reads this first._
 ## Current phase
 **Phase 2 — MISP** (branch `phase-2-misp`). Resumed 2026-11-15.
 
-## Next (Phase 2)
-- [ ] Owner: log in at https://127.0.0.1:8443 and change the admin password (if not done)
-- [ ] Owner's task + 3 questions, checkpoint, PR
-- When done for the day: `scripts\misp-down.ps1` (never `down -v`). Start: `scripts\misp-up.ps1` (~7 min on Windows).
+## Next
+- Phase 2 checkpoint passed 2026-11-15: owner changed the admin password (ADMIN_PASSWORD removed from `.env.misp`), owner's `fresh_only()` (b10333a) reviewed, 3 questions answered (with help). PR #4 merged.
+- **Phase 3 — OpenCTI** next. MISP runs on demand: `scripts\misp-up.ps1` (~7 min) / `scripts\misp-down.ps1` (never `down -v`).
 
 ## Done
 - 2026-11-14: Hardware check done (owner ran it). Standard path chosen, see [ADR-001](adr/001-hardware-path.md).
