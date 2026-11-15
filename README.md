@@ -2,7 +2,7 @@
 
 > A self-updating threat-intel brief: public feeds in over STIX/TAXII, correlated in MISP and OpenCTI, written up each morning by a **local** LLM, and fact-checked so it never invents an indicator.
 
-**Status:** Phase 2 (MISP). See [docs/PROGRESS.md](docs/PROGRESS.md).
+**Status:** Phase 3 (OpenCTI). See [docs/PROGRESS.md](docs/PROGRESS.md).
 
 <!-- Demo GIF and link to today's sample brief go here (Phase 8). -->
 
@@ -50,6 +50,18 @@ scripts\misp-down.ps1                     # stop; data is kept
 
 The collector uses a **read-only** MISP user. Warninglist hits are flagged for scoring, not silently dropped.
 
+## OpenCTI (knowledge graph)
+
+OpenCTI community `7.261109.3` in a trimmed, pinned compose ([ADR-004](docs/adr/004-opencti-deployment.md)). The UI is on 127.0.0.1:8088 only, and backing services are not published. Connectors: MITRE ATT&CK, CISA KEV and AlienVault OTX, plus MISP and TAXII2 on demand. abuse.ch ThreatFox + URLhaus come in through HexBrief's own API importer, because abuse.ch retired the CSV exports the official connectors use.
+
+```powershell
+scripts\opencti-up.ps1                 # stops MISP first; -WithMisp / -WithTaxii add those connectors
+python scripts\opencti_setup.py        # once: label, `daily-briefs` TAXII collection, read-only token
+python scripts\abusech_import.py       # ThreatFox + URLhaus via API (Auth-Key in a header)
+hexbrief opencti recent --hours 24     # counts by type and author (read-only user)
+scripts\opencti-down.ps1               # stop; data is kept
+```
+
 ## How the brief stays truthful
 
 _Phase 5._
@@ -67,6 +79,7 @@ _Phase 5._
 - [ADR-001: Hardware path and lab sizing](docs/adr/001-hardware-path.md)
 - [ADR-002: TAXII tooling (own client, pinned medallion)](docs/adr/002-taxii-tooling.md)
 - [ADR-003: MISP deployment, PyMISP pin and feeds](docs/adr/003-misp-deployment.md)
+- [ADR-004: OpenCTI deployment, version and connectors](docs/adr/004-opencti-deployment.md)
 
 ## License
 
