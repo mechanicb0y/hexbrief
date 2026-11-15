@@ -68,7 +68,13 @@ class OpenCTIWindow:
 
 def connect(url: str, token: str, verify: bool | str = True, timeout: int = 120) -> OpenCTIReader:
     """Create a pycti client. It runs a health check against the platform at once."""
-    from pycti import OpenCTIApiClient  # lazy: unit tests don't need a server
+    import os
+
+    from pycti import OpenCTIApiClient
+
+    os.environ.setdefault(
+        "OPENCTI_TLS_REJECT_UNAUTHORIZED", "true"
+    )  # opt in to TLS checks  # lazy: unit tests don't need a server
 
     return OpenCTIApiClient(  # type: ignore[no-any-return]
         url, token, log_level="error", ssl_verify=verify, requests_timeout=timeout
