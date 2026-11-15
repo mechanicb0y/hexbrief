@@ -1,0 +1,4967 @@
+{
+ "meta": {
+  "recorded_from": "2026-11-15",
+  "now": "2026-11-15 22:52"
+ },
+ "findings": [
+  {
+   "key": "report--456e0480-885d-5360-95d1-d391d18d34be",
+   "kind": "report",
+   "title": "KeyHunter Operation: Harvard Alumni Data, Stanford Applications and LLM Key Theft",
+   "summary": "A Chinese-speaking threat actor identified as leepsmarts conducted a multi-vector operation combining LLM API credential theft with academic fraud targeting 20 universities. The campaign harvested 2,233 API keys from misconfigured cloud infrastructure across platforms like Vercel, Netlify, and Railway, with 12 marked valid. The actor created fraudulent student accounts at institutions including NYU, UC Berkeley, and Oregon State, while processing 195 Harvard alumni records from a torrent-distributed dataset. The operation employed AI agent frameworks through Telegram bots for automated scanning, validation, and account creation. Parallel financial fraud activities included a Harmony ONE cryptocurrency drainer capturing victim seed phrases and credit card validation using stolen Stripe merchant keys. Infrastructure spanning China, South Korea, Malaysia, and the US was discovered through an exposed directory listing revealing tools, scripts, and operational logs dating back to January 2026.",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://socradar.io/blog/keyhunter-operation-harvard-alumni-stanford-llm-key-data/",
+    "https://otx.alienvault.com/pulse/6aeb40b4e681d29bd1496aac"
+   ],
+   "first_seen": "2026-11-04T14:27:00.647000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "domain",
+     "value": "juanwangccbotgithubgithub.com"
+    },
+    {
+     "type": "ipv4",
+     "value": "14.47.118.194"
+    },
+    {
+     "type": "ipv4",
+     "value": "190.114.197.2"
+    },
+    {
+     "type": "ipv4",
+     "value": "46.39.24.98"
+    }
+   ],
+   "cves": [
+    "CVE-2026-41940"
+   ],
+   "attack_ids": [],
+   "malware": [],
+   "actors": [
+    "leepsmarts"
+   ],
+   "sectors": [
+    "education",
+    "finance"
+   ],
+   "countries": [
+    "Argentina",
+    "France",
+    "Germany",
+    "Netherlands",
+    "Pakistan",
+    "Russian Federation",
+    "Saudi Arabia",
+    "South Africa",
+    "United Arab Emirates",
+    "United States of America",
+    "Uzbekistan"
+   ],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": true,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--456e0480-885d-5360-95d1-d391d18d34be"
+   ]
+  },
+  {
+   "key": "report--0aaffaa8-e736-5e1a-b019-2d9424aadf53",
+   "kind": "report",
+   "title": "Attackers Target AI Development Platform Langflow",
+   "summary": "In September 2026, F5 Labs detected 405 exploitation attempts targeting CVE-2026-0768, an unauthenticated remote code execution vulnerability in Langflow AI application-building platform, originating from 55 distinct IP addresses. This marks the first observation of an AI/ML development platform RCE in opportunistic internet-wide scanning. Captured payloads included capability probing with unique markers, timing-based execution checks, and environment harvesting attempts aimed at extracting cloud credentials, model API keys, and database secrets. Activity came primarily from two infrastructure clusters: Google Cloud hosts using environment-harvesting payloads with forged AI-crawler User-Agents, and European scanning subnets employing marker-based capability probing with spoofed localhost headers. The vulnerability, disclosed in January 2026, allows Python code injection through decorator and default-argument evaluation on the validation endpoint without authentication, enabling arbitrary code execution wit...",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://www.f5.com/labs/articles/attackers-target-ai-development-platform-langflow",
+    "https://otx.alienvault.com/pulse/6ac5f1632c72bc95740deede",
+    "https://www.fortinet.com/blog/threat-research/clingstun-linux-backdoor-abuses-public-stun-infrastructure",
+    "https://otx.alienvault.com/pulse/6ac4285a7c6e1cd492e8b2cf",
+    "https://www.nozominetworks.com/blog/a-stunning-disguise-cling-malware-masquerades-as-google-",
+    "https://otx.alienvault.com/pulse/6ac368846173b592a85473db",
+    "https://otx.alienvault.com/pulse/6ae4c9f97b4e07a268c06b96",
+    "https://hunt.io/blog/php2shell-honeypot-shells-root-palo-alto-firewalls",
+    "https://otx.alienvault.com/pulse/6ae9eb16f9bae7d0faed8d7a",
+    "https://blog.polyswarm.io/yoba-malware-campaign-abuses-signed-ai-applications-to-evade-detection",
+    "https://otx.alienvault.com/pulse/6aec5fe9d7ff10f7065a9f18",
+    "https://securelist.com/storm-2603-fileless-toolshell-attack/121467/",
+    "https://securityscorecard.com/blog/a-dish-served-lukewarm-the-refrigerator-botnet/",
+    "https://otx.alienvault.com/pulse/6aed32c8b1c53b811aaa8bb0",
+    "https://otx.alienvault.com/pulse/6aedb6df481d077141e5e5e4",
+    "https://www.esentire.com/blog/remcos-rat"
+   ],
+   "first_seen": "2026-10-05T09:06:12.599000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "sha256",
+     "value": "10d83c1748895361e07320f68d44d427b43cadd2cbffe0ab5e607ab03aec83da"
+    },
+    {
+     "type": "sha256",
+     "value": "121f2050e3c891b29565fd73451fff7ae60199c86eb8d79ec1eb1d9844578487"
+    },
+    {
+     "type": "sha256",
+     "value": "284e5ec8748f99fd1b8c331b699a5fe5fd4448bbaae0347a940f427f931c4d14"
+    },
+    {
+     "type": "sha256",
+     "value": "2ed54e0f988a62039abed88f6394eb1e3d5ed931f0183556055417fb08844ecf"
+    },
+    {
+     "type": "sha256",
+     "value": "48962b3893f2c8261e32e6b95ea7d463d145a529a8b2a6c987dd979454405c73"
+    },
+    {
+     "type": "sha256",
+     "value": "48f9b72ce72ab7087794650d6eef10135345088384fbde1482f1c74a02b80302"
+    },
+    {
+     "type": "sha256",
+     "value": "4fbd61cb9181ebbc4fe9a6e59d3c346dc00001da48d66bd890556fc6fad22b07"
+    },
+    {
+     "type": "sha256",
+     "value": "5c4e263546fb21f8fe8732789a5b6583eaa8ae11ebeef099462a7c9bf50e022d"
+    },
+    {
+     "type": "sha256",
+     "value": "6581bf37184bb2db899b9893064d39dd314ea691adf3281cc0aa7e0a31e5138a"
+    },
+    {
+     "type": "sha256",
+     "value": "76692a23abe718b93e63edefd743971ec627c0cdf3778f856bd5ec88003deaa2"
+    },
+    {
+     "type": "sha256",
+     "value": "9391c6ad17aced1142607c0c623b18d86a7697cc483d204ffac94093e26b8068"
+    },
+    {
+     "type": "sha256",
+     "value": "a297eddfa7abea8d411afc0f150f8f6f30e470a77204de87e3b0815fa9bb8a84"
+    },
+    {
+     "type": "sha256",
+     "value": "b90640b392827b4f2d280f6cf67860862953331917d42df23e1653a92f2f98ad"
+    },
+    {
+     "type": "sha256",
+     "value": "c0d8ffebfba969b1c1ca76bd9623bb623e9f95155c8ceca77d8fcc521435a497"
+    },
+    {
+     "type": "sha256",
+     "value": "c1d8e2829ea63b9dc1cf2c3421a5093406adad4d6622e238376e78e908e0e6e8"
+    },
+    {
+     "type": "sha256",
+     "value": "dc892f5013edb0aa1e61e808511387373d8d120348b5be0929621d21e6e9946a"
+    },
+    {
+     "type": "sha256",
+     "value": "dfba6008a2c828a9cb62342aec53006ae05a60cb8d4c41c3fa216fd727e8c6a3"
+    },
+    {
+     "type": "sha256",
+     "value": "e4d12208789f36efc5a1ff765088fed95d6bb5972d1a804a4536fd42366797d4"
+    },
+    {
+     "type": "sha256",
+     "value": "e6e113783356446aef66e5296db45b244f318292af7cebc2a9bd76f095a95c4c"
+    },
+    {
+     "type": "sha256",
+     "value": "ec199c78c11040fd3127887222fd75a85e5797bf96aa691a117fdd83dd663d81"
+    },
+    {
+     "type": "sha256",
+     "value": "f49f45303cbfccee14ff193ac9608f860e6d616f08c0ecbef1ec44f7c863d7ec"
+    },
+    {
+     "type": "sha256",
+     "value": "3a6927a3399f2a10bb2e2229482e5096e5f1c3401a87f7f1730db11243531e28"
+    },
+    {
+     "type": "sha256",
+     "value": "90d738a8d650e3fefda9d7efa4baa11bd89ab05fcf0eb173e04aa01a52b465e2"
+    },
+    {
+     "type": "ipv4",
+     "value": "130.12.180.89"
+    },
+    {
+     "type": "ipv4",
+     "value": "130.94.67.235"
+    },
+    {
+     "type": "ipv4",
+     "value": "198.41.83.165"
+    },
+    {
+     "type": "ipv4",
+     "value": "198.41.83.174"
+    },
+    {
+     "type": "ipv4",
+     "value": "2.59.133.151"
+    },
+    {
+     "type": "ipv4",
+     "value": "23.27.25.75"
+    },
+    {
+     "type": "ipv4",
+     "value": "38.60.136.217"
+    },
+    {
+     "type": "ipv4",
+     "value": "45.39.190.176"
+    },
+    {
+     "type": "ipv4",
+     "value": "96.126.130.81"
+    },
+    {
+     "type": "sha256",
+     "value": "1c93ea48fa7ff886a6d81e44869dd7962309e95d01c1561df362b0b18007a562"
+    },
+    {
+     "type": "sha256",
+     "value": "2d692ee6dcb41c249c55881897b7dec0550b92963e07fccdb11ad655601977c3"
+    },
+    {
+     "type": "sha256",
+     "value": "4a1502affa36d106d5374bf02cf777956eef651176ec8964b26ff90f103dd506"
+    },
+    {
+     "type": "sha256",
+     "value": "535b9e298defd3449ba2b10b9828925d3ce344872dcbd9470c0e8db20f0aae83"
+    },
+    {
+     "type": "sha256",
+     "value": "5e99d6023dce9bb18d845a37fcdbc7ea574fdb20ab8d888ec54c695382d46036"
+    },
+    {
+     "type": "sha256",
+     "value": "66bcbc8c2b9d847a1e976e57972e10eac98e9b894cbf30510bff1e8d63efb81f"
+    },
+    {
+     "type": "sha256",
+     "value": "6f84cc354b785157983efa8f4b674d2e1d6c3331017f29ff8d51bc43668d4b0f"
+    },
+    {
+     "type": "sha256",
+     "value": "9c15dc5a510bf2e8a16c846e61fa35c50ef733b72d4e47b6e8307498a398443c"
+    }
+   ],
+   "cves": [
+    "CVE-2014-8361",
+    "CVE-2016-10372",
+    "CVE-2016-20016",
+    "CVE-2016-4800",
+    "CVE-2017-7921",
+    "CVE-2017-9841",
+    "CVE-2018-14028",
+    "CVE-2018-20062",
+    "CVE-2019-17621",
+    "CVE-2019-7256",
+    "CVE-2020-15505",
+    "CVE-2021-21974",
+    "CVE-2021-26855",
+    "CVE-2021-33044",
+    "CVE-2021-34523",
+    "CVE-2021-3493",
+    "CVE-2021-35394",
+    "CVE-2021-36380",
+    "CVE-2021-4034",
+    "CVE-2022-21894",
+    "CVE-2022-26134",
+    "CVE-2022-26289",
+    "CVE-2022-30190",
+    "CVE-2022-31199",
+    "CVE-2022-35555",
+    "CVE-2022-36553",
+    "CVE-2022-37055",
+    "CVE-2022-41082",
+    "CVE-2022-47986",
+    "CVE-2023-1389",
+    "CVE-2023-22518",
+    "CVE-2023-26801",
+    "CVE-2023-2868",
+    "CVE-2023-34362",
+    "CVE-2023-36025",
+    "CVE-2023-41011",
+    "CVE-2023-46604",
+    "CVE-2023-46805",
+    "CVE-2024-10914",
+    "CVE-2024-10915",
+    "CVE-2024-21412",
+    "CVE-2024-21887",
+    "CVE-2024-23624",
+    "CVE-2024-23625",
+    "CVE-2024-32281",
+    "CVE-2024-32292",
+    "CVE-2024-32314",
+    "CVE-2024-3400",
+    "CVE-2024-35340",
+    "CVE-2024-3721",
+    "CVE-2024-40766",
+    "CVE-2024-44000",
+    "CVE-2024-4577",
+    "CVE-2024-46048",
+    "CVE-2024-7029",
+    "CVE-2024-7344",
+    "CVE-2025-0994",
+    "CVE-2025-21042",
+    "CVE-2025-29927",
+    "CVE-2025-3248",
+    "CVE-2025-34035",
+    "CVE-2025-34037",
+    "CVE-2025-49704",
+    "CVE-2025-49706",
+    "CVE-2025-53770",
+    "CVE-2025-53771",
+    "CVE-2025-55182",
+    "CVE-2025-55184",
+    "CVE-2025-6264",
+    "CVE-2025-67038",
+    "CVE-2026-0768",
+    "CVE-2026-109618",
+    "CVE-2026-109619",
+    "CVE-2026-115560",
+    "CVE-2026-21509",
+    "CVE-2026-25085",
+    "CVE-2026-36356",
+    "CVE-2026-4020",
+    "CVE-2026-46300",
+    "CVE-2026-87827"
+   ],
+   "attack_ids": [
+    "T1016",
+    "T1018",
+    "T1021",
+    "T1021.004",
+    "T1027",
+    "T1027.004",
+    "T1033",
+    "T1036",
+    "T1036.004",
+    "T1037",
+    "T1040",
+    "T1046",
+    "T1048",
+    "T1049",
+    "T1053.005",
+    "T1053.006",
+    "T1055",
+    "T1056.001",
+    "T1057",
+    "T1059",
+    "T1059.001",
+    "T1059.004",
+    "T1059.005",
+    "T1059.006",
+    "T1068",
+    "T1070",
+    "T1070.002",
+    "T1070.003",
+    "T1070.004",
+    "T1070.006",
+    "T1071",
+    "T1071.001",
+    "T1071.003",
+    "T1071.004",
+    "T1078",
+    "T1082",
+    "T1083",
+    "T1090",
+    "T1090.002",
+    "T1090.003",
+    "T1095",
+    "T1102",
+    "T1105",
+    "T1106",
+    "T1113",
+    "T1132.001",
+    "T1133",
+    "T1134",
+    "T1136",
+    "T1140",
+    "T1189",
+    "T1190",
+    "T1203",
+    "T1204",
+    "T1204.002",
+    "T1219",
+    "T1486",
+    "T1489",
+    "T1496",
+    "T1497.001",
+    "T1497.003",
+    "T1498",
+    "T1498.001",
+    "T1505",
+    "T1505.003",
+    "T1543.002",
+    "T1543.003",
+    "T1548",
+    "T1548.001",
+    "T1552",
+    "T1552.001",
+    "T1553",
+    "T1562",
+    "T1562.001",
+    "T1566.001",
+    "T1566.002",
+    "T1568.002",
+    "T1571",
+    "T1572",
+    "T1573",
+    "T1573.001",
+    "T1574",
+    "T1574.002",
+    "T1590",
+    "T1595",
+    "T1595.002"
+   ],
+   "malware": [
+    "Cling",
+    "ClingSTUN",
+    "Remcos",
+    "Warlock",
+    "XMRIG",
+    "YobaDropper",
+    "YobaLoader"
+   ],
+   "actors": [
+    "Storm-2603"
+   ],
+   "sectors": [
+    "education",
+    "finance",
+    "government",
+    "retail",
+    "technology",
+    "telecommunications"
+   ],
+   "countries": [
+    "Argentina",
+    "Belgium",
+    "Estonia",
+    "Finland",
+    "France",
+    "Hungary",
+    "Ireland",
+    "Italy",
+    "Kazakhstan",
+    "Luxembourg",
+    "Namibia",
+    "Philippines",
+    "Russian Federation",
+    "South Africa",
+    "Sweden",
+    "United Kingdom of Great Britain and Northern Ireland"
+   ],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": true,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--0aaffaa8-e736-5e1a-b019-2d9424aadf53",
+    "report--84939abb-7e42-5919-9e3c-5bf20bf3305d",
+    "report--9222f9f6-98d6-5df4-bf97-cbc0b48a4a72",
+    "report--9dcddbbc-a98f-5a5a-80fe-e7e907702514",
+    "report--dd876bd0-7fd9-5605-a876-78dc35ef694f",
+    "report--e268266d-ab1c-5285-9957-5a1594c1cabb",
+    "report--231b9a7f-8579-5f88-af7f-f207d29fbb49",
+    "report--73660eec-9f7c-5c8c-9b6f-167a34d2812c"
+   ]
+  },
+  {
+   "key": "report--4a2b0878-ce69-5d99-9a57-4b615dbb2109",
+   "kind": "report",
+   "title": "BOSSAI: Inside the AI attack mesh that targeted Taiwan's emergency services",
+   "summary": "Acronis Threat Research Unit identified a single operator utilizing a mesh of 12 AI agents called BOSSAI to conduct persistent campaigns across 11 countries. The attacker deployed both abliterated and commercial AI models working in specialized roles - infrastructure builders, vulnerability scanners, and active exploitation agents. Primary targets included emergency services, universities, financial institutions, and government systems in Taiwan, Thailand, and Mexico. Confirmed breaches involved exfiltration of medical records from Taipei emergency services, student data from Thai universities, and collection of over 200,000 Mexican residential phone records. Commercial AI models repeatedly refused malicious instructions despite jailbreak attempts, forcing the operator to rely on less effective abliterated local models. The investigation exposed complete operational infrastructure including command histories, agent conversations, and victim data, revealing both the power and limitations of AI-augmented off...",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://otx.alienvault.com/pulse/6aeae4fe1c423d6e45143b77",
+    "https://www.acronis.com/en/tru/posts/bossai-inside-the-ai-attack-mesh-that-targeted-taiwans-emergency-services/"
+   ],
+   "first_seen": "2026-11-04T07:55:42.557000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "domain",
+     "value": "attacker-collector.com"
+    },
+    {
+     "type": "ipv4",
+     "value": "112.121.185.218"
+    },
+    {
+     "type": "ipv4",
+     "value": "156.240.109.26"
+    },
+    {
+     "type": "ipv4",
+     "value": "202.160.76.153"
+    },
+    {
+     "type": "ipv4",
+     "value": "202.160.76.154"
+    },
+    {
+     "type": "ipv4",
+     "value": "202.160.76.155"
+    },
+    {
+     "type": "ipv4",
+     "value": "202.160.76.156"
+    },
+    {
+     "type": "ipv4",
+     "value": "202.160.76.157"
+    },
+    {
+     "type": "ipv4",
+     "value": "202.160.76.174"
+    },
+    {
+     "type": "ipv4",
+     "value": "49.158.237.136"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [
+    "T1003",
+    "T1018",
+    "T1046",
+    "T1059",
+    "T1071",
+    "T1078",
+    "T1083",
+    "T1090",
+    "T1105",
+    "T1110",
+    "T1133",
+    "T1190",
+    "T1213",
+    "T1552",
+    "T1567",
+    "T1589",
+    "T1590",
+    "T1590.005",
+    "T1592",
+    "T1595"
+   ],
+   "malware": [],
+   "actors": [],
+   "sectors": [
+    "education",
+    "finance",
+    "government",
+    "healthcare",
+    "technology",
+    "telecommunications"
+   ],
+   "countries": [
+    "Australia",
+    "Canada",
+    "China",
+    "Honduras",
+    "Hong Kong",
+    "Indonesia",
+    "Japan",
+    "Mexico",
+    "Singapore",
+    "Sri Lanka",
+    "Taiwan",
+    "Thailand",
+    "United Kingdom of Great Britain and Northern Ireland",
+    "United States of America"
+   ],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--4a2b0878-ce69-5d99-9a57-4b615dbb2109"
+   ]
+  },
+  {
+   "key": "report--59449ef1-1777-5d2f-8291-2ca3f7bf669f",
+   "kind": "report",
+   "title": "HexBrief daily threat brief 2026-11-15",
+   "summary": "# HexBrief daily threat brief: 2026-11-15\n\n> **TLP:CLEAR**: may be shared publicly.\n> Window: 2026-11-14 22:24 → 2026-11-15 22:24 (Asia/Kuala_Lumpur). Generated 2026-11-15 22:24 MYT.\n\n## Bottom line up front\n\nToday's intelligence highlights a convergence of AI-driven automation in cyberattacks, with frameworks like BOSSAI and CyberStrikeAI targeting education sectors alongside critical infrastructure. Universities face dual threats from credential theft operations and sophisticated mobile malware campaigns exploiting supply chain compromises.\n\n## Top threats\n\n### 1. BOSSAI AI Mesh Targets Education and Emergency Services\n\n*Findings: [F3](#f3)*\n\nThe BOSSAI campaign utilizes a mesh of 12 AI agents to automate attacks against universities, exfiltrating student data alongside medical records from emergency services.\n\n**Recommended actions**\n- Monitor for the identified IOC domains and IP ranges associated with the attacker-collector infrastructure.\n- Review access controls for student databases and healthcare systems given the cross-sector targeting.\n- Deploy behavioral analysis tools to detect automated reconnaissance patterns.\n\n### 2. CyberStrikeAI Framework Targets Educational Institutions\n\n*Findings: [F6](#f6)*\n\nThis open-source framework combines LLM orchestration with traditional C2 servers to execute full attack chains against educational institutions in Africa and Latin America.\n\n**Recommended actions**\n- Block the identified fastcdn\\[.\\]bar domain and associated IP addre",
+   "sources": [
+    "HexBrief"
+   ],
+   "source_urls": [],
+   "first_seen": "2026-11-15T14:29:36+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--59449ef1-1777-5d2f-8291-2ca3f7bf669f"
+   ]
+  },
+  {
+   "key": "CVE-2026-114713",
+   "kind": "vulnerability",
+   "title": "CVE-2026-114713: UnrealIRCd Improper Neutralization of Delimiters Vulnerability",
+   "summary": "UnrealIRCd UnrealIRCd contains an improper neutralization of delimiters vulnerability that allows any user on a network with two or more linked servers to inject server-to-server commands that are executed with server authority. Added to CISA KEV on 2026-11-13; federal due date 2026-11-16.",
+   "sources": [
+    "CISA KEV"
+   ],
+   "source_urls": [
+    "https://nvd.nist.gov/vuln/detail/CVE-2026-114713"
+   ],
+   "first_seen": "2026-11-13T00:00:00+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 95,
+   "iocs": [],
+   "cves": [
+    "CVE-2026-114713"
+   ],
+   "attack_ids": [],
+   "malware": [],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": true,
+   "kev_new": {
+    "CVE-2026-114713": "UnrealIRCd Improper Neutralization of Delimiters Vulnerability"
+   },
+   "exploited": true,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": []
+  },
+  {
+   "key": "CVE-2026-123039",
+   "kind": "vulnerability",
+   "title": "CVE-2026-123039: Check Point Multiple Products Incorrect Permission Assignment for Critical Resource Vulnerability",
+   "summary": "Check Point Firewall, Multi-Domain Security Management Server, Scalable Platforms, Security Gateway, and Security Management Server contain an incorrect permissions assignment for critical resources vulnerability when the Gaia OS DynamicCLI daemon runs as root and listens on a world-writable local socket without authenticating connecting processes. An authenticated local user can send a command to the socket and have it executed as root. Added to CISA KEV on 2026-11-13; federal due date 2026-11-16.",
+   "sources": [
+    "CISA KEV"
+   ],
+   "source_urls": [
+    "https://nvd.nist.gov/vuln/detail/CVE-2026-123039"
+   ],
+   "first_seen": "2026-11-13T00:00:00+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 95,
+   "iocs": [],
+   "cves": [
+    "CVE-2026-123039"
+   ],
+   "attack_ids": [],
+   "malware": [],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": true,
+   "kev_new": {
+    "CVE-2026-123039": "Check Point Multiple Products Incorrect Permission Assignment for Critical Resource Vulnerability"
+   },
+   "exploited": true,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": []
+  },
+  {
+   "key": "report--35659ad0-832d-5293-83a5-78031ac0a75a",
+   "kind": "report",
+   "title": "CyberStrikeAI attacks educational institutions",
+   "summary": "An open-source framework called CyberStrikeAI was used in real-world attacks against educational institutions across Africa and Latin America. The framework combines LLM-based orchestration with a traditional C2 server, where an AI model on the server plans actions and generates commands while an implant executes them on compromised hosts. Attackers initially gained access through compromised SQL Server infrastructure, then deployed the CyberStrikeAI agent which performed reconnaissance, privilege escalation, credential dumping, lateral movement, and data exfiltration. The AI orchestrator automated post-exploitation activities that traditionally require manual operator intervention, reducing the skill barrier for attackers. While the AI component operates server-side, the actual malicious activities on victim systems use standard techniques like Kerberoasting, AS-REP Roasting, LSASS dumps, DCSync, and Golden Ticket attacks, making them detectable through conventional security controls. Chinese-language art...",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://otx.alienvault.com/pulse/6ae86a19eabc583f87c50fd6",
+    "https://securelist.com/tr/cyberstrikeai-attacks/121715/"
+   ],
+   "first_seen": "2026-11-02T10:46:49.678000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "domain",
+     "value": "fastcdn.bar"
+    },
+    {
+     "type": "ipv4",
+     "value": "104.234.26.163"
+    },
+    {
+     "type": "sha256",
+     "value": "61c0810a23580cf492a6ba4f7654566108331e7a4134c968c2d6a05261b2d8a1"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [
+    "T1003.001",
+    "T1003.002",
+    "T1003.003",
+    "T1018",
+    "T1021.002",
+    "T1021.006",
+    "T1053.005",
+    "T1059.001",
+    "T1069.002",
+    "T1082",
+    "T1087.002",
+    "T1105",
+    "T1113",
+    "T1136.001",
+    "T1213.001",
+    "T1482",
+    "T1543.003",
+    "T1550.001",
+    "T1558.001",
+    "T1558.003",
+    "T1570"
+   ],
+   "malware": [
+    "CyberStrikeAI",
+    "Mimikatz",
+    "NodeRabbit",
+    "PollCat"
+   ],
+   "actors": [],
+   "sectors": [
+    "education"
+   ],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--35659ad0-832d-5293-83a5-78031ac0a75a"
+   ]
+  },
+  {
+   "key": "report--663778ee-321f-5480-a973-44a2826467af",
+   "kind": "report",
+   "title": "Dark Web Profile: CyberXero",
+   "summary": "CyberXero is a Russian-speaking, financially motivated Initial Access Broker operating on Dark Web forums, conducting two parallel operations: a global mass-exploitation campaign targeting WordPress, Magento and e-commerce platforms, and a directed campaign focused on Ukrainian energy and utilities organizations. The actor distinguishes itself through AI augmentation, deploying 51 specialized Claude Code agents and PentAGI integrated with Cobalt Strike. Active since July 2026, CyberXero generates revenue through access brokering, payment data theft, and cryptocurrency payments. Over 40 organizations across Ukraine, Poland, China, Pakistan and the Netherlands have been affected, with more than 628,000 personal records exfiltrated and 429 WordPress administration panels compromised. The actor weaponizes vulnerabilities within 30 days and employs sophisticated techniques including SQL injection, PHP deserialization, and lateral movement tactics.",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://socradar.io/blog/dark-web-profile-cyberxero/",
+    "https://otx.alienvault.com/pulse/6af327a10b5317aadf0fbfc8"
+   ],
+   "first_seen": "2026-11-10T14:18:09.950000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "ipv4",
+     "value": "212.193.31.189"
+    },
+    {
+     "type": "sha256",
+     "value": "59c535f47ab4d35f6d9fc8b8aec4a72438ea0b89e5a4dcea74b05d2d32cfa483"
+    },
+    {
+     "type": "sha256",
+     "value": "71e21094c1ac1cf0275c91ed377965e248bca1c12711f6dd20e2682681fc1192"
+    },
+    {
+     "type": "sha256",
+     "value": "92a789444708fa1cb4cc5a89e0aa6cc7a279b62a7b8a4d2857255a18197d0090"
+    },
+    {
+     "type": "sha256",
+     "value": "a5ae0aab352871bc0b038b3aa43b03eb223425628c884af7b9fc592cd34eb86c"
+    }
+   ],
+   "cves": [
+    "CVE-2015-1397",
+    "CVE-2026-4815",
+    "CVE-2026-60137",
+    "CVE-2026-63030"
+   ],
+   "attack_ids": [
+    "T1003.001",
+    "T1003.002",
+    "T1027",
+    "T1036.005",
+    "T1047",
+    "T1059.001",
+    "T1059.004",
+    "T1078.003",
+    "T1098.004",
+    "T1110.003",
+    "T1136.001",
+    "T1190",
+    "T1505.003",
+    "T1543.003",
+    "T1583.003",
+    "T1588.002",
+    "T1588.005",
+    "T1590.002",
+    "T1591",
+    "T1595.002"
+   ],
+   "malware": [
+    "Cobalt Strike - S0154",
+    "PentAGI",
+    "WSO webshell",
+    "wp2shell"
+   ],
+   "actors": [
+    "CyberXero"
+   ],
+   "sectors": [
+    "energy",
+    "government",
+    "retail",
+    "technology",
+    "telecommunications"
+   ],
+   "countries": [
+    "China",
+    "Netherlands",
+    "Pakistan",
+    "Poland",
+    "Ukraine"
+   ],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": true,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--663778ee-321f-5480-a973-44a2826467af"
+   ]
+  },
+  {
+   "key": "report--ff761bb8-6002-503a-89f2-096c8a1b85a3",
+   "kind": "report",
+   "title": "Exploitation Targeting Node-RED, a Tool Embedded in ICS Products",
+   "summary": "On October 30, 2026, exploitation activity was detected targeting CVE-2026-58115, an unauthenticated Node-RED admin API vulnerability. Attackers deployed malicious flows that automatically download and execute Linux bots through three layers of encoding. The exploit originated from IP 4.201.105.116 in Microsoft's network and utilized Node-RED's inject and exec nodes to execute commands without authentication. The dropper retrieved binaries from 85.215.73.250:8080, saving them to RAM-backed storage at /dev/shm/.b to avoid disk forensics. Multiple payload variants were observed, including staged shell scripts and persistent webshells. The activity demonstrates opportunistic mass scanning across multiple CVEs rather than targeted operations. Node-RED is embedded in critical infrastructure products including Siemens SIMATIC IoT2050 devices, making this vulnerability particularly significant for industrial control systems environments.",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://otx.alienvault.com/pulse/6ae9ac6e66c89c6be4d99928",
+    "https://www.vulncheck.com/blog/exploitation-targeting-node-red"
+   ],
+   "first_seen": "2026-11-03T09:42:06.626000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "ipv4",
+     "value": "45.194.90.57"
+    },
+    {
+     "type": "sha256",
+     "value": "4662660a5924cc8f09736d32ca1b8d8728d8e69805e7d1e8c9efdbdffa3cf0f1"
+    },
+    {
+     "type": "url",
+     "value": "http://45.194.90.57:38472/.sys_update"
+    },
+    {
+     "type": "url",
+     "value": "http://85.215.73.250:8080/bot-linux-amd64"
+    }
+   ],
+   "cves": [
+    "CVE-2019-17558",
+    "CVE-2026-58115"
+   ],
+   "attack_ids": [
+    "T1027",
+    "T1036",
+    "T1036.005",
+    "T1059",
+    "T1059.004",
+    "T1070.006",
+    "T1071.001",
+    "T1078",
+    "T1102",
+    "T1105",
+    "T1140",
+    "T1190",
+    "T1505.003",
+    "T1562.003",
+    "T1569.002",
+    "T1583.001",
+    "T1608.001",
+    "T1608.004"
+   ],
+   "malware": [],
+   "actors": [],
+   "sectors": [
+    "agriculture",
+    "energy",
+    "government",
+    "healthcare",
+    "manufacturing"
+   ],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": true,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--ff761bb8-6002-503a-89f2-096c8a1b85a3"
+   ]
+  },
+  {
+   "key": "report--3e5f29d4-821f-5b87-bb41-aac3dd33adb7",
+   "kind": "report",
+   "title": "Poisoned Source: APT29 Watering Holes Targets Mobile Devices",
+   "summary": "Sekoia TDR identified a large-scale watering hole campaign employing three infection vectors: compromised legitimate websites, Adversary-in-the-Middle-like impersonating high-profile domains, and supply-chain compromise of Ukrainian Plerdy analytics service. The injected JavaScript code profiles browser and device attributes before delivering platform-specific n-day exploit chains targeting iOS or Android devices. Exploited vulnerabilities include CVE-2025-43529, CVE-2024-27834, CVE-2026-20700, CVE-2025-14174, CVE-2025-43510, CVE-2025-43520, CVE-2026-3910, and CVE-2025-27038. Final payloads exfiltrate browser cookies, Wi-Fi passwords, and comprehensive device data without persistence, consistent with intelligence-gathering objectives enabling session hijacking and access to browser-based services. Based on technical overlaps, operational patterns, victimology and infrastructure analysis, this campaign is attributed with moderate-to-high confidence to APT29, a Russian nexus intrusion set widely linked to th...",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://otx.alienvault.com/pulse/6aeb242026030af6a32b4b10",
+    "https://www.sekoia.com/blog/poisoned-source-apt29-watering-holes-targets-mobile-devices-with-n-day-exploits",
+    "https://censys.com/blog/darksword-coruna-open-directory-finding-report/",
+    "https://otx.alienvault.com/pulse/6ac6bb9cd16a3898ced29ead",
+    "https://arstechnica.com/security/2026/11/hackers-exploited-ios-and-android-flaws-to-infect-phones/",
+    "https://otx.alienvault.com/pulse/6aebe661b7e5525aa39d6ba8"
+   ],
+   "first_seen": "2026-10-07T21:37:32.724000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "domain",
+     "value": "adsprism-stat.com"
+    },
+    {
+     "type": "domain",
+     "value": "america250.holiday"
+    },
+    {
+     "type": "domain",
+     "value": "theowo.club"
+    },
+    {
+     "type": "ipv4",
+     "value": "95.133.231.28"
+    },
+    {
+     "type": "sha256",
+     "value": "06c17b31d36838f3d29044784aa047d5c2d9174d3356c1211cf25f9df677445f"
+    },
+    {
+     "type": "sha256",
+     "value": "183d62d682aea8018491c8559544e8d6a9ab0e1abd05ecbb6c97daa4f438d2b8"
+    },
+    {
+     "type": "sha256",
+     "value": "29d283ebd08d0cd3b2e6f4a67718d3d6e7a6be01d0613d716bce218dba57a928"
+    },
+    {
+     "type": "sha256",
+     "value": "2ffb35e3f9e55286a930fb887e73764a913166648135fe0ca7551736d97d7bfa"
+    },
+    {
+     "type": "sha256",
+     "value": "35c0cd19a7334b544c193e392bcd9a8f1d1f43cf6b61be5bf1d9e35537aff2ef"
+    },
+    {
+     "type": "sha256",
+     "value": "387a7fb768db1350a9788d9704e7a72abe07152734e0ff026af72b417e36268c"
+    },
+    {
+     "type": "sha256",
+     "value": "41e6fd33a30d36dabff9ea408d9766a6583edcc107968f6dc1499f2586381967"
+    },
+    {
+     "type": "sha256",
+     "value": "621112712ec515e8791129c62feda8fff6654a0116882401609503cacc08054a"
+    },
+    {
+     "type": "sha256",
+     "value": "69b6cb327a4d5da99399718f6a66f84de69f89425b0a31f2dcee0682f811596f"
+    },
+    {
+     "type": "sha256",
+     "value": "a7d2493df00565c21587b0cad2a9fe7ca1e5590acf796da6e499be0ffde44cc3"
+    },
+    {
+     "type": "sha256",
+     "value": "ae3241d96cc2d99538c7aff60f382cc8dac13859bcbea3ee84992d24d22a8108"
+    },
+    {
+     "type": "sha256",
+     "value": "bee3e014e3df87ddce0250b0985b87f6868a427a7b650a74b7ffedb9d57f3088"
+    },
+    {
+     "type": "sha256",
+     "value": "c170fda024183645c0aa681149304e50506509c3498bb6b9a5f5ced6aa73e5fa"
+    },
+    {
+     "type": "url",
+     "value": "http://ad.starx-net.com:8881/telemetry/v12"
+    },
+    {
+     "type": "url",
+     "value": "https://ad.starx-net.com/api/"
+    },
+    {
+     "type": "url",
+     "value": "https://ad.starx-net.com:8881/telemetry/v12"
+    },
+    {
+     "type": "url",
+     "value": "https://edge-ord.clouds-stacks.com/module/5b4c8fea5cbcee273e8d830f52-temfp.js"
+    },
+    {
+     "type": "url",
+     "value": "https://static.flux-telemetry.com/api/uGmlx2pmMHU1jq7wZU2QWgeC28vbXalf/v1'"
+    },
+    {
+     "type": "url",
+     "value": "https://static.flux-telemetry.com/module/5b4c8fea5cbcee273e8d830f52-temfp.js'"
+    },
+    {
+     "type": "domain",
+     "value": "escofiringbijou.com"
+    },
+    {
+     "type": "domain",
+     "value": "hdios.cn"
+    },
+    {
+     "type": "domain",
+     "value": "northlab.cn"
+    },
+    {
+     "type": "sha256",
+     "value": "864d68e64618d6bfc26d75d6f780ae0b7bfed3698cc8333818ed32519e560d1f"
+    },
+    {
+     "type": "url",
+     "value": "https://66ds.lol"
+    }
+   ],
+   "cves": [
+    "CVE-2024-27808",
+    "CVE-2024-27833",
+    "CVE-2024-27834",
+    "CVE-2025-14174",
+    "CVE-2025-24201",
+    "CVE-2025-27038",
+    "CVE-2025-31200",
+    "CVE-2025-31277",
+    "CVE-2025-43510",
+    "CVE-2025-43520",
+    "CVE-2025-43529",
+    "CVE-2026-20700",
+    "CVE-2026-31001",
+    "CVE-2026-3910"
+   ],
+   "attack_ids": [
+    "T1005",
+    "T1016",
+    "T1027",
+    "T1033",
+    "T1041",
+    "T1055",
+    "T1056.001",
+    "T1057",
+    "T1068",
+    "T1082",
+    "T1083",
+    "T1087",
+    "T1119",
+    "T1140",
+    "T1189",
+    "T1190",
+    "T1195.002",
+    "T1203",
+    "T1518.001",
+    "T1539",
+    "T1552.001",
+    "T1555.003",
+    "T1566.002",
+    "T1583.001",
+    "T1584.001",
+    "T1584.004",
+    "T1584.006",
+    "T1614"
+   ],
+   "malware": [
+    "AndroSnitch",
+    "Coruna",
+    "DarkSword",
+    "GHOSTBLADE",
+    "GHOSTKNIFE",
+    "GHOSTSABER"
+   ],
+   "actors": [
+    "APT29"
+   ],
+   "sectors": [
+    "defense",
+    "energy",
+    "government",
+    "hospitality"
+   ],
+   "countries": [
+    "Bulgaria",
+    "Czechia",
+    "Mongolia",
+    "Ukraine",
+    "United Kingdom of Great Britain and Northern Ireland",
+    "United States of America"
+   ],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": true,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--3e5f29d4-821f-5b87-bb41-aac3dd33adb7",
+    "report--0f521358-9038-5188-bd8f-dfbd9e6c82ba",
+    "report--d6a0cfc0-d8fc-5a30-b0ae-46a98c186ee5"
+   ]
+  },
+  {
+   "key": "report--292910a9-e559-50cf-82f2-5fff5d8e9829",
+   "kind": "report",
+   "title": "The Internals of a Badbox Operation",
+   "summary": "Investigation reveals a massive supply chain compromise involving MECOOL Android set-top boxes manufactured by Videostrong Technology Co., Ltd. Over 1.3 million devices were pre-infected with the x.cpe backdoor, granting operators system-level access through MQTT infrastructure. The backdoor deploys multiple payloads including residential proxy SDKs and ad fraud modules like AdMoyu, Appsalt, APSolo, LinkFog, and Gaganode. Approximately 500,000 devices remain actively online, predominantly affecting Malaysia, Mexico, and Brazil. The operation functions as a pay-per-install campaign fueling ad fraud and proxy ecosystems. Google has permanently banned Videostrong from the Android ecosystem following these findings. Investigation conducted in partnership with Motion Picture Association, Google, Plume, Trend Micro, Lumen, and HUMAN Security.",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://otx.alienvault.com/pulse/6ae9a05a6c8de6ce3516b3c8",
+    "https://synthient.com/blog/the-internals-of-a-badbox-operation",
+    "https://cloud.google.com/blog/topics/threat-intelligence/shutting-the-door-on-the-xcpe-botnet/",
+    "https://otx.alienvault.com/pulse/6ae8a86845dfd06f55cb0848"
+   ],
+   "first_seen": "2026-11-02T15:12:40.194000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "domain",
+     "value": "froponic.com"
+    },
+    {
+     "type": "domain",
+     "value": "hiddeninplainsight.top"
+    },
+    {
+     "type": "domain",
+     "value": "kepiron.com"
+    },
+    {
+     "type": "domain",
+     "value": "rawsindrel.com"
+    },
+    {
+     "type": "domain",
+     "value": "sepothael.com"
+    },
+    {
+     "type": "domain",
+     "value": "trapiscol.com"
+    },
+    {
+     "type": "domain",
+     "value": "vewsraith.com"
+    },
+    {
+     "type": "domain",
+     "value": "videostrong.cn"
+    },
+    {
+     "type": "domain",
+     "value": "videostrong.com"
+    },
+    {
+     "type": "domain",
+     "value": "yokatv.com"
+    },
+    {
+     "type": "ipv4",
+     "value": "219.134.163.210"
+    },
+    {
+     "type": "ipv4",
+     "value": "219.134.163.211"
+    },
+    {
+     "type": "sha256",
+     "value": "002ecacb7afe59836afc357074ea91308fd448b34dfdec0dc3d89f1bc15c1bb6"
+    },
+    {
+     "type": "sha256",
+     "value": "00d2af00b7593f4468e3c9a1cfb1abd89042b6f629b1ec49b889a37cf838d5c7"
+    },
+    {
+     "type": "sha256",
+     "value": "0135b69bab304564628488829b825050d1dd6dab98e86ec6776839dac9365af9"
+    },
+    {
+     "type": "sha256",
+     "value": "01b8c78f5509119b3e27ea4d628048985b94b5e00db0431d843519cf1d3e2cde"
+    },
+    {
+     "type": "sha256",
+     "value": "02490fa9f472ec872723d64d03402967e77932d2df72c588b0d7a7df9e17ae62"
+    },
+    {
+     "type": "sha256",
+     "value": "02b94ae4ee0fd2bab915fe2911d15ee70e51ca0564ba43c746593e7fe0b7ccd3"
+    },
+    {
+     "type": "sha256",
+     "value": "049b626ca9bc4cf552e675dd5bf6215753caa3a3d28fab17b2a8fa9e0c8421c0"
+    },
+    {
+     "type": "sha256",
+     "value": "04ffe332458931d82c0503daba1859622540828302af1190d2d3c6447094428c"
+    },
+    {
+     "type": "sha256",
+     "value": "069d829ae00fbfb40001877bb762f40bb798d018a6ba2fea08202d253bbff86e"
+    },
+    {
+     "type": "sha256",
+     "value": "072826e0548641cb91d57f6dba8b00fa9c4f4000d4ef6490593e33cddb8d1208"
+    },
+    {
+     "type": "sha256",
+     "value": "076becdc8e6586d48d9ac29b997f7a8d63687d44e76d6cf15826db13cd5e26e8"
+    },
+    {
+     "type": "sha256",
+     "value": "07b511a6f7715ccd2f77b5f51e4cf46542ccaada99564252711f4a142ac26179"
+    },
+    {
+     "type": "sha256",
+     "value": "085662ba43e22d04d6f69b7b5176c68cedee6507c5d34973c94459f324b44c8d"
+    },
+    {
+     "type": "sha256",
+     "value": "0ae9baf869a84df9bfec5da16db5a367cf13ac53b60a44859ad39b6801811ec9"
+    },
+    {
+     "type": "sha256",
+     "value": "0e8c50362e263ad793fa154b8b86f279513764b65a3876ce7af079b95e130298"
+    },
+    {
+     "type": "sha256",
+     "value": "0fe4c7d38a75b675e4d5b9528433a476ccde95616f7187040e6e4c4e1a5f388e"
+    },
+    {
+     "type": "sha256",
+     "value": "11a9f22718935389073301f616c7473f2afd90ae3582ea3011cf093eb422b7d6"
+    },
+    {
+     "type": "sha256",
+     "value": "125647fbfb292715930cd52394f020c27e4f4488c1145afe62c0e6547b5aecae"
+    },
+    {
+     "type": "sha256",
+     "value": "157969b15197f046dd2cf99cd4ddd7a5e306f6d3ee2cc24a49128b9dc720d982"
+    },
+    {
+     "type": "sha256",
+     "value": "15b86359b9e124ddd8ec79f5f548c6f6fa154a7a9c400004f9f54b7760184e92"
+    },
+    {
+     "type": "sha256",
+     "value": "17d97cb33ffa9ee04a47720ed79faf2985a85f4fabcfd98ccce26524e6ce562e"
+    },
+    {
+     "type": "sha256",
+     "value": "1806a1a93a6bce28cc6e95e9001f06370eaef9c66846ade9aecaf220d7ac91a4"
+    },
+    {
+     "type": "sha256",
+     "value": "1c34f551cea557b24f6f3776de7fecaf40536c749d5b9734242acde4dd578c53"
+    },
+    {
+     "type": "sha256",
+     "value": "1c989cef1b9cc5a39715d172e3f3acb574a958765f4a9df50c952c0a359826cd"
+    },
+    {
+     "type": "sha256",
+     "value": "1de0a368599ab04b8863c0e61c2d5a75e00f742a3326325f2870a9a72ee8d200"
+    },
+    {
+     "type": "sha256",
+     "value": "1e7849c9246f4ac20ca1ae857032c4be22d7f4ec8309f4a22d770019c96489e8"
+    },
+    {
+     "type": "sha256",
+     "value": "1f2ab93c35f0c37d9b88f82268183a2f77491aa6b142a48381524b18e217b960"
+    },
+    {
+     "type": "sha256",
+     "value": "206428965533b9eb3687a0c801a4c3059f7c33c076481f5c684b2e33afb5b242"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [
+    "T1016",
+    "T1027",
+    "T1036",
+    "T1036.005",
+    "T1041",
+    "T1055",
+    "T1056.001",
+    "T1059.001",
+    "T1059.004",
+    "T1071.001",
+    "T1071.002",
+    "T1078",
+    "T1082",
+    "T1083",
+    "T1090.001",
+    "T1090.003",
+    "T1105",
+    "T1113",
+    "T1124",
+    "T1132.001",
+    "T1140",
+    "T1195.002",
+    "T1219",
+    "T1542.001",
+    "T1543.001",
+    "T1547.001",
+    "T1553.001",
+    "T1562.001",
+    "T1566.002",
+    "T1573.001",
+    "T1574.001"
+   ],
+   "malware": [
+    "ABCNexus",
+    "APSolo",
+    "AdMoyu",
+    "Appsalt",
+    "BWM",
+    "CBOXTV",
+    "EarnFM",
+    "Fission",
+    "Gaganode",
+    "HiddenView",
+    "Honeygain",
+    "IPWeb",
+    "Jaguar",
+    "Kimwolf",
+    "LinkFog",
+    "Moyu",
+    "NetNut",
+    "Nexus",
+    "Popanet",
+    "Spirit",
+    "TitanNet",
+    "Traffmonetizer",
+    "Wingbird - S0176",
+    "XCPE",
+    "x.cpe"
+   ],
+   "actors": [
+    "Ltd.",
+    "Videostrong Technology Co."
+   ],
+   "sectors": [
+    "media"
+   ],
+   "countries": [
+    "Brazil",
+    "China",
+    "Germany",
+    "Malaysia",
+    "Mexico",
+    "United States of America"
+   ],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--292910a9-e559-50cf-82f2-5fff5d8e9829",
+    "report--0aa635bb-1912-598a-9854-edc65489f74c"
+   ]
+  },
+  {
+   "key": "report--6a4dcacb-1773-50fc-8e53-24f39caa4787",
+   "kind": "report",
+   "title": "Gorbag: Orcs at the border harvesting intelligence from Ukraine",
+   "summary": "A Russia-aligned threat actor named Gorbag has been operating since February 2025, conducting highly targeted cyberespionage operations against Ukrainian organizations. The group primarily focuses on law enforcement, justice entities, local administrations near the front line, and the defense sector. Rather than establishing long-term access, Gorbag employs simple infostealers for rapid intelligence collection, harvesting browser credentials, VPN configurations, and selected documents in single-pass operations. The group's toolset includes Prime ReverseShell (a PowerShell reverse shell) and BeautyStealer (a C++ browser-data and file stealer). Initial compromise occurs through spearphishing emails with malicious attachments. In early 2026, Gorbag updated its attack chain to exploit CVE-2025-8088, a WinRAR path traversal vulnerability. The operational focus on quick data collection suggests Gorbag may function as an initial access broker, sharing collected credentials with other Russia-aligned threat actors ...",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://otx.alienvault.com/pulse/6aea271df4897a00b60de744",
+    "https://www.welivesecurity.com/en/eset-research/gorbag-orcs-border-harvesting-intelligence-ukraine/"
+   ],
+   "first_seen": "2026-11-03T18:25:33.589000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "ipv4",
+     "value": "142.111.194.73"
+    },
+    {
+     "type": "ipv4",
+     "value": "89.44.9.186"
+    },
+    {
+     "type": "sha256",
+     "value": "583754e5e682ea83d58fbf76ea5c82ea0f2ab5db06e9e52343c4d52f35f0a4a6"
+    },
+    {
+     "type": "sha256",
+     "value": "9ce0f41d6e575aca81d290b3d0b89b011da4f9b87276b27d1c7de81695d4c927"
+    }
+   ],
+   "cves": [
+    "CVE-2025-8088"
+   ],
+   "attack_ids": [],
+   "malware": [
+    "BeautyStealer",
+    "GIFTEDCROOK",
+    "Prime ReverseShell"
+   ],
+   "actors": [
+    "Gorbag"
+   ],
+   "sectors": [
+    "defense",
+    "government",
+    "transportation"
+   ],
+   "countries": [
+    "Ukraine"
+   ],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": true,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--6a4dcacb-1773-50fc-8e53-24f39caa4787"
+   ]
+  },
+  {
+   "key": "report--8146206a-6f54-5c68-87e9-90a6af778e20",
+   "kind": "report",
+   "title": "ARTEX: Agentic Asbestos",
+   "summary": "ARTEX is an open-source, LLM-driven autonomous penetration testing framework released in July 2026 that integrates AI agents with reconnaissance and exploitation capabilities. As of November 2026, 1,465 hosts run exposed ARTEX consoles globally, with approximately 815 distinct deployments. CrowdStrike linked ARTEX usage to attacks against South Korean financial institutions, while Microsoft attributed its use to Storm-0940's ConnectWise supply chain compromise. The framework enables automated operations from reconnaissance through data exfiltration with minimal human intervention. Ten percent of ARTEX hosts also run other offensive tools including Cobalt Strike, Vshell, and additional AI attack frameworks. Operators frequently expose open directories containing exploit binaries, post-exploitation kits, and session histories. The tool's developer claimed it was intended for authorized testing and took the repository offline after public attribution, though archived copies remain circulating.",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://otx.alienvault.com/pulse/6aed89b36eddd48d6b209367",
+    "https://censys.com/blog/artex-agentic-asbestos",
+    "https://otx.alienvault.com/pulse/6aeb62d591162af275e93f90",
+    "https://hunt.io/blog/artex-south-korea-bank-infrastructure",
+    "https://otx.alienvault.com/pulse/6ac8a22f8d0ad1ea5f056ddc",
+    "https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/"
+   ],
+   "first_seen": "2026-10-09T08:13:35.684000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "ipv4",
+     "value": "101.53.80.202"
+    },
+    {
+     "type": "ipv4",
+     "value": "103.248.148.84"
+    },
+    {
+     "type": "ipv4",
+     "value": "108.165.147.226"
+    },
+    {
+     "type": "ipv4",
+     "value": "111.68.4.13"
+    },
+    {
+     "type": "ipv4",
+     "value": "111.68.4.131"
+    },
+    {
+     "type": "ipv4",
+     "value": "124.155.252.63"
+    },
+    {
+     "type": "ipv4",
+     "value": "154.12.86.207"
+    },
+    {
+     "type": "ipv4",
+     "value": "203.160.133.172"
+    },
+    {
+     "type": "ipv4",
+     "value": "206.187.215.173"
+    },
+    {
+     "type": "ipv4",
+     "value": "209.209.85.38"
+    },
+    {
+     "type": "ipv4",
+     "value": "23.158.220.98"
+    },
+    {
+     "type": "ipv4",
+     "value": "23.248.249.90"
+    },
+    {
+     "type": "ipv4",
+     "value": "38.244.50.120"
+    },
+    {
+     "type": "ipv4",
+     "value": "45.87.53.10"
+    },
+    {
+     "type": "ipv4",
+     "value": "45.87.53.14"
+    },
+    {
+     "type": "ipv4",
+     "value": "45.87.53.3"
+    },
+    {
+     "type": "ipv4",
+     "value": "45.87.53.34"
+    },
+    {
+     "type": "ipv4",
+     "value": "45.87.53.4"
+    },
+    {
+     "type": "ipv4",
+     "value": "45.87.53.6"
+    },
+    {
+     "type": "ipv4",
+     "value": "5.87.53.104"
+    },
+    {
+     "type": "ipv4",
+     "value": "5.87.53.141"
+    },
+    {
+     "type": "ipv4",
+     "value": "5.87.53.44"
+    },
+    {
+     "type": "ipv4",
+     "value": "5.87.53.64"
+    },
+    {
+     "type": "domain",
+     "value": "fofoapi.com"
+    },
+    {
+     "type": "domain",
+     "value": "xcai.pro"
+    },
+    {
+     "type": "ipv4",
+     "value": "118.107.47.11"
+    },
+    {
+     "type": "ipv4",
+     "value": "130.94.31.86"
+    },
+    {
+     "type": "ipv4",
+     "value": "149.88.85.20"
+    },
+    {
+     "type": "ipv4",
+     "value": "202.95.14.60"
+    },
+    {
+     "type": "ipv4",
+     "value": "23.248.226.250"
+    },
+    {
+     "type": "sha256",
+     "value": "c7a884afcd7f91408921890d9617bef6bfac3dae992bc25bb9c48c0395a60842"
+    },
+    {
+     "type": "url",
+     "value": "https://fofoapi.com/api/v1/search/all"
+    }
+   ],
+   "cves": [
+    "CVE-2021-3156",
+    "CVE-2022-2588",
+    "CVE-2025-5054"
+   ],
+   "attack_ids": [
+    "T1003",
+    "T1005",
+    "T1021",
+    "T1021.002",
+    "T1021.003",
+    "T1021.004",
+    "T1027",
+    "T1041",
+    "T1046",
+    "T1053",
+    "T1059",
+    "T1068",
+    "T1069",
+    "T1071",
+    "T1078",
+    "T1087",
+    "T1090",
+    "T1098",
+    "T1105",
+    "T1110",
+    "T1133",
+    "T1136",
+    "T1190",
+    "T1203",
+    "T1213",
+    "T1482",
+    "T1530",
+    "T1550",
+    "T1550.002",
+    "T1552",
+    "T1552.001",
+    "T1558",
+    "T1563",
+    "T1567",
+    "T1572",
+    "T1583.003",
+    "T1589",
+    "T1590",
+    "T1592",
+    "T1595"
+   ],
+   "malware": [
+    "ARTEX",
+    "Adaptix C2",
+    "Cobalt Strike - S0154",
+    "VShell"
+   ],
+   "actors": [
+    "Storm-0940"
+   ],
+   "sectors": [
+    "finance"
+   ],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": true,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--8146206a-6f54-5c68-87e9-90a6af778e20",
+    "report--fe4f5e14-2c4f-56b4-8214-494b9fe3728f",
+    "report--cce22941-6558-53cc-a6d8-665c53f29ea9"
+   ]
+  },
+  {
+   "key": "report--c995c7e4-7d0e-5861-9efa-0b89f1d944af",
+   "kind": "report",
+   "title": "Appraisal by AI: Model-driven victim prioritization in the VOLTA infostealer",
+   "summary": "VOLTA is a sophisticated Windows infostealer that incorporates AI-powered victim profiling to prioritize targets based on monetization potential. After harvesting credentials, browser data, cryptocurrency wallets, sessions from various platforms, and personal information, it compiles a structured evidence bundle and submits it to OpenRouter using LLM models like Claude Opus, with fallback options to Kimi-K2 and Gemini. The LLM acts as a forensic intelligence analyst, ranking stolen assets by value and assessing victim security posture. VOLTA performs live enrichment by accessing victim Gmail, Uber Eats, DoorDash, Discord, and Roblox accounts using stolen tokens. The malware self-deletes and operates through third-party infrastructure without actor-owned servers, suggesting a builder-based distribution model where customers can deploy customized versions.",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://blog.talosintelligence.com/appraisal-by-ai-model-driven-victim-prioritization-in-the-volta-infostealer/",
+    "https://otx.alienvault.com/pulse/6ae5f5fe1e9d5fb8fd713f1a",
+    "https://otx.alienvault.com/pulse/6af1d860f5d71db2f5f24f0e",
+    "https://piyolog.hatenadiary.jp/entry/2026/11/09/144357"
+   ],
+   "first_seen": "2026-10-31T14:06:54.711000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "sha256",
+     "value": "57ef4242666d78c50df145b34023df564f0fad38812d6a580e66433d427e2279"
+    }
+   ],
+   "cves": [
+    "CVE-2026-123158"
+   ],
+   "attack_ids": [
+    "T1005",
+    "T1012",
+    "T1027",
+    "T1033",
+    "T1041",
+    "T1055",
+    "T1057",
+    "T1070.004",
+    "T1082",
+    "T1083",
+    "T1087",
+    "T1106",
+    "T1112",
+    "T1113",
+    "T1114",
+    "T1119",
+    "T1134",
+    "T1140",
+    "T1185",
+    "T1204",
+    "T1213",
+    "T1497",
+    "T1528",
+    "T1539",
+    "T1552",
+    "T1552.001",
+    "T1552.004",
+    "T1555",
+    "T1567",
+    "T1567.002",
+    "T1573"
+   ],
+   "malware": [
+    "VOLTA",
+    "VOLTA-AUTODOXER"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": true,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--c995c7e4-7d0e-5861-9efa-0b89f1d944af",
+    "report--64f03156-02ea-5998-9539-c35d06db07d6"
+   ]
+  },
+  {
+   "key": "report--92c10008-e7dd-5937-a15e-09af69efa428",
+   "kind": "report",
+   "title": "Canto incognito: tracking the PoeLLM malware",
+   "summary": "Since April 2026, PoeLLM malware has been actively targeting exposed AI/LLM and open-source services including LiteLLM, Ollama, Gotenberg, and Gitea, with possible Ivanti Sentry targeting. The campaign employs an unusual command-and-control mechanism where infected systems derive C2 server addresses from keywords embedded in a poem hosted on GitHub. This financially-motivated operation deploys XMRig and Iron cryptocurrency miners, connecting victims to Kryptex mining infrastructure. Compromised hosts are repurposed as scanners and exploit servers to expand the botnet, which has impacted over 3,400 victim servers with peak activity exceeding 800 active servers daily. The campaign appears linked to an Italian-speaking threat actor and predominantly affects victims in the United States and Western Europe. Vulnerable routers are exploited to serve as C2 infrastructure.",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://otx.alienvault.com/pulse/6ac7794a227de27b373a9281",
+    "https://www.lumen.com/blog/en-us/canto-incognito-tracking-the-poellm-malware"
+   ],
+   "first_seen": "2026-10-08T11:06:50.648000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "domain",
+     "value": "gotenberg.dev"
+    },
+    {
+     "type": "domain",
+     "value": "malwarescan.xyz"
+    },
+    {
+     "type": "sha256",
+     "value": "350a99830b80b5600d3a2757fa996155579ef9d0c53de95f0299f64d280b9bb1"
+    },
+    {
+     "type": "sha256",
+     "value": "6fab94577364beec314afae3b082dd680933f08a8349b9f35b92667e8231b501"
+    },
+    {
+     "type": "sha256",
+     "value": "f706aba0d150db2d8f385cbbbb6a6d4fe590a5d184f29e5b1b05fcc4c2cd0932"
+    },
+    {
+     "type": "url",
+     "value": "http://5.78.73.122:81/private/bins.sh"
+    },
+    {
+     "type": "url",
+     "value": "http://5.78.73.122:81/private/python3.6"
+    },
+    {
+     "type": "url",
+     "value": "https://gotenberg.dev/docs/getting-started/installation"
+    }
+   ],
+   "cves": [
+    "CVE-2018-21027",
+    "CVE-2018-21028",
+    "CVE-2026-10520",
+    "CVE-2026-42271"
+   ],
+   "attack_ids": [
+    "T1018",
+    "T1027",
+    "T1046",
+    "T1053",
+    "T1059.004",
+    "T1071.001",
+    "T1090",
+    "T1102.001",
+    "T1105",
+    "T1110",
+    "T1140",
+    "T1190",
+    "T1203",
+    "T1219",
+    "T1496",
+    "T1573",
+    "T1583.001",
+    "T1583.003",
+    "T1584.004",
+    "T1595.002"
+   ],
+   "malware": [
+    "Iron",
+    "PoeLLM",
+    "XMRIG"
+   ],
+   "actors": [],
+   "sectors": [
+    "technology"
+   ],
+   "countries": [
+    "United States of America"
+   ],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": true,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--92c10008-e7dd-5937-a15e-09af69efa428"
+   ]
+  },
+  {
+   "key": "report--d44cb6d2-9f95-5860-8a1c-c6514ed0c854",
+   "kind": "report",
+   "title": "Inside an AhsayCBS Intrusion: Hidden Webshells, a CryptoMiner, and a C2 Implant",
+   "summary": "Between October 8 and 11, 2026, threat actors exploited authentication bypass and remote code execution vulnerabilities in AhsayCBS backup management software to compromise multiple servers. The intrusion involved deploying five distinct webshell families with varying capabilities, including command execution, file operations, and encrypted payload loaders hidden in PNG images. Attackers installed two XMRig cryptocurrency miners with scheduled task persistence, staged tunneling tools, and deployed a custom Python-based implant with environmental keying that communicated with command-and-control infrastructure. The operators created Microsoft Defender exclusions, accessed backup credentials through Veeam database queries, and specifically targeted backup infrastructure to potentially access stored credentials for hypervisors and domain accounts. The sophisticated multi-stage attack demonstrated significant operational patience beyond typical smash-and-grab cryptomining campaigns.",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://www.huntress.com/blog/ahsaycbs-webshells",
+    "https://otx.alienvault.com/pulse/6af1ef5821afddb68d6df42b",
+    "https://www.huntress.com/blog/ahsaycbs-flaws-exploit",
+    "https://otx.alienvault.com/pulse/6ac84a1665712fe245b07ce7"
+   ],
+   "first_seen": "2026-10-09T01:57:42.212000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "domain",
+     "value": "creepexplosiondarknight.com"
+    },
+    {
+     "type": "sha256",
+     "value": "6953618238eb40f45b584e52aca22cebbe8ba03e9a80c15c6b593f51f7e49527"
+    },
+    {
+     "type": "sha256",
+     "value": "6c695baad1d81ed49194d07a79381292c0466208ff1a9862c0c55f971d6a409f"
+    },
+    {
+     "type": "sha256",
+     "value": "6c7a4061bcf08df5fe4a49d37442dc650d751be1a91a8bc802edff213e4d5e61"
+    },
+    {
+     "type": "sha256",
+     "value": "6f6b66cbdc4a5aa5685d0017abd3f65843a28bcc2bb4e5b78d6d12a844a51aa8"
+    },
+    {
+     "type": "sha256",
+     "value": "7a13e59d816d68a071a8648e62a7c3c7f929a61c618a2133ab6f511da24f979d"
+    },
+    {
+     "type": "sha256",
+     "value": "818bb464271a539c96bcbbfea1db7d5a722512041ed8ed10d3f6c7f366190044"
+    },
+    {
+     "type": "sha256",
+     "value": "8245c7e7d944923f1608592f6c3473dcc6e3a3e43df3dd1c6257e7880948787b"
+    },
+    {
+     "type": "sha256",
+     "value": "875d0986ddaa51bfb5e03b06df1213cc3bb7966588d6153bdda57f2e3671e986"
+    },
+    {
+     "type": "sha256",
+     "value": "8aac187bae71f75fa2dde03dcb4a9279c982182ee8254ae96e7a6626fe4c7617"
+    },
+    {
+     "type": "sha256",
+     "value": "91b3cc9d6421b651ec85a16062af3ba26700dad2eea4a8a7e42fdd2e422f8803"
+    },
+    {
+     "type": "sha256",
+     "value": "a87002c32723f1849b3ad17b1fe6da732c9810b54b08501be21f5b1fcd882a59"
+    },
+    {
+     "type": "sha256",
+     "value": "bb2472cf5dc7e5c94216d355bf84fba2c8d088d03d61a1ac0d78639049cf5e1f"
+    },
+    {
+     "type": "sha256",
+     "value": "ca5f8e5247f1a044b8be45ef03187726b9af3ac30fd93fb5bb54144e34ed3738"
+    },
+    {
+     "type": "sha256",
+     "value": "e6e576a634166a16bdbfc09b14e7cf8eab90015d2dfa67dd73f3968ee869229b"
+    },
+    {
+     "type": "sha256",
+     "value": "e79c91e8157fef862be8cbe80bdf57b87a541416717265f81f669d751fca4a3d"
+    },
+    {
+     "type": "sha256",
+     "value": "f76dae028e0c43248c128b3bf609e8d660ce0bf44b53ab9e097887e6f5206eb5"
+    },
+    {
+     "type": "url",
+     "value": "https://creepexplosiondarknight.com/d"
+    },
+    {
+     "type": "sha256",
+     "value": "05f69ae6b2b89c1c4dcf836bff032232f11bf0109f2b498e2345045d06139034"
+    },
+    {
+     "type": "sha256",
+     "value": "481728a7c9c4c02be07051d9c1958d902ea6397ebb8952ab83944818e3d25d21"
+    },
+    {
+     "type": "sha256",
+     "value": "4dcb0202fe8b2d4d7b183764e38184cd6ed50132786cc7e7d1f7f4bce1dd6f3d"
+    }
+   ],
+   "cves": [
+    "CVE-2026-105133",
+    "CVE-2026-105134"
+   ],
+   "attack_ids": [
+    "T1027",
+    "T1027.003",
+    "T1036",
+    "T1036.004",
+    "T1036.005",
+    "T1053.005",
+    "T1057",
+    "T1059.001",
+    "T1059.003",
+    "T1059.006",
+    "T1070.004",
+    "T1071.001",
+    "T1105",
+    "T1124",
+    "T1190",
+    "T1219",
+    "T1480.001",
+    "T1505.003",
+    "T1518.001",
+    "T1543.003",
+    "T1547.001",
+    "T1555",
+    "T1562.001",
+    "T1564",
+    "T1569.002",
+    "T1571",
+    "T1572",
+    "T1608.001"
+   ],
+   "malware": [
+    "Mimikatz",
+    "NetExec",
+    "XMRIG"
+   ],
+   "actors": [],
+   "sectors": [
+    "technology"
+   ],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": true,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--d44cb6d2-9f95-5860-8a1c-c6514ed0c854",
+    "report--15474be8-c1dd-55c1-9573-66edb1ca2979"
+   ]
+  },
+  {
+   "key": "report--008ce836-13a4-5819-8851-bb96201e0cb2",
+   "kind": "report",
+   "title": "Not All That Glitters Is Gold: Tracking CopperDragon's Sparrow Framework Around the Globe",
+   "summary": "Over the past year, researchers investigated intrusion campaigns targeting high-profile organizations across Latin America, Asia, and Europe. These initially appeared independent but were linked through shared tools and infrastructure to the Sparrow malware ecosystem. CopperDragon is tracked as a digital quartermaster supporting China-nexus threat actors using the Sparrow cross-platform framework. Three distinct activity clusters were identified: SilentDelivery using watering-hole attacks with fake certificate warnings deploying SquadC backdoor; OceanGate targeting government and critical infrastructure with AnnobinDoor and SparrowShell backdoors; and DarkWire focusing on telecommunications and government entities using CopperDoor and CopperDNS backdoors. Operations employed sophisticated techniques including kernel rootkits, passive backdoors with packet interception, trojanized SSH tools, and extensive credential harvesting across Linux and Windows environments.",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://otx.alienvault.com/pulse/6af32ca0532e5bb3ad1eb242",
+    "https://research.checkpoint.com/2026/not-all-that-glitters-is-gold-tracking-copperdragons-sparrow-framework-around-the-globe/"
+   ],
+   "first_seen": "2026-11-10T14:39:28.302000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "domain",
+     "value": "aauctioneer.com"
+    },
+    {
+     "type": "domain",
+     "value": "amelicen.com"
+    },
+    {
+     "type": "domain",
+     "value": "artfingo.com"
+    },
+    {
+     "type": "domain",
+     "value": "astorialaza.com"
+    },
+    {
+     "type": "domain",
+     "value": "faceorkut.com"
+    },
+    {
+     "type": "domain",
+     "value": "jamvybez.com"
+    },
+    {
+     "type": "domain",
+     "value": "microscoft.vip"
+    },
+    {
+     "type": "domain",
+     "value": "microupdate.me"
+    },
+    {
+     "type": "domain",
+     "value": "seosnskorea.com"
+    },
+    {
+     "type": "domain",
+     "value": "windefender.net"
+    },
+    {
+     "type": "domain",
+     "value": "windowsupdates.us"
+    },
+    {
+     "type": "ipv4",
+     "value": "103.141.235.123"
+    },
+    {
+     "type": "ipv4",
+     "value": "103.9.77.116"
+    },
+    {
+     "type": "ipv4",
+     "value": "130.94.91.53"
+    },
+    {
+     "type": "ipv4",
+     "value": "135.136.135.54"
+    },
+    {
+     "type": "ipv4",
+     "value": "149.104.12.128"
+    },
+    {
+     "type": "ipv4",
+     "value": "149.104.87.222"
+    },
+    {
+     "type": "ipv4",
+     "value": "149.104.87.228"
+    },
+    {
+     "type": "ipv4",
+     "value": "149.104.90.200"
+    },
+    {
+     "type": "ipv4",
+     "value": "151.242.188.220"
+    },
+    {
+     "type": "ipv4",
+     "value": "153.127.55.77"
+    },
+    {
+     "type": "ipv4",
+     "value": "154.205.154.70"
+    },
+    {
+     "type": "ipv4",
+     "value": "154.205.154.82"
+    },
+    {
+     "type": "ipv4",
+     "value": "154.223.21.194"
+    },
+    {
+     "type": "ipv4",
+     "value": "156.244.2.26"
+    },
+    {
+     "type": "ipv4",
+     "value": "165.154.226.247"
+    },
+    {
+     "type": "ipv4",
+     "value": "165.154.227.16"
+    },
+    {
+     "type": "ipv4",
+     "value": "165.154.243.24"
+    },
+    {
+     "type": "ipv4",
+     "value": "207.189.10.188"
+    },
+    {
+     "type": "ipv4",
+     "value": "38.54.45.155"
+    },
+    {
+     "type": "ipv4",
+     "value": "38.54.57.12"
+    },
+    {
+     "type": "ipv4",
+     "value": "38.54.71.107"
+    },
+    {
+     "type": "ipv4",
+     "value": "38.54.71.160"
+    },
+    {
+     "type": "ipv4",
+     "value": "38.54.71.56"
+    },
+    {
+     "type": "ipv4",
+     "value": "38.60.195.184"
+    },
+    {
+     "type": "ipv4",
+     "value": "38.60.206.85"
+    },
+    {
+     "type": "ipv4",
+     "value": "38.60.209.227"
+    },
+    {
+     "type": "ipv4",
+     "value": "38.60.209.65"
+    },
+    {
+     "type": "ipv4",
+     "value": "38.60.214.237"
+    },
+    {
+     "type": "ipv4",
+     "value": "38.60.241.193"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [
+    "T1003",
+    "T1003.001",
+    "T1021",
+    "T1021.001",
+    "T1021.002",
+    "T1027",
+    "T1036",
+    "T1055",
+    "T1056",
+    "T1071",
+    "T1078",
+    "T1112",
+    "T1115",
+    "T1135",
+    "T1140",
+    "T1189",
+    "T1190",
+    "T1204",
+    "T1547",
+    "T1574"
+   ],
+   "malware": [
+    "AnnobinDoor",
+    "CopperAdu",
+    "CopperDNS",
+    "CopperDoor",
+    "CopperList",
+    "CopperLogger",
+    "CopperLsa",
+    "CopperLsass",
+    "CopperProxy",
+    "CrowDoor",
+    "HemiGate",
+    "Melofee",
+    "PyProxy",
+    "Reptile",
+    "SparrowDoor",
+    "SparrowShell",
+    "SquadC",
+    "TernDoor"
+   ],
+   "actors": [
+    "CopperDragon"
+   ],
+   "sectors": [
+    "government",
+    "military",
+    "technology",
+    "telecommunications"
+   ],
+   "countries": [
+    "Czechia",
+    "France",
+    "Germany",
+    "Hong Kong",
+    "Indonesia",
+    "Nepal",
+    "Taiwan"
+   ],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--008ce836-13a4-5819-8851-bb96201e0cb2"
+   ]
+  },
+  {
+   "key": "report--72ca8e02-7671-5836-9838-3e17d70dc7b5",
+   "kind": "report",
+   "title": "PSIRT",
+   "summary": "A critical path traversal vulnerability combined with improper NULL byte neutralization in FortiMail versions 7.2 through 8.0 allows unauthenticated attackers to write arbitrary files on the underlying system through crafted HTTP or HTTPS requests. This vulnerability is actively exploited in the wild. Affected versions include FortiMail 8.0.0-8.0.1, 7.6.0-7.6.6, 7.4.0-7.4.8, and 7.2.0-7.2.9. Indicators of compromise include modified system binaries, added malicious libraries, and suspicious archive configurations communicating with external IPs. Organizations should immediately disable the IBE feature or restrict management interface access until patches become available.",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://otx.alienvault.com/pulse/6abf0b86fb14812f2dc84fb2",
+    "https://fortiguard.fortinet.com/psirt/FG-IR-26-175"
+   ],
+   "first_seen": "2026-10-02T01:40:22.647000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "sha256",
+     "value": "4000276a150a165d3c2537d1e19fb393c4de8333076a16655e28059cae82157b"
+    },
+    {
+     "type": "sha256",
+     "value": "703e97c64e61e41dc3aaba580d82bb2aa7b6a11b54ee6fb467ed5d5a3bffdef5"
+    },
+    {
+     "type": "sha256",
+     "value": "77324ac428bde86d351fc5fc06f6d64a6bfe737dfb2743df1d4c5ac2418a5b6a"
+    },
+    {
+     "type": "sha256",
+     "value": "7a6cea9f5c9e2e9994d4e3c4da73f86cf5acd05ea5d312c066c9d1dafd69ee38"
+    },
+    {
+     "type": "sha256",
+     "value": "8015f34dc84922b03688399d7f9fe7a00361789f7e420c7e2a2cdb23e75cef84"
+    },
+    {
+     "type": "sha256",
+     "value": "8953ec7960b09f544a880b072ad4e6cfda7a8303f486251d3478dcfdfbac23b6"
+    },
+    {
+     "type": "sha256",
+     "value": "d6fe51c22b91776f4c961ea58bcac5917f15d560a619d7ce726d3d51795609d3"
+    }
+   ],
+   "cves": [
+    "CVE-2026-104286"
+   ],
+   "attack_ids": [
+    "T1059.004",
+    "T1068",
+    "T1070.004",
+    "T1071.001",
+    "T1078",
+    "T1083",
+    "T1098",
+    "T1105",
+    "T1136",
+    "T1190",
+    "T1486",
+    "T1543.002",
+    "T1562.001",
+    "T1565.001",
+    "T1574.006"
+   ],
+   "malware": [],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": true,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--72ca8e02-7671-5836-9838-3e17d70dc7b5"
+   ]
+  },
+  {
+   "key": "report--85e919a2-5038-5d3f-bb67-03fec06afff8",
+   "kind": "report",
+   "title": "StyleSmuggler Exploitation Deploys PSK Agent RAT Against Magento Stores",
+   "summary": "Between September 9 and September 13, 2026, a coordinated campaign exploited Magento and Adobe Commerce stores across Western Europe, North America, and Asia-Pacific using CVE-2026-75650 (StyleSmuggler). The attack chain delivered a shell-script dropper, PSK Agent RAT, and PHP webshell through the /paypal/transparent/response/ endpoint. The dropper achieved 0% detection on VirusTotal at time of analysis. The campaign deployed chi_down, a 10.5 MB obfuscated Go binary with remote access capabilities including command execution, SOCKS5 proxying, and encrypted communications. DNS exfiltration was used to track successful compromises. Chinese-language comments in the dropper and infrastructure naming suggest a likely Chinese-speaking operator, though attribution to a specific threat group is not supported. Multiple operators are exploiting the same vulnerability with distinct toolkits.",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://www.imperva.com/blog/stylesmuggler-exploitation-deploys-psk-agent-rat-against-magento-stores",
+    "https://otx.alienvault.com/pulse/6ae9eb17c5d87b8a004ed8fb"
+   ],
+   "first_seen": "2026-11-03T14:09:27.567000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "domain",
+     "value": "windwsecurity.run"
+    },
+    {
+     "type": "ipv4",
+     "value": "132.243.238.178"
+    },
+    {
+     "type": "ipv4",
+     "value": "86.107.100.105"
+    },
+    {
+     "type": "sha256",
+     "value": "1811a1d63310737e969348d16d95f80bf56f8e8896fc64eb5d6d6dc314e2a547"
+    },
+    {
+     "type": "sha256",
+     "value": "6dbfb04c063170af13a8151346898ebcb9c4b827fa8d16a96018419b746601a6"
+    },
+    {
+     "type": "sha256",
+     "value": "fc9bcdb3a442880e585d6fe4ddaec62d62af641f8ac3cceeb6a553985a7d9094"
+    },
+    {
+     "type": "url",
+     "value": "http://transfer.chinow.abrdns.com/get/psk_agent.sh"
+    }
+   ],
+   "cves": [
+    "CVE-2026-21589",
+    "CVE-2026-75650"
+   ],
+   "attack_ids": [
+    "T1027",
+    "T1036.005",
+    "T1053",
+    "T1059.004",
+    "T1071.004",
+    "T1090",
+    "T1105",
+    "T1190",
+    "T1505.003",
+    "T1573"
+   ],
+   "malware": [
+    "PSK Agent",
+    "chi_down",
+    "zer4.php"
+   ],
+   "actors": [],
+   "sectors": [
+    "retail"
+   ],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": true,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--85e919a2-5038-5d3f-bb67-03fec06afff8"
+   ]
+  },
+  {
+   "key": "report--efea17c7-54d4-51d4-8f28-2b909537f9e6",
+   "kind": "report",
+   "title": "Supply chain attack: BO Team in a software developer's infrastructure",
+   "summary": "In June 2025, a software developer detected suspicious SMB connection attempts, revealing a sophisticated compromise by the Black Owl (BO Team) APT group. Attackers seized nearly all infrastructure components including domain controllers, servers, virtual environments, Ansible orchestration, backups, and security systems. They exploited CVE-2021-44228 (Log4Shell) on VMware vCenter, compromised hypervisors using stolen SSH keys, and infiltrated both Windows and Linux infrastructures through credential theft and brute-force attacks. Evidence suggests attackers aimed to inject malicious code into the developer's software products to enable supply chain attacks against customers. The attackers maintained persistent access for several months using custom backdoors, but the operation was detected before completion, preventing potential widespread compromise of downstream organizations.",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://otx.alienvault.com/pulse/6aec5fe933b8cac0f8ed7334",
+    "https://ics-cert.kaspersky.com/publications/reports/2026/11/05/supply-chain-attack-bo-team-in-a-software-developers-infrastructure/?utm_source=ics-cert.kaspersky.com&utm_medium=rss&utm_campaign=main"
+   ],
+   "first_seen": "2026-11-05T10:52:25.634000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "url",
+     "value": "http://lo1yaizaeghaevarooD1ahtaichootae.nofrillsdns.com/script.sh"
+    },
+    {
+     "type": "url",
+     "value": "http://lo1yaizaeghaevarood1ahtaichootaz.nofrillsdns.com/$"
+    },
+    {
+     "type": "url",
+     "value": "http://vmware-timecheck-api.nofrillsdns.com:443"
+    },
+    {
+     "type": "url",
+     "value": "https://lo1yaizaeghaevarood1ahtaichootaz.nofrillsdns.com/$"
+    },
+    {
+     "type": "url",
+     "value": "https://lo1yaizaeghaevarood1ahtaichootaz.nofrillsdns.com/update"
+    }
+   ],
+   "cves": [
+    "CVE-2021-44228"
+   ],
+   "attack_ids": [
+    "T1003.001",
+    "T1003.002",
+    "T1003.003",
+    "T1021.001",
+    "T1021.002",
+    "T1021.004",
+    "T1027",
+    "T1053.003",
+    "T1070.001",
+    "T1070.002",
+    "T1078",
+    "T1110",
+    "T1110.001",
+    "T1133",
+    "T1140",
+    "T1190",
+    "T1210",
+    "T1505.003",
+    "T1556.001",
+    "T1558.001"
+   ],
+   "malware": [
+    "Global Socket",
+    "Nanodump",
+    "ReverseSSH"
+   ],
+   "actors": [
+    "Black Owl (BO Team"
+   ],
+   "sectors": [
+    "technology"
+   ],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": true,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--efea17c7-54d4-51d4-8f28-2b909537f9e6"
+   ]
+  },
+  {
+   "key": "report--053bcb4f-4631-57fe-8faa-8280ff42129b",
+   "kind": "report",
+   "title": "VAPOR PANDA Uses AI-Driven ARTEX to Grow Global Espionage Campaign",
+   "summary": "VAPOR PANDA conducted a sophisticated espionage campaign beginning October 17, 2026, using the ARTEX AI-driven framework alongside DeepSeek and commercial LLMs to orchestrate parallel intrusions against over 200 organizations worldwide. Targets included foreign ministries across Latin America, Europe, Asia, and the Middle East, plus U.S.-based semiconductor, defense, pharmaceutical, nuclear, and telecommunications entities. The adversary deployed BLOODALCHEMY backdoor, conducted credential spraying, and explicitly instructed AI agents to identify systems without endpoint security sensors. This represents an escalation from single intrusions to multiple simultaneous engagements, with agents autonomously pursuing attack paths while human operators provided strategic direction in Chinese. The campaign demonstrated how threat actors combine open-source AI frameworks with commercial LLMs to dramatically scale intrusion operations beyond manual capabilities.",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://otx.alienvault.com/pulse/6ae64194faf7dc45dce3baa3",
+    "https://www.crowdstrike.com/en-us/blog/vapor-panda-uses-artex-to-scale-global-campaign/"
+   ],
+   "first_seen": "2026-10-31T19:29:24.748000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "domain",
+     "value": "nginxmysql.com"
+    },
+    {
+     "type": "domain",
+     "value": "sqlserver-sqlite.com"
+    },
+    {
+     "type": "ipv4",
+     "value": "45.153.126.223"
+    },
+    {
+     "type": "sha256",
+     "value": "364251838edfcf5ef1107fa692da3c5bd9a540482449f645992830134bf807ab"
+    },
+    {
+     "type": "sha256",
+     "value": "3fb5a9fb3e2cb1d6208966bd4e55d10282d19c7250d827efa560463d60a12ee4"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "ARTEX",
+    "BLOODALCHEMY"
+   ],
+   "actors": [
+    "VAPOR PANDA"
+   ],
+   "sectors": [
+    "defense",
+    "energy",
+    "finance",
+    "government",
+    "hospitality",
+    "semiconductor",
+    "technology",
+    "telecommunications"
+   ],
+   "countries": [
+    "Belgium",
+    "Greece",
+    "Philippines",
+    "United States of America"
+   ],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--053bcb4f-4631-57fe-8faa-8280ff42129b"
+   ]
+  },
+  {
+   "key": "report--7f56b5f2-420a-5168-aec0-8996672a7fbc",
+   "kind": "report",
+   "title": "BITTER Expands Its Arsenal with PapRAT",
+   "summary": "A cyberespionage group known as BITTER has been conducting campaigns targeting South Asian organizations using PowerShell scripts and a custom remote access trojan called PapRAT. Three distinct infection chains have been identified: one exploiting Windows ftp.exe with malicious LNK files, another using VHDX disk images containing MSI installers, and a third combining URL shortcuts with WebDAV to deploy PapRAT. The malware exists in both C++ and Rust implementations, with capabilities including command execution, file manipulation, directory enumeration, screenshot capture, and secondary payload delivery. PapRAT maintains persistent access through scheduled tasks and communicates with command-and-control servers over HTTP. The Rust variant introduces enhanced functionality including PowerShell execution and sleep commands. Targets are concentrated in South Asian government, energy, and engineering sectors.",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://www.fortinet.com/blog/threat-research/bitter-expands-its-arsenal-with-paprat",
+    "https://otx.alienvault.com/pulse/6ae9981a0b51502b1e8d1e4f"
+   ],
+   "first_seen": "2026-11-03T08:15:22.006000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "domain",
+     "value": "felixfuturenext.com"
+    },
+    {
+     "type": "domain",
+     "value": "gomescareerplans.com"
+    },
+    {
+     "type": "domain",
+     "value": "goodnfortunes.com"
+    },
+    {
+     "type": "domain",
+     "value": "netmansrvdns.com"
+    },
+    {
+     "type": "domain",
+     "value": "rappellingaart.com"
+    },
+    {
+     "type": "domain",
+     "value": "rivingtonclarks.com"
+    },
+    {
+     "type": "domain",
+     "value": "techtalkhelp.com"
+    },
+    {
+     "type": "sha256",
+     "value": "411c0b9a2f98b927d806a685faf0c1ab1005647b4816157008892347fb88546b"
+    },
+    {
+     "type": "sha256",
+     "value": "569a21b519aaac8c92f653d708ab6ef34e3f38ea967f47e041d1e2425f6a4b33"
+    },
+    {
+     "type": "sha256",
+     "value": "a3081df333ca7f18bd90d10a45125ab5011dcf9d2806feae2935f09cab07da4c"
+    },
+    {
+     "type": "sha256",
+     "value": "ccefbdec2718d864d9d33c743aabfcef88a8d7904d1c598bfcf15cf5f3591c88"
+    },
+    {
+     "type": "sha256",
+     "value": "e3992f8c945b0761242377cba32d91b0a390c7cecd79478439843d93e6d2b76b"
+    },
+    {
+     "type": "url",
+     "value": "http://gomescareerplans.com/docs"
+    },
+    {
+     "type": "url",
+     "value": "http://gomescareerplans.com/docs/?vid=%computername%G^|^c^md"
+    },
+    {
+     "type": "url",
+     "value": "http://goodnfortunes.com/b99/?kq=%computername%^|c^m^d"
+    },
+    {
+     "type": "url",
+     "value": "http://goodnfortunes.com/ucl.php?svr=%computername%**%username%"
+    },
+    {
+     "type": "url",
+     "value": "http://techtalkhelp.com/talk.log"
+    },
+    {
+     "type": "url",
+     "value": "http://www.rivingtonclarks.com/banana/."
+    },
+    {
+     "type": "url",
+     "value": "http://www.rivingtonclarks.com/beautiQuewonders/banaNa.php"
+    },
+    {
+     "type": "url",
+     "value": "https://felixfuturenext.com/Epistemological/"
+    },
+    {
+     "type": "url",
+     "value": "https://goodnfortunes.com/ucl.php"
+    },
+    {
+     "type": "url",
+     "value": "https://techtalkhelp.com/talk.log"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [
+    "T1005",
+    "T1027",
+    "T1036.005",
+    "T1053.005",
+    "T1059.001",
+    "T1059.003",
+    "T1071.001",
+    "T1082",
+    "T1083",
+    "T1090",
+    "T1095",
+    "T1105",
+    "T1113",
+    "T1140",
+    "T1204.002",
+    "T1218.007",
+    "T1218.011",
+    "T1547.001",
+    "T1564.001",
+    "T1566.001",
+    "T1573.001"
+   ],
+   "malware": [
+    "PapRAT",
+    "WmRAT"
+   ],
+   "actors": [
+    "HAZY TIGER"
+   ],
+   "sectors": [
+    "energy",
+    "government"
+   ],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--7f56b5f2-420a-5168-aec0-8996672a7fbc"
+   ]
+  },
+  {
+   "key": "report--4adb4418-4e30-5e02-89ed-e16e1b4f6b9d",
+   "kind": "report",
+   "title": "DarkBlinders: Active Espionage Campaign",
+   "summary": "A sophisticated cyberespionage operation targeting Israel and the Kurdistan Region of Iraq was conducted by DarkBlinders, the threat actor behind the Blinder Tunnel campaign. Active between August and October 2026, the campaign compromised a high-profile Israeli individual associated with the security sector and a government cloud environment in the Kurdistan Region. The operation employed government webmail, cloud-drive, and meeting-service lures, including phishing infrastructure impersonating the Gulf Cooperation Council Secretariat General and Kuwait's Ministry of Foreign Affairs. GitHub repositories under the PeakyBlindersTeam account served as command-and-control infrastructure. The attackers used selective activation, reviewing metadata from infected hosts before deploying a second-stage backdoor enabling PowerShell command execution. Post-compromise activity included credential theft and exfiltration of at least 1 GB of data from the government cloud environment. The activity demonstrates connectio...",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://otx.alienvault.com/pulse/6ae9a41c3b21a1b31d13d6b6",
+    "https://dreamgroup.com/blog/darkblinders-inside-an-active-espionage-campaign",
+    "https://unit42.paloaltonetworks.com/blinder-tunnel-targets-critical-infrastructure/",
+    "https://otx.alienvault.com/pulse/6ac6152430b84019d1fded71"
+   ],
+   "first_seen": "2026-10-07T09:47:16.621000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "domain",
+     "value": "accountmeetgooge.online"
+    },
+    {
+     "type": "domain",
+     "value": "artcyberspacetraining.site"
+    },
+    {
+     "type": "domain",
+     "value": "artwavecollective.site"
+    },
+    {
+     "type": "domain",
+     "value": "astravioncapital.site"
+    },
+    {
+     "type": "domain",
+     "value": "cdn-gdrive.cloud"
+    },
+    {
+     "type": "domain",
+     "value": "cdndrive.online"
+    },
+    {
+     "type": "domain",
+     "value": "drive-g.cloud"
+    },
+    {
+     "type": "domain",
+     "value": "drive-go.cam"
+    },
+    {
+     "type": "domain",
+     "value": "drive-googe.online"
+    },
+    {
+     "type": "domain",
+     "value": "drivegooge.online"
+    },
+    {
+     "type": "domain",
+     "value": "gcc-sg.cloud"
+    },
+    {
+     "type": "domain",
+     "value": "gcc-sg.online"
+    },
+    {
+     "type": "domain",
+     "value": "googedrive.online"
+    },
+    {
+     "type": "domain",
+     "value": "googemeet.online"
+    },
+    {
+     "type": "domain",
+     "value": "gsecurity.help"
+    },
+    {
+     "type": "domain",
+     "value": "korektell.com"
+    },
+    {
+     "type": "domain",
+     "value": "krgcloud.online"
+    },
+    {
+     "type": "domain",
+     "value": "lifeinmotionnow.site"
+    },
+    {
+     "type": "domain",
+     "value": "meet-goo.cam"
+    },
+    {
+     "type": "domain",
+     "value": "meetcloud.site"
+    },
+    {
+     "type": "domain",
+     "value": "meetgooge.cam"
+    },
+    {
+     "type": "domain",
+     "value": "meetgooge.online"
+    },
+    {
+     "type": "domain",
+     "value": "meetingapp.site"
+    },
+    {
+     "type": "domain",
+     "value": "meetlogin.online"
+    },
+    {
+     "type": "domain",
+     "value": "meetonline.cam"
+    },
+    {
+     "type": "domain",
+     "value": "mfakuwait.online"
+    },
+    {
+     "type": "domain",
+     "value": "mfakuwait.org"
+    },
+    {
+     "type": "domain",
+     "value": "mfakuwait.website"
+    },
+    {
+     "type": "domain",
+     "value": "moelcloud.online"
+    },
+    {
+     "type": "domain",
+     "value": "mofakuwait.online"
+    },
+    {
+     "type": "domain",
+     "value": "msonedrive.cloud"
+    },
+    {
+     "type": "domain",
+     "value": "optionbmitfilterport.site"
+    },
+    {
+     "type": "domain",
+     "value": "secure-googe.help"
+    },
+    {
+     "type": "domain",
+     "value": "stark-meet.com"
+    },
+    {
+     "type": "domain",
+     "value": "stark-meet.online"
+    },
+    {
+     "type": "domain",
+     "value": "stark-meet.website"
+    },
+    {
+     "type": "domain",
+     "value": "starkmeet.com"
+    },
+    {
+     "type": "domain",
+     "value": "ukcentral.team"
+    },
+    {
+     "type": "domain",
+     "value": "vision-cloud.online"
+    },
+    {
+     "type": "sha256",
+     "value": "052702d652286482863a70eaa37e4fc894f40c8b08dccf245ced46916e7f419f"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [
+    "T1016",
+    "T1018",
+    "T1027",
+    "T1027.002",
+    "T1033",
+    "T1036",
+    "T1036.005",
+    "T1049",
+    "T1055",
+    "T1059",
+    "T1059.001",
+    "T1071",
+    "T1071.001",
+    "T1078",
+    "T1082",
+    "T1083",
+    "T1090",
+    "T1102",
+    "T1102.001",
+    "T1105",
+    "T1204",
+    "T1204.002",
+    "T1497",
+    "T1497.001",
+    "T1547",
+    "T1547.001",
+    "T1555",
+    "T1555.003",
+    "T1560",
+    "T1566",
+    "T1566.001",
+    "T1566.002",
+    "T1567",
+    "T1567.002",
+    "T1574.002"
+   ],
+   "malware": [
+    "AEROSTAT",
+    "Blackwood.dll",
+    "Chisel",
+    "ENDDOT",
+    "GHOSTFORM",
+    "HOTAIR",
+    "PsProxy",
+    "PsProxy.dll",
+    "RuntimeBroker",
+    "RuntimeBroker.dll",
+    "RuntimeBrokerApi",
+    "SHELBYC2",
+    "SHELBYLOADER",
+    "ShelbyLoader V2",
+    "StarkMeet",
+    "TREEWORLD"
+   ],
+   "actors": [
+    "CL-STA-1178",
+    "DarkBlinders"
+   ],
+   "sectors": [
+    "energy",
+    "government"
+   ],
+   "countries": [
+    "Iraq",
+    "Israel",
+    "Kuwait"
+   ],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--4adb4418-4e30-5e02-89ed-e16e1b4f6b9d",
+    "report--0a5841ef-e6ed-5ca1-966c-81a5f1732956"
+   ]
+  },
+  {
+   "key": "report--6cff53ed-a199-583d-ab5b-a7b368cab0ce",
+   "kind": "report",
+   "title": "MATCHBOIL: New tricks, same old evil intentions",
+   "summary": "ESET researchers documented the evolution of MATCHBOIL, a custom C# downloader used by Russia-aligned APT group UAC-0099. The malware downloads payloads from command-and-control servers, installs them, and establishes persistence on victim machines. Development traces back to April 2024, with continuous improvements through April 2026. Early versions used Unicode symbol obfuscation and custom string encryption, while later iterations employed the Eziriz .NET Reactor obfuscator. UAC-0099 progressively added sandbox detection methods, modified persistence mechanisms from registry keys to scheduled tasks, and introduced deceptive graphical interfaces. All observed victims were Ukrainian organizations across transportation, manufacturing, and energy sectors. The group typically distributes MATCHBOIL through spearphishing emails containing malicious links that download VBScript files. MATCHBOIL often delivers MATCHWOK backdoor as its final payload.",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://otx.alienvault.com/pulse/6ac84a166254b974f23968a2",
+    "https://www.welivesecurity.com/en/eset-research/matchboil-new-tricks-same-old-evil-intentions/"
+   ],
+   "first_seen": "2026-10-09T01:57:42.729000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "domain",
+     "value": "airarticlegenerate.com"
+    },
+    {
+     "type": "domain",
+     "value": "flycloud-service.com"
+    },
+    {
+     "type": "domain",
+     "value": "virtualdailyplanner.pro"
+    },
+    {
+     "type": "sha256",
+     "value": "02aab65e4916d5dfab0fd1dd4ea6f6e7e3e8afdbbb48940e4de3fda98b4a9d8d"
+    },
+    {
+     "type": "sha256",
+     "value": "458a1927d2c36a9cc8990ffc34a7969d0165d364f30204645d5c522d65fc1d88"
+    },
+    {
+     "type": "sha256",
+     "value": "642cabb0e96000baa28a8268816f2b06d8a917169b975a35f286783664b19121"
+    },
+    {
+     "type": "sha256",
+     "value": "a8e7df2077236a9544e52e881755cd8424fe6a400209ea89de9141d3405aa1be"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [
+    "T1036.005",
+    "T1047",
+    "T1053.005",
+    "T1071.001",
+    "T1106",
+    "T1132.001",
+    "T1140",
+    "T1497.001",
+    "T1547.001",
+    "T1573.002",
+    "T1583.001",
+    "T1583.003",
+    "T1587.001",
+    "T1587.003",
+    "T1588.002"
+   ],
+   "malware": [
+    "LONEPAGE",
+    "MATCHBOIL",
+    "MATCHWOK"
+   ],
+   "actors": [
+    "UAC-0099"
+   ],
+   "sectors": [
+    "energy",
+    "finance",
+    "government",
+    "manufacturing",
+    "media",
+    "transportation"
+   ],
+   "countries": [
+    "Ukraine"
+   ],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--6cff53ed-a199-583d-ab5b-a7b368cab0ce"
+   ]
+  },
+  {
+   "key": "report--acbdb563-2772-5b3e-a8ad-4863c3f39488",
+   "kind": "report",
+   "title": "SkyW4lker Phishing Kit: Microsoft 365 Threat to US Firms",
+   "summary": "SkyW4lker is an active device-code phishing kit targeting Microsoft 365 users primarily in the United States, Europe, and other regions. By exploiting Microsoft's legitimate authentication process, attackers gain access to corporate accounts without stealing passwords or bypassing MFA. Between June and October 2026, 618 sandbox analyses identified related activity, with submissions increasing from 20 in June to 200 in September. The United States accounts for 47% of submissions, with organizations in technology, manufacturing, and government sectors most affected. The kit uses phishing emails with password-protected attachments containing links that lead victims through CAPTCHA pages to Microsoft's authentication system. Technical analysis reveals obfuscated JavaScript, IP-based geolocation, and polling mechanisms. SkyW4lker shares infrastructure and code modules with the Gabagool credential phishing kit, suggesting both were developed by the same actor.",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://any.run/cybersecurity-blog/skyw4lker-phishing-kit-analysis/?utm_source=csn&amp;utm_medium=article&amp;utm_campaign=skyw4lker&amp;utm_content=blog&amp;utm_term=041126",
+    "https://otx.alienvault.com/pulse/6aeb9ec5f0df7c45eb2cdd32"
+   ],
+   "first_seen": "2026-11-04T21:08:21.079000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "domain",
+     "value": "5200m.com"
+    },
+    {
+     "type": "domain",
+     "value": "7criccasinobonus.cc"
+    },
+    {
+     "type": "domain",
+     "value": "aachem-za.co"
+    },
+    {
+     "type": "domain",
+     "value": "accordhealth.cc"
+    },
+    {
+     "type": "domain",
+     "value": "advancedsteelbuilding.com"
+    },
+    {
+     "type": "domain",
+     "value": "alasilla.com"
+    },
+    {
+     "type": "domain",
+     "value": "albertamo.com"
+    },
+    {
+     "type": "domain",
+     "value": "alfabricationinc.com"
+    },
+    {
+     "type": "domain",
+     "value": "apexpartsdepot.com"
+    },
+    {
+     "type": "domain",
+     "value": "apinows.com"
+    },
+    {
+     "type": "domain",
+     "value": "atlassgroupinc.com"
+    },
+    {
+     "type": "domain",
+     "value": "auth-loadingdocuments.online"
+    },
+    {
+     "type": "domain",
+     "value": "azgymfloor.com"
+    },
+    {
+     "type": "domain",
+     "value": "bandg-electrics.com"
+    },
+    {
+     "type": "domain",
+     "value": "bezpartien.online"
+    },
+    {
+     "type": "domain",
+     "value": "bloomfleldcapital.com"
+    },
+    {
+     "type": "domain",
+     "value": "bramum.online"
+    },
+    {
+     "type": "domain",
+     "value": "buckslu.org"
+    },
+    {
+     "type": "domain",
+     "value": "bxcelcounselling.org"
+    },
+    {
+     "type": "domain",
+     "value": "caine-wenier.com"
+    },
+    {
+     "type": "domain",
+     "value": "calebchemicals.com"
+    },
+    {
+     "type": "domain",
+     "value": "calmechc.net"
+    },
+    {
+     "type": "domain",
+     "value": "canacedesotogroup.com"
+    },
+    {
+     "type": "domain",
+     "value": "celestialtremor.org"
+    },
+    {
+     "type": "domain",
+     "value": "celliottelliott-wellman.org"
+    },
+    {
+     "type": "domain",
+     "value": "celvarioncorn.org"
+    },
+    {
+     "type": "domain",
+     "value": "centipedtourspa.com"
+    },
+    {
+     "type": "domain",
+     "value": "claronevents.com"
+    },
+    {
+     "type": "domain",
+     "value": "clingard.pro"
+    },
+    {
+     "type": "domain",
+     "value": "clubdenut.club"
+    },
+    {
+     "type": "domain",
+     "value": "coreansdmain.com"
+    },
+    {
+     "type": "domain",
+     "value": "csr-rooflng.com"
+    },
+    {
+     "type": "domain",
+     "value": "ctr-wooding.com"
+    },
+    {
+     "type": "domain",
+     "value": "darap-it.co"
+    },
+    {
+     "type": "domain",
+     "value": "detroitgardenswork.com"
+    },
+    {
+     "type": "domain",
+     "value": "devtachsales.com"
+    },
+    {
+     "type": "domain",
+     "value": "dguidrycardinazprofessional.com"
+    },
+    {
+     "type": "domain",
+     "value": "dpincoli.com"
+    },
+    {
+     "type": "domain",
+     "value": "dutchfarrms.com"
+    },
+    {
+     "type": "domain",
+     "value": "eccentric-authentication.com"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [
+    "T1027",
+    "T1036.005",
+    "T1056.003",
+    "T1071.001",
+    "T1102.001",
+    "T1114",
+    "T1132.001",
+    "T1204.001",
+    "T1213.002",
+    "T1497",
+    "T1528",
+    "T1566.001",
+    "T1566.002",
+    "T1583.001",
+    "T1583.003",
+    "T1589.002",
+    "T1590.005",
+    "T1598",
+    "T1608.005"
+   ],
+   "malware": [],
+   "actors": [],
+   "sectors": [
+    "government",
+    "manufacturing",
+    "technology"
+   ],
+   "countries": [
+    "British Indian Ocean Territory",
+    "Canada",
+    "India",
+    "United Kingdom of Great Britain and Northern Ireland",
+    "United States of America"
+   ],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--acbdb563-2772-5b3e-a8ad-4863c3f39488"
+   ]
+  },
+  {
+   "key": "report--a001bf09-598c-563a-be65-379c98f5ae58",
+   "kind": "report",
+   "title": "Caught in 4K: The Gentlemen Files",
+   "summary": "A Russian-speaking affiliate of the Gentlemen ransomware group, identifying as Azazel, compromised over two dozen organizations across six countries while simultaneously betraying the RaaS operator. The threat actor deployed independent leak site LEAKNED, keeping all extortion proceeds. Attack chains primarily exploited CI/CD secrets from GitLab instances, with one deep compromise involving an AI platform through SSRF, credential decryption, and continuous object storage exfiltration. Azazel operationalized MCP (Model Context Protocol) as a command-and-control channel, marking the first documented criminal use of AI assistant tooling for attack execution. Infrastructure consisted of three nodes totaling over 50TB storage capacity, with approximately 6TB of actively transferring victim data discovered during investigation. Victims spanned logistics, insurance, pharmaceutical, AI, medical devices, and government-adjacent sectors.",
+   "sources": [
+    "AlienVault OTX"
+   ],
+   "source_urls": [
+    "https://www.cloudsek.com/blog/caught-in-4k-the-gentlemen-files",
+    "https://otx.alienvault.com/pulse/6ac3a6d89aeb3e3d383d6d06"
+   ],
+   "first_seen": "2026-10-05T13:32:08.571000+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "domain",
+     "value": "forgitlab.com"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [],
+   "actors": [
+    "Azazel"
+   ],
+   "sectors": [
+    "finance",
+    "government",
+    "healthcare",
+    "logistics",
+    "technology"
+   ],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "report--a001bf09-598c-563a-be65-379c98f5ae58"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox botnet_cc: AdaptixC2",
+   "kind": "indicators",
+   "title": "ThreatFox botnet_cc: AdaptixC2 (5 indicators)",
+   "summary": "5 indicators reported by abuse.ch. Labels: adaptix, adaptixc2, drb-ra, modat, threatfox.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [
+    "https://magnify.modat.io/hosts/106.53.107.131"
+   ],
+   "first_seen": "2026-11-14T19:43:15+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "ipv4",
+     "value": "103.155.92.49"
+    },
+    {
+     "type": "ipv4",
+     "value": "106.53.107.131"
+    },
+    {
+     "type": "ipv4",
+     "value": "117.55.237.88"
+    },
+    {
+     "type": "ipv4",
+     "value": "209.99.190.30"
+    },
+    {
+     "type": "ipv4",
+     "value": "85.189.45.191"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "AdaptixC2"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--5e4c01fd-c46a-5598-a994-693025258881",
+    "indicator--9e1a712b-ebd2-53de-bed8-977c9570a50f",
+    "indicator--afd90ed1-1cf5-5cc9-a983-60c12148f760",
+    "indicator--11f10160-5dc5-5f53-b43a-d0286273aa27",
+    "indicator--8c1cacca-b343-5cac-94de-bcb2365c61d0"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox botnet_cc: Aisuru",
+   "kind": "indicators",
+   "title": "ThreatFox botnet_cc: Aisuru (5 indicators)",
+   "summary": "5 indicators reported by abuse.ch. Labels: airashi, aisuru, botnet, ddos, mirai, threatfox.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [
+    "https://github.com/deepfield/public-research/tree/main/aisuru"
+   ],
+   "first_seen": "2026-11-15T02:51:25+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "ipv4",
+     "value": "104.248.220.25"
+    },
+    {
+     "type": "ipv4",
+     "value": "157.245.253.194"
+    },
+    {
+     "type": "ipv4",
+     "value": "165.232.36.128"
+    },
+    {
+     "type": "ipv4",
+     "value": "201.79.52.69"
+    },
+    {
+     "type": "ipv4",
+     "value": "64.227.188.32"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "Aisuru"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--90161b45-ee6f-5fb1-b296-31510c66ad52",
+    "indicator--3c51fe3d-6fe0-563e-9a0e-786d2f00745b",
+    "indicator--e82bcf92-61d9-578f-892d-4a2893052157",
+    "indicator--90d9d953-0406-53f2-ac99-a736f53371d3",
+    "indicator--a67ea007-8ed8-50bf-9617-a827b32e6f63"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox botnet_cc: Amadey",
+   "kind": "indicators",
+   "title": "ThreatFox botnet_cc: Amadey (2 indicators)",
+   "summary": "2 indicators reported by abuse.ch. Labels: amadey, threatfox.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [
+    "https://bazaar.abuse.ch/sample/f8abe2d41ab9c41ad0a6b77edcf5740c0c64ffb9b7392cedbf26c5f253f49d8f/"
+   ],
+   "first_seen": "2026-11-15T07:50:08+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "url",
+     "value": "http://193.178.158.107/Nsdjb4T/index.php"
+    },
+    {
+     "type": "url",
+     "value": "http://193.178.158.57/8fdjjfdSD/index.php"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "Amadey"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--a7233537-1492-5bcb-ba10-48384f786664",
+    "indicator--fe7af53e-9cdd-5084-bca5-4dc21cf2bfa5"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox botnet_cc: AsyncRAT",
+   "kind": "indicators",
+   "title": "ThreatFox botnet_cc: AsyncRAT (5 indicators)",
+   "summary": "5 indicators reported by abuse.ch. Labels: asyncrat, drb-ra, modat, rat, threatfox.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [
+    "https://magnify.modat.io/hosts/184.75.208.50",
+    "https://magnify.modat.io/hosts/193.26.115.30",
+    "https://magnify.modat.io/hosts/196.251.121.237"
+   ],
+   "first_seen": "2026-11-14T19:05:05+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "ipv4",
+     "value": "169.58.38.91"
+    },
+    {
+     "type": "ipv4",
+     "value": "184.75.208.50"
+    },
+    {
+     "type": "ipv4",
+     "value": "193.26.115.30"
+    },
+    {
+     "type": "ipv4",
+     "value": "196.251.121.237"
+    },
+    {
+     "type": "ipv4",
+     "value": "62.85.91.36"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "AsyncRAT"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--9a817164-3dbe-5f69-b00e-9e84419d78de",
+    "indicator--ada872b5-89a1-5134-9f1e-03ce67d2b7d6",
+    "indicator--ada2a1b5-3124-53c5-9bbc-476f611c1142",
+    "indicator--27dc4f8c-46ec-5c9a-bbbb-757a36ac76e2",
+    "indicator--07875c2a-4dc6-5dc9-b30f-70d2f9d7d611"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox botnet_cc: CECbot",
+   "kind": "indicators",
+   "title": "ThreatFox botnet_cc: CECbot (6 indicators)",
+   "summary": "6 indicators reported by abuse.ch. Labels: android, botnet, cecbot, ddos, threatfox.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [
+    "https://github.com/deepfield/public-research/tree/main/cecbot"
+   ],
+   "first_seen": "2026-11-14T18:53:04+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "ipv4",
+     "value": "102.220.161.57"
+    },
+    {
+     "type": "ipv4",
+     "value": "31.57.184.218"
+    },
+    {
+     "type": "ipv4",
+     "value": "31.57.216.154"
+    },
+    {
+     "type": "ipv4",
+     "value": "31.57.216.212"
+    },
+    {
+     "type": "ipv4",
+     "value": "31.57.216.91"
+    },
+    {
+     "type": "ipv4",
+     "value": "45.198.224.73"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "CECbot"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--533f7170-abba-5f1a-b560-e60a243b88e6",
+    "indicator--ea64d478-4dd6-567f-8570-a224206f1c01",
+    "indicator--049c34f8-3e11-5f12-8358-c22e753a0ba7",
+    "indicator--b791fbde-ea84-5018-8d71-bdfeebda64f1",
+    "indicator--339a641c-c74a-5b5e-a03f-fe024c96ba7a",
+    "indicator--b0d2208d-cc29-5b49-9107-15c4b2e2e5b9"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox botnet_cc: Cobalt Strike",
+   "kind": "indicators",
+   "title": "ThreatFox botnet_cc: Cobalt Strike (8 indicators)",
+   "summary": "8 indicators reported by abuse.ch. Labels: cobaltstrike, modat, shodan, threatfox.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [
+    "https://magnify.modat.io/hosts/149.104.166.188",
+    "https://magnify.modat.io/hosts/149.104.166.189",
+    "https://magnify.modat.io/hosts/149.104.166.190"
+   ],
+   "first_seen": "2026-11-14T19:05:06+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "ipv4",
+     "value": "121.127.33.139"
+    },
+    {
+     "type": "ipv4",
+     "value": "149.104.166.188"
+    },
+    {
+     "type": "ipv4",
+     "value": "149.104.166.189"
+    },
+    {
+     "type": "ipv4",
+     "value": "149.104.166.190"
+    },
+    {
+     "type": "ipv4",
+     "value": "218.237.58.53"
+    },
+    {
+     "type": "ipv4",
+     "value": "45.207.208.51"
+    },
+    {
+     "type": "ipv4",
+     "value": "45.251.240.174"
+    },
+    {
+     "type": "ipv4",
+     "value": "89.116.210.28"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "Cobalt Strike"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--95d3f0da-31df-5258-9c5f-f861c431855e",
+    "indicator--f2a2f92e-6213-5028-968e-c0790214a23e",
+    "indicator--76bcca2b-b867-5d7c-bfe4-73ce1199f328",
+    "indicator--a37fc18e-d390-5323-ada5-71b017657f6a",
+    "indicator--fb983694-0c82-5160-8717-1181082c5f88",
+    "indicator--d16fd6bc-c3c8-5265-8a6a-5c02e1351a2a",
+    "indicator--339e18af-5da5-5773-a6db-bf31bbc08415",
+    "indicator--dfc768e8-a268-57cf-abc8-7ad561c34fb4"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox botnet_cc: Havoc",
+   "kind": "indicators",
+   "title": "ThreatFox botnet_cc: Havoc (2 indicators)",
+   "summary": "2 indicators reported by abuse.ch. Labels: drb-ra, havoc, threatfox.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [],
+   "first_seen": "2026-11-14T19:43:52+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "ipv4",
+     "value": "176.44.68.157"
+    },
+    {
+     "type": "ipv4",
+     "value": "18.136.4.30"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "Havoc"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--6a6cb2db-290b-558f-9a53-f6142e4b72b9",
+    "indicator--1d0f2ed0-2124-5dea-9f9c-1225ec50becd"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox botnet_cc: Jackskid",
+   "kind": "indicators",
+   "title": "ThreatFox botnet_cc: Jackskid (7 indicators)",
+   "summary": "7 indicators reported by abuse.ch. Labels: botnet, ddos, jackskid, mirai, rctea, threatfox.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [
+    "https://github.com/deepfield/public-research/tree/main/jackskid"
+   ],
+   "first_seen": "2026-11-14T15:19:33+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "ipv4",
+     "value": "130.94.10.21"
+    },
+    {
+     "type": "ipv4",
+     "value": "130.94.11.208"
+    },
+    {
+     "type": "ipv4",
+     "value": "130.94.13.23"
+    },
+    {
+     "type": "ipv4",
+     "value": "149.33.32.158"
+    },
+    {
+     "type": "ipv4",
+     "value": "38.60.205.67"
+    },
+    {
+     "type": "ipv4",
+     "value": "38.60.206.178"
+    },
+    {
+     "type": "ipv4",
+     "value": "91.200.220.179"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "Jackskid"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--2e393c9f-c6a6-5799-902b-64baf0331821",
+    "indicator--75fd656f-8d70-53bf-8d39-094bfdb10c81",
+    "indicator--5b4e015d-0fe5-56e9-b30d-11febba5a5e4",
+    "indicator--6f8a5aaf-3a6f-578e-af46-4846b9893b32",
+    "indicator--560b993d-208f-5bf7-bbb8-fd67dfbf63a3",
+    "indicator--2678eb3d-68bd-56ac-8826-15eec75b305b",
+    "indicator--79a5e90f-aaaf-5813-8d64-dfe88c831e7b"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox botnet_cc: Mirai",
+   "kind": "indicators",
+   "title": "ThreatFox botnet_cc: Mirai (7 indicators)",
+   "summary": "7 indicators reported by abuse.ch. Labels: deep-sorrow, jkl-pboc, mirai, modat, murdoc, scanbot, threatfox, zerobot.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [
+    "https://magnify.modat.io/hosts/118.160.44.121",
+    "https://magnify.modat.io/hosts/201.103.69.81",
+    "https://magnify.modat.io/hosts/223.206.141.52"
+   ],
+   "first_seen": "2026-11-15T05:08:09+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "domain",
+     "value": "wearecook.cc.cd"
+    },
+    {
+     "type": "ipv4",
+     "value": "118.160.44.121"
+    },
+    {
+     "type": "ipv4",
+     "value": "201.103.69.81"
+    },
+    {
+     "type": "ipv4",
+     "value": "223.206.141.52"
+    },
+    {
+     "type": "ipv4",
+     "value": "45.90.163.37"
+    },
+    {
+     "type": "ipv4",
+     "value": "77.239.124.141"
+    },
+    {
+     "type": "ipv4",
+     "value": "85.11.167.150"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "Mirai"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--98f9b6ec-bde2-5afc-ad2c-758a4d62cb55",
+    "indicator--f1ffd32a-737f-5029-a7c2-9aa01fc5d3b5",
+    "indicator--4ba0a755-412d-5e95-a159-746eaf90946c",
+    "indicator--c45ac51b-fe8f-51b2-8b9c-1e8fbfa63c0d",
+    "indicator--e7b0f2eb-5ab7-58c3-8ff9-495a68cd3bfb",
+    "indicator--d775f097-5079-5d40-8795-ed12d6d94f10",
+    "indicator--d4841635-3b0d-507e-af3b-8b59ca49d806"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox botnet_cc: NjRAT",
+   "kind": "indicators",
+   "title": "ThreatFox botnet_cc: NjRAT (6 indicators)",
+   "summary": "6 indicators reported by abuse.ch. Labels: njrat, threatfox.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [],
+   "first_seen": "2026-11-14T15:50:05+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "ipv4",
+     "value": "18.239.18.119"
+    },
+    {
+     "type": "ipv4",
+     "value": "18.65.39.69"
+    },
+    {
+     "type": "ipv4",
+     "value": "197.206.148.126"
+    },
+    {
+     "type": "ipv4",
+     "value": "45.130.84.171"
+    },
+    {
+     "type": "ipv4",
+     "value": "8.162.11.200"
+    },
+    {
+     "type": "ipv4",
+     "value": "99.86.91.25"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "NjRAT"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--dfc84f24-8109-5458-99cd-e6963cc51ab5",
+    "indicator--b9e3aecb-508a-5c65-9634-0ed8797d33aa",
+    "indicator--cc5bca74-133e-55b0-a977-94f212360e74",
+    "indicator--5c66008a-10a3-5710-aa17-8e77a64ec9bf",
+    "indicator--d557c835-6293-5d5a-8cb7-fffc4614e1a6",
+    "indicator--45d9ea80-40bc-5034-81f5-5b1dcd2b745e"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox botnet_cc: Potassium",
+   "kind": "indicators",
+   "title": "ThreatFox botnet_cc: Potassium (1 indicators)",
+   "summary": "1 indicators reported by abuse.ch. Labels: botnet, ddos, mirai, potassium, threatfox, woof.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [
+    "https://github.com/deepfield/public-research/tree/main/potassium"
+   ],
+   "first_seen": "2026-11-14T21:14:36+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "ipv4",
+     "value": "31.56.19.143"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "Potassium"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--4898db06-17b1-5bc2-9e10-f42e5514e68c"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox botnet_cc: Quasar RAT",
+   "kind": "indicators",
+   "title": "ThreatFox botnet_cc: Quasar RAT (2 indicators)",
+   "summary": "2 indicators reported by abuse.ch. Labels: quasarrat, threatfox.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [],
+   "first_seen": "2026-11-14T19:05:08+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "ipv4",
+     "value": "191.107.80.209"
+    },
+    {
+     "type": "ipv4",
+     "value": "192.162.199.218"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "Quasar RAT"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--b25067bd-20fe-57f9-840c-0f62a33ea735",
+    "indicator--87161b6e-863f-589a-b161-b5965742da60"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox botnet_cc: RevStealer",
+   "kind": "indicators",
+   "title": "ThreatFox botnet_cc: RevStealer (6 indicators)",
+   "summary": "6 indicators reported by abuse.ch. Labels: ref2859, revstealer, setupcenter, threatfox.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [
+    "https://github.com/harperjohnsai/detections/tree/main/iocs/2026-11-revstealer-setup-center"
+   ],
+   "first_seen": "2026-11-15T08:32:56+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "domain",
+     "value": "alert.bakerypark51.wiki"
+    },
+    {
+     "type": "domain",
+     "value": "init1.wavefleet63.work"
+    },
+    {
+     "type": "domain",
+     "value": "meta3.grovestack.one"
+    },
+    {
+     "type": "domain",
+     "value": "node.tutor-lens77.xyz"
+    },
+    {
+     "type": "domain",
+     "value": "stat9.wintergroup.one"
+    },
+    {
+     "type": "domain",
+     "value": "static.wanderreef37.wiki"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "RevStealer"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--f96b8e9c-f811-59a4-9ef7-b645d076a8e5",
+    "indicator--6bc2f9b8-aaf2-50a8-a29a-c7fcd70c7eb1",
+    "indicator--990a9391-d8db-5146-a7a4-14d19c06231f",
+    "indicator--76c439c8-dde4-5a43-af54-caf8c5155c07",
+    "indicator--af43e0a9-fec4-5afc-8d5d-eb7b1d4e68ce",
+    "indicator--f01419db-756d-5a7b-b315-87970b7e6604"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox botnet_cc: Sliver",
+   "kind": "indicators",
+   "title": "ThreatFox botnet_cc: Sliver (8 indicators)",
+   "summary": "8 indicators reported by abuse.ch. Labels: c2, modat, shodan, sliver, threatfox.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [
+    "https://magnify.modat.io/hosts/150.40.98.62",
+    "https://magnify.modat.io/hosts/178.18.241.48",
+    "https://magnify.modat.io/hosts/89.82.48.41"
+   ],
+   "first_seen": "2026-11-15T05:04:11+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "ipv4",
+     "value": "103.236.55.218"
+    },
+    {
+     "type": "ipv4",
+     "value": "121.89.84.167"
+    },
+    {
+     "type": "ipv4",
+     "value": "124.156.204.199"
+    },
+    {
+     "type": "ipv4",
+     "value": "150.40.98.62"
+    },
+    {
+     "type": "ipv4",
+     "value": "178.18.241.48"
+    },
+    {
+     "type": "ipv4",
+     "value": "38.114.90.236"
+    },
+    {
+     "type": "ipv4",
+     "value": "39.108.102.94"
+    },
+    {
+     "type": "ipv4",
+     "value": "89.82.48.41"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "Sliver"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--4ddddf82-fb9b-5c6e-b30f-0a629993e189",
+    "indicator--eb5f7a83-c312-5202-9361-da2a0b140e3c",
+    "indicator--d6e3d24b-c08f-50a2-9703-88ee23316e07",
+    "indicator--d30f4de2-cfb5-5d38-b549-9b328991cc65",
+    "indicator--f030213f-39ec-56dd-b5f1-cfcd9b0cd9f2",
+    "indicator--ae432f53-a770-5c60-b45b-4a9ae9b419b4",
+    "indicator--84ad740f-49c1-5a51-ab77-1ba7cf53ac85",
+    "indicator--626bc0a6-8788-5284-810e-ffb70450b51e"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox botnet_cc: SolarisLoader",
+   "kind": "indicators",
+   "title": "ThreatFox botnet_cc: SolarisLoader (3 indicators)",
+   "summary": "3 indicators reported by abuse.ch. Labels: solarisloader, threatfox.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [
+    "https://bazaar.abuse.ch/sample/f8abe2d41ab9c41ad0a6b77edcf5740c0c64ffb9b7392cedbf26c5f253f49d8f/"
+   ],
+   "first_seen": "2026-11-15T07:52:23+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "url",
+     "value": "http://193.178.158.107/login.php"
+    },
+    {
+     "type": "url",
+     "value": "http://193.178.158.57/login.php"
+    },
+    {
+     "type": "url",
+     "value": "http://196.251.107.186/login.php"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "SolarisLoader"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--efc6b934-16b0-57ed-a667-75526612002f",
+    "indicator--05b5716e-a91f-5909-b72c-9f49e894974e",
+    "indicator--bf66caa3-3ded-5fe1-b1da-5fe166f060ac"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox botnet_cc: Unknown RAT",
+   "kind": "indicators",
+   "title": "ThreatFox botnet_cc: Unknown RAT (7 indicators)",
+   "summary": "7 indicators reported by abuse.ch. Labels: android, crypto-lure, irahook, rat, rmm, screenconnect, stealer, threatfox.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [
+    "https://bazaar.abuse.ch/sample/c7f9ed3d6cda7e15a4a532e7eff76318bd3efea75bb823cf2d14ef1b68c6f232/"
+   ],
+   "first_seen": "2026-11-15T06:56:03+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "domain",
+     "value": "luegner.top"
+    },
+    {
+     "type": "domain",
+     "value": "relay.lecoindudiabetique.com"
+    },
+    {
+     "type": "domain",
+     "value": "sibel.sbs"
+    },
+    {
+     "type": "domain",
+     "value": "xiongying990kk099.com"
+    },
+    {
+     "type": "ipv4",
+     "value": "195.177.94.208"
+    },
+    {
+     "type": "url",
+     "value": "https://192.69.210.253/client_report"
+    },
+    {
+     "type": "url",
+     "value": "https://sibel.sbs/ws"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "Unknown RAT"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--6c5bfa28-8b19-5b9d-a5b2-6890a352a878",
+    "indicator--ca7d4aa4-9abf-542c-be0f-af72498a1cab",
+    "indicator--8e49a087-1c57-5e11-b48d-7fe50a13ac5c",
+    "indicator--f19b0fc5-53fd-55c4-87c0-6d7bd869dd72",
+    "indicator--bae58989-4e53-58f5-a5e5-591a0172f582",
+    "indicator--8119c3b5-daa1-5679-a44a-d2f3d0e0e9e7",
+    "indicator--1da728e6-8d7a-55fb-b9c7-27b0cc3046d1"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox botnet_cc: VShell",
+   "kind": "indicators",
+   "title": "ThreatFox botnet_cc: VShell (4 indicators)",
+   "summary": "4 indicators reported by abuse.ch. Labels: threatfox, vshell.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [],
+   "first_seen": "2026-11-14T19:05:07+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "ipv4",
+     "value": "107.149.96.10"
+    },
+    {
+     "type": "ipv4",
+     "value": "45.116.78.205"
+    },
+    {
+     "type": "ipv4",
+     "value": "45.192.213.147"
+    },
+    {
+     "type": "ipv4",
+     "value": "59.153.167.12"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "VShell"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--dbb74480-c71f-595e-99d8-9044bf01ed30",
+    "indicator--f7f1c8e7-9613-5c56-af4d-05d13bb18e49",
+    "indicator--591c82ed-3399-509e-bcc9-b0c7f4e4eb36",
+    "indicator--3db7c662-42e8-5a8b-b2a3-e4b627839e14"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox botnet_cc: WARDENStealer",
+   "kind": "indicators",
+   "title": "ThreatFox botnet_cc: WARDENStealer (13 indicators)",
+   "summary": "13 indicators reported by abuse.ch. Labels: gocrypter, stealer, threatfox, wardenstealer.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [
+    "https://bazaar.abuse.ch/sample/8219c601aec2465a74ab251cd5c03eb5689fa5e389192d96dfee218399aa67aa/",
+    "https://bazaar.abuse.ch/sample/fa4387cbb847d8d36450642b024be7e7af480925cc557770a4174084e1ca4833/"
+   ],
+   "first_seen": "2026-11-15T07:11:18+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "domain",
+     "value": "approval-tangem.com"
+    },
+    {
+     "type": "domain",
+     "value": "approve-tangem.com"
+    },
+    {
+     "type": "domain",
+     "value": "authorize-tangem.com"
+    },
+    {
+     "type": "domain",
+     "value": "backup-tangem.com"
+    },
+    {
+     "type": "domain",
+     "value": "drovlix.com"
+    },
+    {
+     "type": "domain",
+     "value": "fildova.com"
+    },
+    {
+     "type": "domain",
+     "value": "nexdova.com"
+    },
+    {
+     "type": "domain",
+     "value": "seed-tangem.com"
+    },
+    {
+     "type": "domain",
+     "value": "seedless-tangem.com"
+    },
+    {
+     "type": "domain",
+     "value": "session-tangem.com"
+    },
+    {
+     "type": "domain",
+     "value": "sigmon-zz.mom"
+    },
+    {
+     "type": "domain",
+     "value": "verification-tangem.com"
+    },
+    {
+     "type": "domain",
+     "value": "verifying-tangem.com"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "WARDENStealer"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--f1d0b0dc-b74d-50b8-a7db-5568e284341b",
+    "indicator--02e0ba23-2964-59b1-af32-dc041cb4e37b",
+    "indicator--47d58437-7958-5f68-b2d1-d475008a6c89",
+    "indicator--880bf792-efc9-5776-8d1f-42ba1252c655",
+    "indicator--1dce80f4-a3ed-51f1-b4e8-9786888756ee",
+    "indicator--1a289ebb-9106-5777-aefd-1d459312819c",
+    "indicator--3c303dac-dbb7-5b68-b4d3-61f6537e43b5",
+    "indicator--26963da7-018c-5c2f-9ced-afd2a3da02dd",
+    "indicator--54cb0dd5-3fcc-5bf0-9794-a46b81cd9166",
+    "indicator--d82fdec0-8ab7-583b-803a-1a750cfd0298",
+    "indicator--3dfea04d-bfdb-59a5-9c44-6f96a43ec0f6",
+    "indicator--dfaec1dd-f1e2-5c07-af85-8668f8289d30",
+    "indicator--294b23a0-1f16-5092-aa87-d02527ac6735"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox payload: AMOS",
+   "kind": "indicators",
+   "title": "ThreatFox payload: AMOS (3 indicators)",
+   "summary": "3 indicators reported by abuse.ch. Labels: amos, clickfix, foxveil, macos, threatfox.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [
+    "https://bazaar.abuse.ch/sample/04a6c4f691286d4c6c6ed280a484931d1cede33b91d0c3611cb4b2ac1928e99f/",
+    "https://bazaar.abuse.ch/sample/12c46c2737251fdc5cb576fc228a981a47e2b0143577bd7f35da22f94011cddb/"
+   ],
+   "first_seen": "2026-11-14T17:25:30+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "sha256",
+     "value": "04a6c4f691286d4c6c6ed280a484931d1cede33b91d0c3611cb4b2ac1928e99f"
+    },
+    {
+     "type": "sha256",
+     "value": "12c46c2737251fdc5cb576fc228a981a47e2b0143577bd7f35da22f94011cddb"
+    },
+    {
+     "type": "sha256",
+     "value": "e0e1173799031873f9a31b83faa20d6064ba79d7b4b11fbce84d443d80f0aa02"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "AMOS"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--5f74461c-d079-51bb-9eb2-b1da67be1327",
+    "indicator--9c835091-247d-5387-85ed-2eecb7891e1f",
+    "indicator--640405e3-d8ed-5fae-9efa-2d62b15b8896"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox payload: Formbook",
+   "kind": "indicators",
+   "title": "ThreatFox payload: Formbook (2 indicators)",
+   "summary": "2 indicators reported by abuse.ch. Labels: formbook, ps1, threatfox.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [],
+   "first_seen": "2026-11-15T03:58:48+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "sha256",
+     "value": "3a1e7d2aaeb545d10018b4925a321de02d6ee47122de46c11c701b25a4f08d59"
+    },
+    {
+     "type": "sha256",
+     "value": "9b1933ff196a946f3b43fdf9a4bea548301b8490f4142c3c3064c0c1a44a7946"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "Formbook"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--47a3038a-acc5-5ebb-a156-685c1b67c619",
+    "indicator--3e13cfaa-95f5-5bee-83f6-6e28eca092ab"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox payload_delivery: AMOS",
+   "kind": "indicators",
+   "title": "ThreatFox payload_delivery: AMOS (6 indicators)",
+   "summary": "6 indicators reported by abuse.ch. Labels: amos, clickfix, foxveil, macos, threatfox.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [
+    "https://bazaar.abuse.ch/sample/04a6c4f691286d4c6c6ed280a484931d1cede33b91d0c3611cb4b2ac1928e99f/",
+    "https://bazaar.abuse.ch/sample/12c46c2737251fdc5cb576fc228a981a47e2b0143577bd7f35da22f94011cddb/"
+   ],
+   "first_seen": "2026-11-14T17:25:29+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "domain",
+     "value": "boost-19.com"
+    },
+    {
+     "type": "domain",
+     "value": "raster15.com"
+    },
+    {
+     "type": "url",
+     "value": "https://boost-19.com/curl/irdxh38dlz/r9yq8jgse57g57oi190.dat"
+    },
+    {
+     "type": "url",
+     "value": "https://boost-19.com/f/zh2s2xptaamrnzpdyiq0ng/vj1ury4s"
+    },
+    {
+     "type": "url",
+     "value": "https://raster15.com/curl/6edvan6qlx1/o0r1mvm569f8tnc1v82.json"
+    },
+    {
+     "type": "url",
+     "value": "https://raster15.com/f/qus5n9iecneukfdd5bqagg/8d5wkyb6"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "AMOS"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--4b517595-87bb-51b8-9e56-475c31fdc75a",
+    "indicator--1ca6706c-b5bf-5ca2-82bb-0067c78e2515",
+    "indicator--9930e66b-98a0-5fae-b7f2-1377dbd0325f",
+    "indicator--69b6e429-9524-54f6-a9d4-5d9fe2dbccac",
+    "indicator--a0878f05-896a-584a-ad5d-b514b7269607",
+    "indicator--e89087e7-065a-51d4-8534-1d002abd8428"
+   ]
+  },
+  {
+   "key": "cluster:abuse.ch:ThreatFox payload_delivery: IClickFix",
+   "kind": "indicators",
+   "title": "ThreatFox payload_delivery: IClickFix (200 indicators)",
+   "summary": "200 indicators reported by abuse.ch. Labels: clickfix, etherhiding, polygon, sepolia, threatfox.",
+   "sources": [
+    "abuse.ch"
+   ],
+   "source_urls": [
+    "https://urlscan.io/result/01a1dc87-4751-770e-a364-972e5abaee67/",
+    "https://urlscan.io/result/01a1dcca-6a6c-722e-8e36-fa44e6928a91/",
+    "https://urlscan.io/result/01a1dccb-e101-7719-b94f-5d051dd9734d/"
+   ],
+   "first_seen": "2026-11-14T15:40:57+00:00",
+   "tlp": "TLP:CLEAR",
+   "confidence": 100,
+   "iocs": [
+    {
+     "type": "domain",
+     "value": "3winn.xyz"
+    },
+    {
+     "type": "domain",
+     "value": "55winn.online"
+    },
+    {
+     "type": "domain",
+     "value": "66clubb.online"
+    },
+    {
+     "type": "domain",
+     "value": "777locc.online"
+    },
+    {
+     "type": "domain",
+     "value": "77ball.one"
+    },
+    {
+     "type": "domain",
+     "value": "86bet.ink"
+    },
+    {
+     "type": "domain",
+     "value": "888j.social"
+    },
+    {
+     "type": "domain",
+     "value": "888to.fit"
+    },
+    {
+     "type": "domain",
+     "value": "888too.online"
+    },
+    {
+     "type": "domain",
+     "value": "a3nconsultingg.com"
+    },
+    {
+     "type": "domain",
+     "value": "ab88.online"
+    },
+    {
+     "type": "domain",
+     "value": "ab88.pw"
+    },
+    {
+     "type": "domain",
+     "value": "abh79.com"
+    },
+    {
+     "type": "domain",
+     "value": "alkemycare.com"
+    },
+    {
+     "type": "domain",
+     "value": "amalembroideries.com"
+    },
+    {
+     "type": "domain",
+     "value": "americanprime.com"
+    },
+    {
+     "type": "domain",
+     "value": "amgelevatorsolutions.com"
+    },
+    {
+     "type": "domain",
+     "value": "anchorpointrealtors.com"
+    },
+    {
+     "type": "domain",
+     "value": "anewwmotion.com"
+    },
+    {
+     "type": "domain",
+     "value": "annemalvetservices.com"
+    },
+    {
+     "type": "domain",
+     "value": "auroraagencia.com.br"
+    },
+    {
+     "type": "domain",
+     "value": "baldezcleaningoh.com"
+    },
+    {
+     "type": "domain",
+     "value": "barreflowbysandra.es"
+    },
+    {
+     "type": "domain",
+     "value": "bersaqom.com"
+    },
+    {
+     "type": "domain",
+     "value": "bestmoversservice.com"
+    },
+    {
+     "type": "domain",
+     "value": "bh7979.xyz"
+    },
+    {
+     "type": "domain",
+     "value": "billigelektrikerstockholm.se"
+    },
+    {
+     "type": "domain",
+     "value": "blessgordyn.co.id"
+    },
+    {
+     "type": "domain",
+     "value": "bluecrvilla.com"
+    },
+    {
+     "type": "domain",
+     "value": "bohampton.net"
+    },
+    {
+     "type": "domain",
+     "value": "bong99.world"
+    },
+    {
+     "type": "domain",
+     "value": "buysellpoultry.com"
+    },
+    {
+     "type": "domain",
+     "value": "cairo-drive.online"
+    },
+    {
+     "type": "domain",
+     "value": "candor-ags.com"
+    },
+    {
+     "type": "domain",
+     "value": "capsnwfl.com"
+    },
+    {
+     "type": "domain",
+     "value": "cavitas.ee"
+    },
+    {
+     "type": "domain",
+     "value": "choptaplus.com"
+    },
+    {
+     "type": "domain",
+     "value": "clothes4work.co.uk"
+    },
+    {
+     "type": "domain",
+     "value": "coffeeshopnotarypdx.com"
+    },
+    {
+     "type": "domain",
+     "value": "coxsbazarnews24.com"
+    }
+   ],
+   "cves": [],
+   "attack_ids": [],
+   "malware": [
+    "IClickFix"
+   ],
+   "actors": [],
+   "sectors": [],
+   "countries": [],
+   "in_kev": false,
+   "kev_new": {},
+   "exploited": false,
+   "ransomware": false,
+   "warninglist_hits": 0,
+   "stix_ids": [
+    "indicator--2ee92f0b-1518-5a81-8b11-307c1ad298e0",
+    "indicator--dce2fdb4-4da1-5f13-8977-bff3d6254d62",
+    "indicator--2b05b61d-8aae-5431-a39e-68e2ec25fdb6",
+    "indicator--1c63cd90-c99c-5420-ba7c-16430e598e2a",
+    "indicator--d7ce4310-ad7c-5839-ba41-e71fa37572fe",
+    "indicator--01223ebf-f62e-529a-a7b0-d87868282f2f",
+    "indicator--c6259d37-7955-57de-b106-182678eccb53",
+    "indicator--620bd679-0d78-5bc2-b36a-5730469f2efd",
+    "indicator--e720da23-fd7d-50a7-987a-ede6d1ff29cb",
+    "indicator--ae15a6bc-f378-50f1-8d34-61a27d45bfb4",
+    "indicator--29c3e3bc-9bec-5087-8597-86030fd3d576",
+    "indicator--87c83aa6-9adc-5c54-9646-545efe77cbd4",
+    "indicator--3d952e3f-7504-5129-ac0e-62f550865228",
+    "indicator--c5a0430c-141f-573a-aae0-590bb00c769f",
+    "indicator--338e1fe4-d6f5-5b1a-adb9-bb6232e2168c",
+    "indicator--2615f3ef-7f74-5d72-ac1e-3c32d08c2027",
+    "indicator--32d42cf0-4ca2-5c06-9a64-d69eca30c723",
+    "indicator--784df78b-9501-54ad-875a-592b2f663a74",
+    "indicator--da7415d5-fd79-51de-b3ec-c6a07a7541c6",
+    "indicator--bba1e3a0-b776-5bdc-b1f2-dbd8dad49aa1",
+    "indicator--7daaef86-c89f-593f-8668-cd03cef2c619",
+    "indicator--346e641f-388c-5598-984b-90f2fba0cc74",
+    "indicator--96b76b09-623a-57ae-9c2c-e38979b236db",
+    "indicator--51b947d3-b6b7-5485-b451-2f878dd2377a",
+    "indicator--9e781560-3101-5be1-9315-3183831f752a",
+    "indicator--a8318103-a63c-5a5b-ae18-7a9ce91225f6",
+    "indicator--4b4cd2e7-cc3a-5c54-a14c-1e5b1bc58e2f",
+    "indicator--3ceb5870-6897-58ef-bf28-ce8ccd0d8dd4",
+    "indicator--f63c787e-e2d2-5344-b5be-0751f7d19308",
+    "indicator--00567ee1-2053-52f5-857e-e1a9a15239cc",
+    "indicator--a0fffe65-8d06-5e52-806a-429b49b23f3d",
+    "indicator--86832635-2833-53e8-96a8-d2f11ef61e17",
+    "indicator--f9bdd1a5-7b70-5355-a282-7d77c484b7a4",
+    "indicator--d050ddaf-68aa-51ca-9d70-cb294bb4626d",
+    "indicator--3237ab66-4b62-5cab-8992-26c09c5e4835",
+    "indicator--939a4a4b-a0df-57a3-87e2-38dddffe313c",
+    "indicator--35407165-e271-5330-8849-0c89f94dc6af",
+    "indicator--32740212-9ff8-5397-984b-506e288f6de9",
+    "indicator--956f15c3-7244-5875-a61f-b254209e1a8b",
+    "indicator--0c60d4b9-f07d-5874-b08d-73c787a8ebd2",
+    "indicator--7556f8cb-7175-5b9a-8250-b218d783491d",
+    "indicator--ece58eb7-4bb5-5667-a62e-d85156278d02",
+    "indicator--d0c3f17e-3ecc-50b6-92f1-cbaaa72c9a77",
+    "indicator--88d3ff01-000e-5a72-8d1e-19d9bd480279",
+    "indicator--1e80c6d0-7327-5738-929d-1d73e695cd73",
+    "indicator--eda97c7d-8357-53f9-bfc8-f44073b75d07",
+    "indicator--81b73ed5-109a-58ba-9f6a-17dca8d472c1",
+    "indicator--1ac0dd43-777a-5af3-824c-9c32e97dc8e9",
+    "indicator--afcfb059-eee9-5de2-a84c-a875f8c3da4d",
+    "indicator--2209ebe5-a098-546d-9736-8ca36a31d8d3",
+    "indicator--e1476a31-c56a-5a2c-a79d-64fbbec2c095",
+    "indicator--bd1d87b8-a4e2-55dc-b234-6c944ecbf358",
+    "indicator--d2d67cc7-d05b-5312-bf3f-e08c4addcc5c",
+    "indicator--7f78e259-d0c7-536d-980e-62f7b0576d43",
+    "indicator--be0b6122-bbc4-5b7a-9f48-4e553140d097",
+    "indicator--6b757049-8d76-5d40-b9d4-180eb92c0f10",
+    "indicator--621cb040-c6ed-5b47-92be-ba7c076c37ed",
+    "indicator--b575410d-6d5c-54ce-b03c-828e7318dfbc",
+    "indicator--49d64928-5091-5104-8cbd-75351fd73ce8",
+    "indicator--9e1bd630-6d0b-557d-b818-4cb1851da7ca",
+    "indicator--12092c25-168c-53af-8e68-fe107701bc0a",
+    "indicator--01dc21a5-23b6-5a92-a487-ea9157c29fca",
+    "indicator--befa9593-5bff-5877-af00-f8b9b0ec185e",
+    "indicator--cacd00fc-78af-54e4-9cf8-0f9e661d43b0",
+    "indicator--26ad47eb-c846-5282-b9f7-a8114dc585ff",
+    "indicator--92c82362-c93e-50e5-80b0-e6b92e7a2637",
+    "indicator--9274180b-5e27-544e-b0de-ae9a8db7c0cf",
+    "indicator--dd00a43c-51a0-5f3e-b47f-bafee405c4af",
+    "indicator--305ef7ce-c5e4-54ee-a335-73b2664b68f6",
+    "indicator--faea6971-6fcf-5f79-81f8-ad5bcccb3fad",
+    "indicator--4e394a80-92aa-5fd9-bd9c-c8578d67ad0e",
+    "indicator--a8910734-48f7-5376-b98c-aff90a7b1ad1",
+    "indicator--67a8aad5-99ab-57fd-865b-1ebb9160473a",
+    "indicator--152099d4-d289-5296-a5ee-46cc8dd2d2d5",
+    "indicator--b8c14aaa-91aa-5806-a0be-55d1eb985cf5",
+    "indicator--7b265551-86b5-51c9-b7c8-1333ec226785",
+    "indicator--c1eca729-14e0-5da4-b545-7c041ad397a3",
+    "indicator--a8e3e301-d036-55f2-a7fe-4d3ef789e885",
+    "indicator--9b5fdedb-3838-5f31-b4ed-fce5fc2b04dc",
+    "indicator--e5798f85-7498-508f-a800-af1f4a3ae03a",
+    "indicator--e1aa089d-600f-59fc-a1a3-88f10f6a735c",
+    "indicator--72f4647a-f931-5590-877b-79763bc96334",
+    "indicator--68aa95d0-9673-57e3-964d-35a1247e89eb",
+    "indicator--3b6d0fff-d2b3-56e3-8730-bdb7a9e4bda8",
+    "indicator--e5cf1473-c1ca-570b-a88f-7cd902dc5687",
+    "indicator--ebd24c90-454d-5c6a-8ec0-6530533b2572",
+    "indicator--154b7ea9-9ed6-5a7c-bd76-6bfa63ac5b43",
+    "indicator--7cd93c82-8ed4-566f-8b44-103b3da633de",
+    "indicator--0401c99f-74eb-537b-8e8e-99433ed03a28",
+    "indicator--61d3c8b1-cb6c-582c-938a-1d57a159204f",
+    "indicator--4260525c-2122-50f8-b6c5-621652896d0e",
+    "indicator--472b6969-75e9-587f-9e4d-8529954c0c46",
+    "indicator--d505aceb-34cc-5295-8889-10b900a118d5",
+    "indicator--da35fd03-a880-5e7e-a53a-cd11164a3a1c",
+    "indicator--f73785d2-8a54-5a17-b3b1-9c61e630d760",
+    "indicator--ede52d03-f9de-5828-99b7-92546e7102db",
+    "indicator--6f63d005-ca68-5ce6-891c-1492e93cf9d0",
+    "indicator--7e97c660-9d1e-584e-97fc-621261ce1ec9",
+    "indicator--e9cfd2a7-d4b0-5cad-8d34-1c26048bdb37",
+    "indicator--64e02b6e-44a7-5e58-9e9f-606de3151650",
+    "indicator--862f113f-377c-5360-bcde-e2733c8311c4",
+    "indicator--06c2689d-27e5-55fc-90db-f8c6b4c6d29a",
+    "indicator--1f50b9cb-3324-5415-9bc7-58cab27cf2fb",
+    "indicator--45382c32-b343-51a5-b22e-2ec07793aab4",
+    "indicator--ed18b77e-5e93-5d1d-adfe-ee4fa1fbf50e",
+    "indicator--ab736927-d2a4-5dad-b530-5da9b17f8494",
+    "indicator--acf97324-fc4a-5bb7-ab31-91510c46070f",
+    "indicator--28f25454-417f-5cef-b8b9-b2a48ed96c0a",
+    "indicator--9a0c883a-f295-5481-b039-47e328819830",
+    "indicator--d3a83389-fa77-5a4d-bcf7-4228fce4d321",
+    "indicator--f954ead7-2983-5f29-90ca-d3bdd571f16c",
+    "indicator--b1647fda-fbfc-54de-a1a5-fd6d36f273f9",
+    "indicator--11d8d05a-f064-5986-b252-a86d22638956",
+    "indicator--62b3e7c4-fe84-563c-aada-754c0a2c21db",
+    "indicator--fdf29ed0-c21d-5c75-b23e-8347114248fb",
+    "indicator--f16091a3-e2c9-527c-97c6-cca535fb1fef",
+    "indicator--c448e96e-15b1-5fa1-be70-35c3ca38bbc3",
+    "indicator--b62b3277-71b2-547e-add8-c1f14ec544a3",
+    "indicator--4788895f-95ee-55d0-95f7-7b55b8528133",
+    "indicator--b3aac1b2-e4c6-57e4-aaa9-4dcd8d6db1ef",
+    "indicator--eb90cbfd-7360-5c31-b315-d98a483b3ba8",
+    "indicator--423107ef-d682-55eb-a2fe-db14f1eccd6d",
+    "indicator--f79daa51-e74a-599b-bda5-487139033bf3",
+    "indicator--402ec17d-4e58-5c2d-bc55-44f02166894f",
+    "indicator--bbaff34b-d1f5-5ede-9e3e-44a68bf1d0e1",
+    "indicator--5f5d4cab-dbd4-547d-9076-881be6100f97",
+    "indicator--c64c5e85-5bb4-5ced-b1f6-60269a1ded48",
+    "indicator--dc18a23f-0038-5c91-910f-5b08198d3965",
+    "indicator--c9ec7c2d-3d4e-5d8f-a6c4-2fff4d02dbf1",
+    "indicator--8d1e6f32-671c-51e9-be34-7a05b0886994",
+    "indicator--51901a4e-c98a-57ea-98aa-f259c01753d2",
+    "indicator--e7da8bb6-d059-5d24-8592-1a032c2e3287",
+    "indicator--2bd0d49a-a00b-5301-a4fb-9bc445bd06e9",
+    "indicator--ff9aa168-27eb-56a1-9622-02a15c0f7b1d",
+    "indicator--389db982-1c63-5193-a947-8fb1c45d9e50",
+    "indicator--cb4988ab-7bc3-5f8a-a56c-a045c435201e",
+    "indicator--83b86ce3-be36-5e7b-8816-27f1ea2d0b0c",
+    "indicator--5f0ca9be-0a35-5173-99ce-44df10850a92",
+    "indicator--dc878b95-f6d0-51a3-b5f8-86c12916bcb2",
+    "indicator--75efb72a-fb0a-5a85-ad8e-a1e4bdbb9977",
+    "indicator--f448cf24-0014-5dfd-a2a1-76e9a6221ea5",
+    "indicator--87bbc675-3369-5b86-a8fc-321bc9ca654f",
+    "indicator--cd72fa19-f0db-535b-957b-0620c3922053",
+    "indicator--d4232b59-7e22-53cd-93c2-84a6bf754fa6",
+    "indicator--a5313694-d9c3-5af3-8eb5-4607abc10b46",
+    "indicator--8f5d2d1e-0ed1-52a2-8cd4-9d04d66236e5",
+    "indicator--a4940753-48d1-5932-8186-26ad5a0e9edd",
+    "indicator--87f08715-aad0-5525-bd93-987a567c1c74",
+    "indicator--5752329b-a157-5563-a18f-871569f66888",
+    "indicator--bd1022f0-ff79-5138-821b-985e074cd2a1",
+    "indicator--fc3e202c-187f-5a6a-8ab3-25ae0fbf985d",
+    "indicator--8506d8b2-5aab-54ab-9836-6549ca124603",
+    "indicator--16fcc9c8-7ee8-568d-a77a-acf5d437f8d4",
+    "indicator--57777814-0eb6-5887-b126-1bc404c71e41",
+    "indicator--0af17aa8-cff8-5893-897d-a78750b6ea88",
+    "indicator--91c70b3d-df5e-5478-b7f7-b08e090c8363",
+    "indicator--b8bf9647-5f74-5a40-b9d2-2e8ab672b243",
+    "indicator--348a0cf4-52ad-57b8-b6af-eadd1f114c01",
+    "indicator--ed6536c3-6f86-5bef-8ac7-84a77d179567",
+    "indicator--7ed07103-05e8-58d2-bd78-92145480c47a",
+    "indicator--1d770f9f-8ed6-57d4-8c4d-c765280c3577",
+    "indicator--111f8209-9347-5747-b9de-c1b58a2f520f",
+    "indicator--d99b5935-a957-51c0-97ca-667e0560dbb0",
+    "indicator--c9c75369-0c5f-52d6-8074-ec8d25349b99",
+    "indicator--cb6b4e75-2ec3-56df-8a73-754f3eb11c92",
+    "indicator--1970de4c-c516-5db0-a2df-194a58db3f48",
+    "indicator--8a9899e7-a7c9-5b4a-8d4f-93ea7df739d3",
+    "indicator--edea402d-c3d8-5d67-8509-422b7b75796a",
+    "indicator--d813b854-36ac-5b34-b3b6-cb7f71d75c9a",
+    "indicator--0c755c59-a7f6-5fd8-8683-d6636fcd1522",
+    "indicator--99200230-837d-5bd0-82ed-4ebe0ed1d630",
+    "indicator--52a28703-e249-50e6-9848-9e4b67368e68",
+    "indicator--2b55aa4c-60f2-5e75-a061-bfba64b5d31f",
+    "indicator--edc20879-f28e-5be3-bcff-dd19a42a9e41",
+    "indicator--25b7ecbd-54f9-5047-a8f7-4c6b431cc094",
+    "indicator--463cfe92-792a-5baf-9c8c-3604dfa7f3f7",
+    "indicator--a0fc89f9-63d5-55fe-a4df-f67bf8632a8c",
+    "indicator--e4ab9886-00a3-5d3a-a64f-3c6fa99a0f35",
+    "indicator--10106d3c-95fa-5544-8030-73c414c8568b",
+    "indicator--f47d64f6-772f-52a3-b2f8-6fa11172dff6",
+    "indicator--365381e1-cdb1-5d4a-bd3c-8623d5db7119",
+    "indicator--f50655f3-d0c0-5dcc-b1d3-78caf0e198f0",
+    "indicator--07b810d1-0f17-523c-b07b-b1abbdfc2b9f",
+    "indicator--db011cda-4a38-5231-bc2f-d312f8eeb84a",
+    "indicator--f935acfc-9b73-5064-8f68-48253e27b1de",
+    "indicator--3c7354dd-67e8-5943-94bb-585bb27191e9",
+    "indicator--52f459cc-e5f3-5d8b-bf86-1d7e6379c931",
+    "indicator--259eb55d-7b44-557f-9463-d06e163c7335",
+    "indicator--9f6ece74-e59b-5630-ba50-ed666c0dc7fe",
+    "indicator--b98ae8d9-218d-5ba0-a37f-6070116c2cb8",
+    "indicator--607b2fcc-d601-5582-b51b-fb4773c9e35d",
+    "indicator--e71635b0-2685-5cf9-84ea-0e7f89d8b9dd",
+    "indicator--95e3ddc4-1ccc-5073-a552-07f40d681ed4",
+    "indicator--775fda32-2445-51a3-b961-1b95b9fa0d68",
+    "indicator--bd33f671-8c23-52bf-95bc-70f50bf08e68",
+    "indicator--a6ce453d-e8ff-5d4f-9766-be463c8b50db",
+    "indicator--eef541d7-52a0-5728-a29f-01c7032a255d",
+    "indicator--f0764f23-cc05-5371-92ab-37bcf5aba9e1",
+    "indicator--4e955f44-d803-5de5-9ae5-fce313b3b325",
+    "indicator--efcc1ed9-5a90-51db-9b5d-f61dc2952cb0"
+   ]
+  }
+ ]
+}
