@@ -103,6 +103,15 @@ def test_schema_and_banned_phrases() -> None:
     assert not validate_narrative(None, FINDINGS).ok
 
 
+def test_wrong_shapes_fail_cleanly_instead_of_crashing() -> None:
+    for bad_threats in (["text"], [{"finding_ids": "F1"}], "F1"):
+        bad = copy.deepcopy(CLEAN)
+        bad["top_threats"] = bad_threats
+        result = validate_narrative(bad, FINDINGS)
+        assert not result.ok
+        assert not any("cites F," in e or "cites 1," in e for e in result.errors)
+
+
 def test_defanged_input_iocs_are_allowed_in_either_form() -> None:
     ok = _plant("Block scholarship-portal[.]example[.]test and 198.51.100[.]23.")
     assert validate_narrative(ok, FINDINGS).ok
