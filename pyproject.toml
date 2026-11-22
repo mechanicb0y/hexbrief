@@ -19,7 +19,7 @@ dependencies = [
     # 2.5 line to match MISP 2.5.51 (ADR-003). 2.5.34.1 is the newest that fits pycti's
     # requests<2.34 pin (2.5.34.2+ needs requests>=2.34.2), see ADR-004.
     "pymisp==2.5.34.1",
-    "pycti==7.261109.3",  # matches OpenCTI platform 7.261109.3 (ADR-004)
+    "pycti==7.261119.0",  # matches OpenCTI platform 7.261109.3 (ADR-004)
 ]
 
 [project.optional-dependencies]
